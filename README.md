@@ -32,12 +32,13 @@ EPF, Ethereum, Protocol
 - Email：zc040809@gmail.com
 ## 发起组织
 
+  [ETHPanda](ethpanda.org) <img alt="organization-logo" height="60px" width="60px" src="https://web3logo.info/detail/ETHPanda/969" />
 
 
 
 ## 社群
 
-
+Telegram：@ETHPandaOrg
 ## 残酷共学打卡记录表
 
 ✅ = Done ⭕️ = Missed ❌ = Failed
@@ -266,4 +267,5 @@ EPF, Ethereum, Protocol
 ## 请假规则
 
 每周请假 2 次
+
 
