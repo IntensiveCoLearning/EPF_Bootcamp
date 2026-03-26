@@ -32,13 +32,14 @@ EPF, Ethereum, Protocol
 - Email：zc040809@gmail.com
 ## 发起组织
 
-  [ETHPanda](ethpanda.org) <img alt="organization-logo" height="60px" width="60px" src="https://web3logo.info/detail/ETHPanda/969" />
-
+  [ETHPanda](ethpanda.org) <img alt="organization-logo" height="60px" width="60px" src="https://cdn.lxdao.io/10aed40b-4786-4c2b-aaaa-b7d8a119c00e.png" />
 
 
 ## 社群
 
 Telegram：@ETHPandaOrg
+
+微信联系人：XiaoHai4890，DL___09__15
 ## 残酷共学打卡记录表
 
 ✅ = Done ⭕️ = Missed ❌ = Failed
