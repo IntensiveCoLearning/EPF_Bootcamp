@@ -2,7 +2,11 @@
 
 ## 介绍
 
-介绍内容
+EPF（Ethereum Protocol Fellowship）是以太坊生态中面向协议研发人才的重要培养路径，帮助开发者与研究者进入 Ethereum Core 的真实工作流，参与客户端、测试、研究与协议实现等方向。
+
+EPF 华语区实习计划希望用 4 周时间，为华语区筛选、训练并识别一批具备协议层潜力的开发者，帮助合作方更早接触未来的 contributor、研究者与工程候选人。
+
+本次共学也作为 EPF 中文小组的一个活动。EPF（Ethereum Protocol Fellowship） 是由 EF 发起并资助的奖学金计划，每年一期，旨在从社区中遴选出 20 至 30 名优秀开发者参与。在奖学金计划期间，EF 提供导师指导和资金支持，帮助开发者迅速掌握以太坊协议层及客户端相关知识。通常，EPF 的报名在每年 4-5 月左右开启，经过大约半年的实践开发，最终在 11 月底的 Devcon/Devconnect 大会上展示成果。我们的学习素材和节奏，将会跟随 EPF 的进展一起。
 ## 关键词
 
 EPF, Ethereum, Protocol
@@ -31,22 +35,7 @@ EPF, Ethereum, Protocol
 
 
 
-## 请假规则
-
-每周请假 2 次
-
-
 ## 社群
-
-
-## 共学激励
-
-学到知识就是最大的福利！
-
-
-## 更多信息
-
-更多信息内容
 
 
 ## 残酷共学打卡记录表
@@ -271,3 +260,9 @@ EPF, Ethereum, Protocol
 - 报名：https://www.notion.so/lxdao/232dceffe40b8030993ad26f2eb6bed2
 
 - 打卡：https://www.notion.so/lxdao/232dceffe40b80508330c5ee936d4dab
+
+
+## 请假规则
+
+每周请假 2 次
+
