@@ -76,7 +76,9 @@ EPS 官方会议和 ACD 会议总结
 | ------------- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
 | [yhzhongc](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/yhzhongc.md) | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [XiaoHai67890](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/XiaoHai67890.md) | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
+| [dadwawd1-ops](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/dadwawd1-ops.md) | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 <!-- END_COMMIT_TABLE -->
+
 
 
 
