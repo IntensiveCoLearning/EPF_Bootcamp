@@ -78,7 +78,9 @@ EPS 官方会议和 ACD 会议总结
 | [XiaoHai67890](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/XiaoHai67890.md) | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [dadwawd1-ops](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/dadwawd1-ops.md) | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [gitgdut](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/gitgdut.md) | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
+| [qingfengzxr](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/qingfengzxr.md) | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 <!-- END_COMMIT_TABLE -->
+
 
 
 
