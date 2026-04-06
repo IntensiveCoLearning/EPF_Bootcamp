@@ -130,7 +130,7 @@ EPS 官方会议和 ACD 会议总结
 | [zylg-create](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/zylg-create.md) | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [114514Rogers](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/114514Rogers.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [Jay-Gould7](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/Jay-Gould7.md) | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | | | |
-| [Zhibo-Shang](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/Zhibo-Shang.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
+| [Zhibo-Shang](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/Zhibo-Shang.md) | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [LastHopeOfGPNU](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/LastHopeOfGPNU.md) | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [karrysmith78-art](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/karrysmith78-art.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [ARZER-TW](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/ARZER-TW.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
@@ -204,6 +204,7 @@ EPS 官方会议和 ACD 会议总结
 | [qingge785](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/qingge785.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [DrakenZeng](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/DrakenZeng.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 <!-- END_COMMIT_TABLE -->
+
 
 
 
