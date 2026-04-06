@@ -127,7 +127,7 @@ EPS 官方会议和 ACD 会议总结
 | [XuetaoZhang](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/XuetaoZhang.md) | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [Minami-Bein](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/Minami-Bein.md) | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [yicoyico639-a11y](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/yicoyico639-a11y.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
-| [zylg-create](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/zylg-create.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
+| [zylg-create](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/zylg-create.md) | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [114514Rogers](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/114514Rogers.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [Jay-Gould7](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/Jay-Gould7.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [Zhibo-Shang](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/Zhibo-Shang.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
@@ -204,6 +204,7 @@ EPS 官方会议和 ACD 会议总结
 | [qingge785](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/qingge785.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [DrakenZeng](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/DrakenZeng.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 <!-- END_COMMIT_TABLE -->
+
 
 
 
