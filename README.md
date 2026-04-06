@@ -195,7 +195,7 @@ EPS 官方会议和 ACD 会议总结
 | [hahahaaishaokao123](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/hahahaaishaokao123.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [Iris-1128](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/Iris-1128.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [enderzcx](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/enderzcx.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
-| [vitalebob](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/vitalebob.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
+| [vitalebob](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/vitalebob.md) | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [walle233](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/walle233.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [kvxunz](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/kvxunz.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [fangxu200241-del](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/fangxu200241-del.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
@@ -204,6 +204,7 @@ EPS 官方会议和 ACD 会议总结
 | [qingge785](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/qingge785.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [DrakenZeng](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/DrakenZeng.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 <!-- END_COMMIT_TABLE -->
+
 
 
 
