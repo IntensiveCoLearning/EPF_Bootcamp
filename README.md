@@ -184,7 +184,7 @@ EPS 官方会议和 ACD 会议总结
 | [kernel1983](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/kernel1983.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [ZHQ-clack](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/ZHQ-clack.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [wkarry450-max](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/wkarry450-max.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
-| [wLynna](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/wLynna.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
+| [wLynna](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/wLynna.md) | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [liji3597](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/liji3597.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [fuyushiphilip](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/fuyushiphilip.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [ads12306](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/ads12306.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
@@ -204,6 +204,7 @@ EPS 官方会议和 ACD 会议总结
 | [qingge785](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/qingge785.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [DrakenZeng](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/DrakenZeng.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 <!-- END_COMMIT_TABLE -->
+
 
 
 
