@@ -72,14 +72,16 @@ EPS 官方会议和 ACD 会议总结
 ✅ = Done ⭕️ = Missed ❌ = Failed
 
 <!-- START_COMMIT_TABLE -->
-| Name | 4.06 | 4.07 | 4.08 | 4.09 | 4.10 | 4.11 | 4.12 | 4.13 | 4.14 | 4.15 | 4.16 | 4.17 | 4.18 | 4.19 | 4.20 | 4.21 | 4.22 | 4.23 | 4.24 | 4.25 | 4.26 | 4.27 | 4.28 | 4.29 | 4.30 | 5.01 | 5.02 | 5.03 |
+| Name | 4.08 | 4.09 | 4.10 | 4.11 | 4.12 | 4.13 | 4.14 | 4.15 | 4.16 | 4.17 | 4.18 | 4.19 | 4.20 | 4.21 | 4.22 | 4.23 | 4.24 | 4.25 | 4.26 | 4.27 | 4.28 | 4.29 | 4.30 | 5.01 | 5.02 | 5.03 | 5.04 | 5.05 |
 | ------------- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
-| [yhzhongc](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/yhzhongc.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
-| [XiaoHai67890](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/XiaoHai67890.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
-| [dadwawd1-ops](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/dadwawd1-ops.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
-| [gitgdut](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/gitgdut.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
-| [qingfengzxr](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/qingfengzxr.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
+| [yhzhongc](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/yhzhongc.md) | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
+| [XiaoHai67890](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/XiaoHai67890.md) | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
+| [dadwawd1-ops](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/dadwawd1-ops.md) | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
+| [gitgdut](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/gitgdut.md) | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
+| [qingfengzxr](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/qingfengzxr.md) | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
+| [jimmyYSY](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/jimmyYSY.md) | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 <!-- END_COMMIT_TABLE -->
+
 
 
 
