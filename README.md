@@ -83,7 +83,7 @@ EPS 官方会议和 ACD 会议总结
 | [MarnieWu](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/MarnieWu.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [Toby1009](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/Toby1009.md) | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [SKYEJT](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/SKYEJT.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
-| [madeline-past](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/madeline-past.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
+| [madeline-past](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/madeline-past.md) | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [fffg-o](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/fffg-o.md) | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [christinaonfice-m43i](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/christinaonfice-m43i.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [fsj15294492583](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/fsj15294492583.md) | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | | | |
@@ -204,6 +204,7 @@ EPS 官方会议和 ACD 会议总结
 | [qingge785](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/qingge785.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [DrakenZeng](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/DrakenZeng.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 <!-- END_COMMIT_TABLE -->
+
 
 
 
