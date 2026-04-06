@@ -15,6 +15,8 @@ timezone: UTC+8
 ## Notes
 
 <!-- Content_START -->
-
-
+# 2026-04-06
+<!-- DAILY_CHECKIN_2026-04-06_START -->
+今天看了prehistory部分，了解了密码学的历史，对以太坊加密算法的密码学基础有了初步的认识
+<!-- DAILY_CHECKIN_2026-04-06_END -->
 <!-- Content_END -->
