@@ -116,7 +116,7 @@ EPS 官方会议和 ACD 会议总结
 | [tangmingyincheng](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/tangmingyincheng.md) | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [wenyaohuang](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/wenyaohuang.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [LangH-web](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/LangH-web.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
-| [ShawnX-F](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/ShawnX-F.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
+| [ShawnX-F](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/ShawnX-F.md) | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [narnona](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/narnona.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [Chichuzxy](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/Chichuzxy.md) | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [ycl-2004](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/ycl-2004.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
@@ -204,6 +204,7 @@ EPS 官方会议和 ACD 会议总结
 | [qingge785](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/qingge785.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [DrakenZeng](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/DrakenZeng.md) |   | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 <!-- END_COMMIT_TABLE -->
+
 
 
 
