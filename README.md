@@ -80,7 +80,9 @@ EPS 官方会议和 ACD 会议总结
 | [gitgdut](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/gitgdut.md) | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [qingfengzxr](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/qingfengzxr.md) | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [jimmyYSY](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/jimmyYSY.md) | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
+| [MarnieWu](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/MarnieWu.md) | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
 <!-- END_COMMIT_TABLE -->
+
 
 
 
