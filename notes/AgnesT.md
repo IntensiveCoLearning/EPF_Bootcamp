@@ -15,8 +15,16 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-07
+<!-- DAILY_CHECKIN_2026-04-07_START -->
+**Day 2：**
+
+了解 Prehistory（史前历史）（以太坊起源与背景）
+<!-- DAILY_CHECKIN_2026-04-07_END -->
+
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 **Day 1 - 加入 EPS 社区，开启学习之路**
 <!-- DAILY_CHECKIN_2026-04-06_END -->
 <!-- Content_END -->
