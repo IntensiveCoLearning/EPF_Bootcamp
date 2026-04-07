@@ -15,8 +15,113 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-07
+<!-- DAILY_CHECKIN_2026-04-07_START -->
+04/07
+
+## 🧩 核心结构（Core Structure）
+
+以太坊被拆分为两层：  
+**执行层（Execution Layer, EL）**  
+**共识层（Consensus Layer, CL）**
+
+👉 分离：  
+**执行（what happens） vs 共识（what is agreed）**
+
+* * *
+
+## 🧮 执行层（Execution Layer, EL）
+
+所有交易真正发生的地方  
+👉 执行逻辑 + 数据变化  
+👉 Global Computer
+
+~ **EVM（Ethereum Virtual Machine）**  
+执行智能合约的“虚拟计算机”
+
+~ **State（状态）**  
+存储所有链上数据（余额、合约）
+
+~ **Transactions（交易池 / mempool）**  
+等待被打包的交易
+
+~ **p2p network**  
+传播交易与区块数据
+
+* * *
+
+## 🤝 共识层（Consensus Layer, CL）
+
+决定哪条链是“正确的”  
+👉 验证 + 选择 + 最终确认  
+👉 Global Agreement
+
+~ **Validators（验证者）**  
+负责出块和投票（质押ETH）
+
+~ **PoS（Proof of Stake）**  
+基于质押的共识机制
+
+~ **Fork Choice（LMD-GHOST）**  
+决定当前主链是哪条
+
+~ **Finality（Casper FFG）**  
+确定区块不可回滚
+
+~ **RANDAO**  
+生成随机数（用于选择验证者）
+
+~ **p2p network**  
+传播区块与投票
+
+* * *
+
+## 🔌 层间连接（Layer Communication）
+
+**Engine API（核心桥梁）**
+
+~ 共识层 → 执行层  
+“执行这个区块”
+
+~ 执行层 → 共识层  
+“执行结果是这样”
+
+👉 Execution ↔ Consensus
+
+* * *
+
+## 🌐 对外接口（Interfaces）
+
+~ **JSON-RPC API**  
+用户 / dApp → 执行层  
+（发送交易、调用合约）
+
+~ **Beacon API**  
+验证者 → 共识层  
+（参与共识）
+
+* * *
+
+## 🧠 三层极简模型（Mental Model）
+
+| 层 | 作用 | 关键词 |
+| --- | --- | --- |
+| 🧮 Execution | 做事情 | 执行 |
+| 🤝 Consensus | 定规则 | 共识 |
+| 🔌 Interface | 连接外部 | 入口 |
+
+* * *
+
+## ⚡ 一句话总结
+
+**Ethereum = Execution + Consensus + Communication**
+
+以太坊 = 执行 + 共识 + 连接
+<!-- DAILY_CHECKIN_2026-04-07_END -->
+
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 2026/04/06
 
 今天学习两部分
