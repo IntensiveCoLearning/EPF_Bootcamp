@@ -15,8 +15,19 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-07
+<!-- DAILY_CHECKIN_2026-04-07_START -->
+以太坊的设计核心理念：简洁性、通用性、模块化、非歧视性、敏捷性。还有关于一些原则的描述。现在来看显得比较空洞，再进一步学习区块链层协议
+
+1.  了解到新名词UTXO和Accounts总结了两个模型对比：（具体的内容笔记在我自己的NOTEBOOKLM）
+    
+
+![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/SKYEJT/images/2026-04-07-1775542567370-image.png)
+<!-- DAILY_CHECKIN_2026-04-07_END -->
+
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 第一天看完了[Prehistory（史前历史）](https://epf.wiki/#/wiki/protocol/prehistory)（以太坊起源与背景），让我回想起了这个经典的RSA加密算法，以公因数分解为背景的非对称加密算法（曾经的密码学知识开始苏醒哈哈哈哈）
 
 再看到free as in freedom 这里不禁感慨果然还是只有开源才能促进发展。和我们科研一样只有开源代码才是真正有价值的科研。
