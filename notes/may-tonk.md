@@ -15,8 +15,230 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-07
+<!-- DAILY_CHECKIN_2026-04-07_START -->
+# 以太坊执行层网络通信学习总结
+
+## —— 从 `eth.md` 理解 EL↔EL、EL↔CL 与现代 Ethereum 节点架构
+
+今天我们学习的核心，是 **Ethereum 执行层节点之间的网络通信协议**，也就是 `devp2p` 仓库里的 `caps/eth.md`。这份文档定义的是 **ETH Wire Protocol**，它运行在 **RLPx** 之上，用来让执行层节点彼此交换区块头、区块体、交易池交易、回执等执行层数据。文档本身直接说明，`eth` 协议是用于 peers 之间交换 Ethereum blockchain information 的协议，并且当前基线版本写的是 `eth/69`。
+
+很多人在第一次接触这份文档时，最容易误解的一点是：以为它讲的是“智能合约怎么执行”或者“DApp 怎么和链交互”。其实不是。今天我们已经把这层关系理清了：**前端、钱包、后端程序** 通常是通过 **JSON-RPC** 和节点交互；**共识层 CL 和执行层 EL** 主要通过 **Engine API** 交互；而 `eth.md` 讲的是 **执行层节点和执行层节点之间** 如何互相同步和传播执行层数据。换句话说，它不属于合约开发接口，而属于节点网络层接口。ethereum.org 对节点的说明也印证了这一点：执行层客户端负责监听网络中广播的新交易、在 EVM 中执行它们，并保存最新状态与数据库；共识层客户端负责 PoS 共识，使网络就经过验证的数据达成一致。
+
+* * *
+
+## 一、为什么今天的 Ethereum 不能只有 EL↔CL，还必须有 EL↔EL
+
+这是今天最重要的理解突破之一。你提出的问题非常关键：**“既然 EL 已经和 CL 对接了，为什么 EL 还要和别的 EL 通信？”** 这个问题一旦想通，整个 `eth.md` 的定位就会变得非常清楚。
+
+答案是：**EL↔CL 和 EL↔EL 解决的是两类完全不同的问题。**  
+EL↔CL 解决的是“共识层和执行层之间如何协作”；EL↔EL 解决的是“执行层数据如何在整个执行层网络中传播和同步”。Engine API 的 Paris 规范显示，CL 和 EL 的交互核心围绕 `engine_newPayloadV1`、`engine_forkchoiceUpdatedV1`、`engine_getPayloadV1` 等方法展开，其中 `ForkchoiceState` 里有 `headBlockHash`、`safeBlockHash`、`finalizedBlockHash`，而 `ExecutionPayload` 则包含执行层区块内容，例如 `transactions`。这说明 CL 主要是在告诉 EL：当前哪条链头是该接受的，你该围绕哪个 head 更新 forkchoice，或者基于哪个 head 构建新的 payload。
+
+但这还远远不够。因为就算 CL 告诉了 EL “哪个 head 是正统链头”，EL 仍然要自己解决很多现实问题：**交易从哪里来，区块体从哪里下载，回执从哪里补，历史数据从哪里拿，本地交易池如何传播给更多 peer。** 这些都不是 CL 替它做的，而是执行层网络自己完成的。`eth.md` 明确把一个 session 中的高层任务分成两类：**chain synchronization** 和 **transaction exchange**。这就意味着，EL 节点之间的横向通信不是可选装饰，而是执行层能形成一个网络、能让数据流动起来的基础。
+
+所以今天最值得记住的一句话是：
+
+**CL 决定“该信哪条链”，EL 网络负责“把这条链需要的执行层数据搬过来并传播开”。**  
+没有 EL↔CL，执行层不知道该跟随哪条 canonical chain；没有 EL↔EL，执行层就没有足够的数据来源和传播网络，整个系统也跑不起来。
+
+* * *
+
+## 二、`eth.md` 的本质：它讲的是执行层节点之间的“数据交换规则书”
+
+从整体上看，`eth.md` 不是在讲“链为什么存在”，也不是在讲“EVM 指令如何执行”，而是在讲一个更基础的问题：**两个执行层节点一旦连上了，应该如何互相说话。**
+
+这份文档规定了哪些消息可以发、先发什么、后发什么、每种消息结构长什么样、响应应该怎么返回。它相当于执行层节点之间的一本“通信规则书”。文档在 Basic Operation 里明确写到：连接建立后，双方必须先交换 `Status` 消息；只有在收到对方 `Status` 之后，这个 Ethereum session 才算激活，在此之前不应该发送其他 `eth` 消息。文档还规定了消息尺寸限制，底层 RLPx 单条消息上限为 16.7 MiB，而 `eth` 协议实践中常见上限更低，典型实现会将单消息限制在约 10 MiB 左右。
+
+这一部分你可以用一句非常朴素的话来理解：  
+`eth` **协议不是“随便发消息”，而是“先握手，再按规则同步数据”。**  
+这和日常应用层 API 的感觉很不一样，它更接近底层网络协议的思路。
+
+* * *
+
+## 三、Status 握手：不是简单“打招呼”，而是能力与状态通告
+
+今天我重点看了 `Status` 这个消息，因为它是整个 `eth` session 的起点。根据 `eth.md`，`Status` 的格式是：
+
+`[vsn, networkid, genesis, forkid, earliest, latest, latestHash]`
+
+这里面包含了协议版本、网络 ID、创世块哈希、fork 标识，以及当前节点能提供的完整区块历史范围。也就是说，`Status` 并不只是“你好，我在线”，而是“我运行的是哪个协议版本、我在哪条网络、我处于哪个 fork 规则、我现在到底能服务哪一段历史”。
+
+这里还有两个今天特别容易混淆、但我们已经厘清的知识点。
+
+第一，`networkid` **不一定等于** `chainId`。`networkid` 更偏向 P2P 网络层的识别；`chainId` 则更多用于交易签名与重放保护。文档明确提醒，这两者不应想当然地视为同一个值。
+
+第二，`Status` 在 `eth/69` 之后比以前更重要。EIP-7642 明确指出，`eth/69` 做了三件关键事：  
+一是让节点在握手里声明自己服务的历史区块范围；  
+二是移除了 Merge 后已不再使用的 total difficulty 握手信息；  
+三是简化了 receipts 传输格式。
+
+因此，今天你再看 `Status`，不能只把它当成旧时代的“版本对齐”，而应理解为：**现代 Ethereum 执行层节点用它来告知 peer 自己的历史服务能力和当前兼容上下文。**
+
+* * *
+
+## 四、为什么 PoS 之后，`eth.md` 不能再按 PoW 思路去读
+
+这是今天学到的另一个非常关键的点。`eth.md` 本身明确写到：因为 Ethereum 的共识发生在 execution chain 之外，这个协议没有内建机制来决定 canonical chain head，它假定每个节点会通过其他方式，比如和一个 consensus node 通信，来知道 canonical chain。
+
+这意味着，**Merge 之后，**`eth` **协议不再单独承担“哪条链算正统”这件事。**  
+在 PoW 时代，执行层网络自己就更接近“既传播数据，也决定哪条链更重”；但在 PoS 时代，canonical head、safe head、finalized head 的判断，已经主要由共识层提供。Engine API 里的 `ForkchoiceState` 正是这种变化的体现，因为它直接让 CL 向 EL 传达 head、safe、finalized 三种哈希。
+
+文档还特别提醒，PoW 转 PoS 之后，**block propagation 已不再由** `eth` **协议负责**；文中保留的 `NewBlock`、`NewBlockHashes` 相关描述，主要只适用于 PoW 和部分 PoA 网络，并会在未来版本中逐步淡出。也就是说，今天阅读 `eth.md` 时，要把它看成一份“带有历史包袱但主线已经现代化”的协议文档：有些内容仍在规范里，但它们对当前主网的核心理解权重要降低。
+
+* * *
+
+## 五、链同步主线：先拿 headers，再拿 bodies，再补 receipts
+
+在今天的学习中，我们把 `eth.md` 里最经典的一条主线理清了：**chain synchronization**。
+
+文档给出的典型流程是这样的：节点先通过 `GetBlockHeaders` 请求区块头，对方返回 `BlockHeaders`；在拿到 header 链之后，再用 `GetBlockBodies` 请求区块体，由对方返回 `BlockBodies`；在某些同步场景下，还要额外用 `GetReceipts` 拉取 receipts，由 `Receipts` 响应。`GetBlockHeaders` 的请求参数中还包含 `startblock`、`limit`、`skip`、`reverse`，这意味着节点不只是“从头到尾一块一块拉”，还可以先取骨架，再并行补全缺失部分。
+
+今天我们特别强调了：  
+**为什么一定是先拿 header，再拿 body？**  
+因为 header 更轻，它决定了“区块骨架”和各个根承诺；一旦 header 链确定下来，节点就知道每个 block hash 是什么，于是区块体可以向多个 peer 并行请求。之后 receipts 又可以用来校验 `receipts-root`，从而让同步过程不必每次都立刻完整重放所有交易。
+
+这一条流程线，实际上是理解执行层节点“为什么能同步起来”的关键。如果没有 EL↔EL 网络，这条链同步路径本身就不存在，因为 headers、bodies、receipts 都是从其他执行层 peer 拉来的。
+
+* * *
+
+## 六、State sync 为什么不再属于 `eth` 主协议
+
+今天我还学到一个很容易被忽略，但实际上非常体现现代架构变化的点：**state tree 下载已经不再是** `eth` **协议的工作。**
+
+`eth.md` 明确说明，`eth/63` 到 `eth/66` 还可以通过 `eth` 协议同步 state tree，但从 `eth/67` 开始，这项工作已经被交给了辅助协议 `snap`。官方 `snap.md` 也说明，`snap` 运行在 RLPx 之上，用于 peers 之间交换 Ethereum 状态快照。
+
+这意味着今天你理解执行层同步时，不能再想成“一个 `eth` 协议包办一切”。更准确地说：
+
+-   `eth` 主要负责 **headers、bodies、receipts、交易池传播**；
+    
+-   `snap` 负责 **state 下载**；
+    
+-   `Engine API` 负责 **EL 和 CL 之间的共识-执行接口**。
+    
+
+这恰恰体现了现代 Ethereum 架构正在不断模块化、分层化：不同协议负责不同职责，而不是所有东西挤在一个协议里。
+
+* * *
+
+## 七、交易传播：为什么交易池一定要靠 EL 网络自己扩散
+
+交易交换是今天学习里非常重要的一部分，因为它和你以后理解 mempool、机器人、脚本并发冲突都直接相关。
+
+ethereum.org 说明，执行层客户端会监听网络中广播的新交易并执行它们。`eth.md` 进一步规定，节点之间必须交换 pending transactions，并把它们保存在本地的 transaction pool 中。新 peer 建立连接时，会先用 `NewPooledTransactionHashes` 公告自己本地池中的交易哈希；如果对方发现有自己没有的交易，就会用 `GetPooledTransactions` 拉取完整交易；此外还有 `Transactions` 消息，可直接发送完整交易。
+
+这说明交易传播的核心逻辑是：
+
+**先广播目录，再按需拉正文。**
+
+这么做的好处是节省带宽。不是每个节点都必须把每一笔完整交易无差别地发给所有 peer，而是先告诉别人“我这边有这些交易的哈希、类型、大小”，真正需要的人再来要正文。文档还特别说，节点应该避免把已经知道的交易重复回发给同一个 peer。
+
+这一部分也直接回答了你那个问题：  
+**为什么不能只有 EL↔CL？**  
+因为交易池传播本来就是 EL 网络内部的职责。CL 负责共识，不负责充当执行层交易广播总线。
+
+* * *
+
+## 八、交易有效，不等于最终执行成功
+
+今天我们还补上了一个非常重要、以后你写 Web3 脚本时一定会反复遇到的概念：**mempool valid 不等于 EVM execute success。**
+
+`eth.md` 在“Transaction Encoding and Validity”一节明确指出，协议所说的交易有效性，关注的是这笔交易是否适合临时放入本地池并与其他 peer 交换，而不是它最终一定能在 EVM 中成功执行。文档要求节点检查交易类型是否已知、签名是否有效、gas 是否满足 intrinsic gas、余额是否足够支付 value 和 gas 成本，还要求交易 nonce 至少不小于发送者当前账户 nonce。
+
+这意味着，一笔交易即使已经进入 mempool，也仍然可能在真正打包执行时失败。失败原因可能是状态变化、滑点变化、余额被其他交易先消耗、或者同 nonce 交易竞争替换。今天虽然没有把这些交易池实现细节展开成一门课，但你已经抓住了最底层的逻辑：  
+**网络层接受一笔交易，并不等于链上最终一定成功执行这笔交易。**  
+这是理解 Web3 交易行为、尤其是 DeFi 交互和自动化机器人时非常关键的一个思维转折。
+
+* * *
+
+## 九、今天关于 nonce 的真正上下文：交易 nonce 和区块 nonce 不一样
+
+今天专门到了 nonce，这个问题很重要，因为 `eth.md` 里其实出现了两个完全不同的 nonce。
+
+第一种是 **transaction nonce**。它出现在 legacy transaction 的字段里，表示发送者账户的交易序号。文档在交易有效性检查里要求节点确认该 nonce 至少不小于当前账户 nonce，也允许实现自行决定本地池支持多大的 future transaction gap。这个 nonce 主要和账户级交易顺序、重放保护、交易池排队有关。
+
+第二种是 **block nonce**。它出现在 block header 结构中，是历史 PoW 区块头字段的一部分，和 seal 校验有关。文档在 header 编码与 header validity 部分都保留了这个字段，还提到可检查的 seal 包括 `mix-digest` 和 `block-nonce`。
+
+所以今天一个非常重要的收获是：  
+**你以后看到“nonce”这个词，绝不能下意识只想到“账户交易序号”。**  
+在 Ethereum 协议文档里，它可能是 tx nonce，也可能是 block nonce，必须看上下文。今天在 `eth.md` 里，这两个都出现了。
+
+* * *
+
+## 十、区块结构：为什么一个区块不是“只有交易列表”那么简单
+
+今天我们还系统看了区块结构。`eth.md` 给出的 header 字段远比初学者想象得复杂：有 `parent-hash`、`state-root`、`txs-root`、`receipts-root`、`gas-limit`、`gas-used`、`basefee-per-gas`、`withdrawals-root`、`blob-gas-used`、`excess-blob-gas`、`parent-beacon-root`、`requests-hash` 等。它还定义了 block body 为 `[transactions, ommers, withdrawals]`。
+
+今天最值得记住的，是对“header、body、block”这三者关系的理解：
+
+-   **header** 是摘要和承诺，里面有各种 root 和关键元数据；
+    
+-   **body** 是正文，真正放交易、ommers、withdrawals 等；
+    
+-   **完整区块** 则是 header 加上相应正文内容。
+    
+
+也正因为 header 里有 `txs-root`、`receipts-root`、`state-root` 等承诺字段，所以同步流程才能先拿 header，再用 body 和 receipts 去校验这些根是否一致。
+
+* * *
+
+## 十一、为什么 header 字段会越来越多：因为 Ethereum 协议还在持续演进
+
+今天我特别提到，`eth.md` 不是一份“死掉的旧规范”，而是一份随硬分叉不断更新的活文档。文档在 header validity 规则里明确写出了不同 fork 之后哪些字段必须存在、之前则必须不存在。比如：
+
+London 之后必须有 `basefee-per-gas`；  
+Shanghai 之后必须有 `withdrawals-root`；  
+Cancun 之后必须有 `blob-gas-used`、`excess-blob-gas`、`parent-beacon-root`；  
+Prague 之后必须有 `requests-hash`。
+
+这让你今天对 Ethereum 的认识更进一步了：  
+**Ethereum 不是一个固定不变的“老协议”，而是在持续迭代的系统。**  
+每次升级不仅会影响合约开发层，也会改变执行层 header、区块编码、节点网络协议等底层结构。`eth.md` 正是这些演进在执行层 P2P 规范上的反映。
+
+* * *
+
+## 十二、eth/69 的现代重点：历史范围通告与 receipts 简化
+
+今天我们花了不少时间理解 `eth/69` 为什么重要。EIP-7642 给出的核心动机很明确：随着 Ethereum 进入 **history expiry** 时代，并不是所有节点都会永久保存并提供全部历史。因此，协议需要一种机制让节点告诉 peer：**我到底还能服务哪一段历史。** 这就是为什么 `Status` 里新增了 `earliest`、`latest`、`latestHash`，并新增了 `BlockRangeUpdate` 消息。
+
+`BlockRangeUpdate` 的作用，就是在节点历史服务范围变化时，通知 peer 新的 `[earliest, latest, latestHash]`。文档还建议，这种更新没必要每个新区块都发一次，大约每两分钟发一次就可以。
+
+EIP-7642 还指出一个非常现实的优化点：旧版 receipts 传输里带着 Bloom 字段，但客户端实际上通常不会持久化这个字段，因为它可以重新计算。继续在网络上传这个字段会浪费巨量带宽，EIP-7642 估计仅此一项在同步中就会造成大约 **530GB** 的额外传输。因此 `eth/69` 简化了 receipts 编码，移除了 Bloom，并简化了 typed receipts 的表示。
+
+这一部分的本质，是让你看到现代 Ethereum 协议设计正在越来越现实化：  
+**不是默认每个节点都全量保留、全量传输、全量服务，而是承认资源边界，并优化真正有价值的数据交换。**
+
+* * *
+
+## 十三、eth/70 草案：为什么 receipts 还要继续分页化
+
+今天我还顺带接触到了 `eth/70` 的方向。`eth.md` 的 changelog 里已经写到了 `eth/70` 的相关更新，而 EIP-7975 则说明了它的目标：支持 **partial block receipt lists**，也就是对超大区块的 receipts 列表进行分页获取。原因是随着主网 block gas limit 提高，单个区块的 receipts 列表未来可能超过客户端常用的约 10 MiB 消息大小限制。需要注意的是，EIP-7975 目前仍是 **Draft**。
+
+这一点虽然还没有完全成为稳定基线，但它很好地说明了协议演进方向：  
+**Ethereum 执行层网络协议正在从“大包整传”逐步走向“更细粒度、更可分页、更适应大规模链上数据”的模式。**
+
+* * *
+
+## 十四、今天真正建立起来的整体架构图
+
+如果把今天的学习内容压缩成一张“脑内结构图”，它大概是这样的：
+
+用户、前端、钱包、后端  
+通过 **JSON-RPC** 和执行层节点交互；  
+执行层节点和共识层节点  
+通过 **Engine API** 协作；  
+执行层节点彼此之间  
+通过 **ETH Wire Protocol (**`eth`**)** 交换区块头、区块体、回执和交易池数据；  
+执行层节点如需状态快照  
+通过 **SNAP** 协议同步状态；  
+共识层节点彼此之间  
+则运行各自的共识层网络协议。
+
+今天最大的进步，不只是学会了几个新名词，而是开始真正把这些层次分开看了。以前容易把“链”“节点”“客户端”“RPC”“共识”“执行”“同步”都揉成一团；今天开始，这些概念已经被拆成了不同角色、不同通道、不同职责。
+<!-- DAILY_CHECKIN_2026-04-07_END -->
+
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 # 我对以太坊协议层的一次系统理解：从 EL、CL 到区块确认与 Engine API
 
 最近我系统学习了以太坊协议层，最大的变化是：我不再只把以太坊看成“一个能跑智能合约的链”，而开始把它理解成一个**分层协作的系统**。
