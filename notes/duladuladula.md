@@ -15,8 +15,16 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-07
+<!-- DAILY_CHECKIN_2026-04-07_START -->
+参加例会
+
+![例会2.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/duladuladula/images/2026-04-07-1775563199079-__2.png)![例会1.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/duladuladula/images/2026-04-07-1775563217747-__1.png)
+<!-- DAILY_CHECKIN_2026-04-07_END -->
+
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 首先了解了一下以太坊产生的一些相关历史,然后阅读和理解以太坊协议分层和模块关系,其中出现了挺多不了解的专业名词,例如EL,CL,P2P网络,PoS等,使用AI进行了相对应的理解,并生成了对应的文档.
 
 * * *
