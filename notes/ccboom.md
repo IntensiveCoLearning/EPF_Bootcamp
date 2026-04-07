@@ -15,8 +15,144 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-07
+<!-- DAILY_CHECKIN_2026-04-07_START -->
+今天进入EL层的具体学习
+
+这可以比喻成一个账本记账的过程，只是比喻
+
+在讲图之前，我们先看两个词：
+
+1.状态：可以理解为总账，里面记录了此刻所有人的账户余额，合约的代码等等
+
+2.区块：新一页的账单，这页纸上写满了大家刚发起的转账记录
+
+所谓的状态转换，就是旧的状态加入新的区块，形成新的状态
+
+我们先看看这个图  
+
+![](https://epf.wiki/images/el-specs/stf_eels.png)![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/ccboom/images/2026-04-07-1775567860744-image.png)
+
+我们分析一下图：
+
+1.准备材料：在图的左边，你得有俩新东西
+
+新账单：里面包含了区块头，交易记录等待
+
+旧账本：这是处理新帐单之前的账本状态，里面包含了当前区块链的历史以及当前的状态
+
+2.开始处理：
+
+也就是中间的大全，它是一个程序
+
+验证区块是否合理，看看新的交易有没有问题，签名对不对
+
+如果不对，那么就走下方，这页账单直接作废，账本状态不变
+
+如果没问题，那就走右边的箭头，正式把这个账单放入账本中
+
+这时候还有一个操作 Discard blocks preceding the recent 255：为了系统的效率，内存里面只保留最近的255区块的详细状态，太老的话就清理掉
+
+3.产出结果，也就是图的右边
+
+经过程序处理之后，我们就得到了图最右边的BlockChain' 和 State'
+
+右上角多了一个 ' ，在数学和计算机上，代表新版本，也就是产生了新账本和新状态  
+  
+  
+再看看这个下面的公式吧，其实就是上面图的过程  
+
+![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/ccboom/images/2026-04-07-1775567882730-image.png)
+
+σt：旧的状态，处理之前的旧帐本，图上左下角那个
+
+B：当前的区块，就是刚刚那个新的账单
+
+Π：状态转换函数：也就是那个严格的程序，负责核对和计算
+
+σt+1：新的状态，处理完之后的最新账本  
+​解读一下就是：程序用旧帐本和新帐单操作完后，算出一个新的账本
+
+这样就容易理解一点
+
+接下来学习一下底层数学逻辑和代码的实现
+
+这里有一个难点是：折叠
+
+什么是折叠？就是把全球所有的账户的状态，使用Hash计算压缩为一个短短的字符，即root hash，并保证只要有值改版，这个就会改变
+
+![](https://epf.wiki/images/el-specs/state.png)
+
+先来学习数学原理
+
+黄皮书上的状态 σ 和Python代码里的State不是一回事。
+
+数学上的状态不是某个具体固定的值，而是通过状态折叠函数动态算出来的
+
+也就是：把所有的数据打包，生成的一个防伪码
+
+一步一步来：
+
+1.
+
+![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/ccboom/images/2026-04-07-1775568607222-image.png)
+
+这是处理单个账户内部的数据，把这个账户下所有的值，通过Trie结构压缩，算出一个指纹
+
+算完之后用户状态变成了：nonce/balance/storageRoot/codeHash 四个状态
+
+这就是中间的Account State
+
+2.
+
+![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/ccboom/images/2026-04-07-1775568616405-image.png)
+
+把所有不空的账户收集起来，准备进行最终打包
+
+3.
+
+![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/ccboom/images/2026-04-07-1775568623288-image.png)
+
+生成旧帐本的总指纹，把刚刚收集的所有信息塞到Trie里向上计算，最终得到一个根节点
+
+4.
+
+![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/ccboom/images/2026-04-07-1775568630590-image.png)
+
+拿着新账单算完之后的状态，把这个状态再走一遍折叠流程，算出当前区块全新的根  
+
+![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/ccboom/images/2026-04-07-1775568682636-image.png)
+
+然后我们看看代码层面的步骤
+
+当系统收到一个新的区块，必须按照以下步骤来检查和执行：
+
+1.拿旧账本：找出当前链上最新的区块头
+
+2.查手续费：检查Blob数据的相关Gas是否计算正确
+
+3.查新账单格式：看看格式，时间和父区块头对比是不是合法的
+
+4.查废弃字段：检查Ommers字段是不是空的，转为Pos之后，这个字段就必须为空了
+
+5.开始计算：这是最重要的一步，系统去执行新区块里的所有交易，执行完产出几个东西
+
+即：Gas used，Trie Root，Logs Bloom，State
+
+6.核对结果：刚刚计算出来的指纹，和别人打包过来里写的State\_root对比，对不上说明造假了
+
+7.正式入库：所有审核都通过，把这个块正式链接到链末端
+
+8.清理内容：超过255的旧状态从内存中删除
+
+9.错误处理：如果上面任何一个环境出现问题，立刻报错，抛出 "Invalid Block"，拒绝这个新块
+
+这张图详细展示了以太坊如何把海量数据提炼成一个Trie Root，并且制定9步审查，确保每一个交易每一个新块都准备无误的添加到总账本之中
+<!-- DAILY_CHECKIN_2026-04-07_END -->
+
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 今天学习了Ethereum的发展历史，从网络的发展到后面的密码学，然后发展出来bitcoin 后面到Ethereum，一个很线性的介绍，告诉我们到底从开始到以太坊的发展历程
 
 还学习了协议的架构，有两层
