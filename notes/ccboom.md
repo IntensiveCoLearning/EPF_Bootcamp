@@ -29,7 +29,7 @@ EPF 实习计划
 
 所谓的状态转换，就是旧的状态加入新的区块，形成新的状态
 
-我们先看看这个图  
+我们先看看这个图
 
 ![](https://epf.wiki/images/el-specs/stf_eels.png)![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/ccboom/images/2026-04-07-1775567860744-image.png)
 
@@ -55,12 +55,11 @@ EPF 实习计划
 
 3.产出结果，也就是图的右边
 
-经过程序处理之后，我们就得到了图最右边的BlockChain' 和 State'
+经过程序处理之后，我们就得到了图最右边的BlockChain’ 和 State’
 
-右上角多了一个 ' ，在数学和计算机上，代表新版本，也就是产生了新账本和新状态  
-  
-  
-再看看这个下面的公式吧，其实就是上面图的过程  
+右上角多了一个 ’ ，在数学和计算机上，代表新版本，也就是产生了新账本和新状态
+
+再看看这个下面的公式吧，其实就是上面图的过程
 
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/ccboom/images/2026-04-07-1775567882730-image.png)
 
@@ -93,8 +92,6 @@ B：当前的区块，就是刚刚那个新的账单
 
 一步一步来：
 
-1.
-
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/ccboom/images/2026-04-07-1775568607222-image.png)
 
 这是处理单个账户内部的数据，把这个账户下所有的值，通过Trie结构压缩，算出一个指纹
@@ -103,23 +100,17 @@ B：当前的区块，就是刚刚那个新的账单
 
 这就是中间的Account State
 
-2.
-
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/ccboom/images/2026-04-07-1775568616405-image.png)
 
 把所有不空的账户收集起来，准备进行最终打包
-
-3.
 
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/ccboom/images/2026-04-07-1775568623288-image.png)
 
 生成旧帐本的总指纹，把刚刚收集的所有信息塞到Trie里向上计算，最终得到一个根节点
 
-4.
-
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/ccboom/images/2026-04-07-1775568630590-image.png)
 
-拿着新账单算完之后的状态，把这个状态再走一遍折叠流程，算出当前区块全新的根  
+拿着新账单算完之后的状态，把这个状态再走一遍折叠流程，算出当前区块全新的根
 
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/ccboom/images/2026-04-07-1775568682636-image.png)
 
@@ -145,13 +136,16 @@ B：当前的区块，就是刚刚那个新的账单
 
 8.清理内容：超过255的旧状态从内存中删除
 
-9.错误处理：如果上面任何一个环境出现问题，立刻报错，抛出 "Invalid Block"，拒绝这个新块
+9.错误处理：如果上面任何一个环境出现问题，立刻报错，抛出 “Invalid Block”，拒绝这个新块
 
-这张图详细展示了以太坊如何把海量数据提炼成一个Trie Root，并且制定9步审查，确保每一个交易每一个新块都准备无误的添加到总账本之中
+这张图详细展示了以太坊如何把海量数据提炼成一个Trie Root，并且制定9步审查，确保每一个交易每一个新块都准备无误的添加到总账本之中  
+  
+这一部分数学方面对于我来说实在太困难了，只能理解一半，后面希望能够回头看看再理解吧，不太擅长
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 今天学习了Ethereum的发展历史，从网络的发展到后面的密码学，然后发展出来bitcoin 后面到Ethereum，一个很线性的介绍，告诉我们到底从开始到以太坊的发展历程
 
