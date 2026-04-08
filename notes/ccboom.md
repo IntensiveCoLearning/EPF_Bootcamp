@@ -15,8 +15,116 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-08
+<!-- DAILY_CHECKIN_2026-04-08_START -->
+今天学习以太坊的架构
+
+现在的以太坊EL，不再负责判断哪条链胜出，他负责把交易执行好，把状态算对，把数据存好，把网络连同通，把结果准确的交给CL
+
+我们先说一下图上在说什么
+
+其实就是一条控制链路
+
+1.共识层CL在上面做共识决策
+
+[2.Cl](http://2.Cl)通过Engine API来驱动执行层EL
+
+3.EL内部负责交易，验证区块，维护状态，维护交易池
+
+4.EL下面通过DevP2P和别的EL节点通信
+
+5.DevP2P最初靠 bootnodes帮你进网，然后再发现更多peers
+
+6.一旦CL通过 forkchoiceUpdated 告诉EL当前应该跟哪条链，EL就回去按需要取peer里拉区块，拉状态，做同步
+
+7.钱包和Dapp不是走 Engine API，而是走 JSON-RPC API跟EL交互
+
+这一段的关系是：
+
+CL驱动EL，EL依赖DevP2P去接触网络，boot nodes只是入网入口，同步动作会和Engine APi 调用联动
+
+共识层告诉执行层现在该看哪条路径，该不该开始构建payload，执行层再通过p2p网络把需要的区块和状态拿回来
+
+也就是说，这张图里至少有三条关系同时存在：
+
+控制关系：CL -> Engine API -> EL
+
+网络关系：EL <-> DevP2P peers
+
+启动入口：bootnodes -> 帮 EL 先连进网络
+
+bootnodes 不是“中心服务器”，也不是“共识权威”，而只是一个初始的接入点
+
+然后我们先看6个基础构件，有了这几个基础构建我们就能搭建最小的心智模型
+
+1.EVM
+
+虚拟化执行引擎，真实硬件有不同的CPU架构和指令集，同一程序在不同硬件上可能行为依赖底层实现，计算机会用虚拟机来抽象这些差异
+
+EVM就是Ethereum程序的虚拟化执行引擎，他的作用是让不同硬件上得到一致结果，从而支持客户端之间形成共识。
+
+实际就是强调两件事
+
+1.EVM的核心价值是确定性，不同机器跑出的结果相同
+
+2.EVM是抽象层，solidity不是底层执行格式，真正被执行的是编译后的EVM bytecode
+
+如果没有EVM这种统一的虚拟执行层，那么不同客户端，不同操作系统，不同硬件算出来的交易可能是不同的结果，那么链就没办法共识
+
+EVM不是solidity，也不是整个EL
+
+2.State
+
+状态机，Ethereum 是 general purpose computational system，它作为一个state machine运行，他会更具输入在不同状态之间转换
+
+和Bitcoin不同，Ethereum 维护的是global state，包括地址，余额，合约代码，Merkle-Patricia Trie等
+
+state是一个很大的合集，Ethereum不是简单的记住交易列表就行了，而是维护一份全局状态，并且不断的做状态变换，
+
+3.Transsactions
+
+触发状态转换的输入，就是交易。
+
+交易不是目的，交易是输入，真正的核心动作是状态转换
+
+有一个状态机，交易是喂给状态机的输入，EVM执行输入，如果输入合法，则得到新的状态
+
+4.DevP2P
+
+EL之间的通信接口，交易不是凭空全网同步，要靠EL节点之间相互传播，传播不是盲目传播，接受的时候会做是否合法的检测
+
+钱包把交易给某个EL，EL放进mempool里面，它通过DevP2P发给卡EL peers，别的EL验证之后继续转发
+
+所以DevP2P承担的就是执行层节点之间的数据传播
+
+5.JSON-RPC API
+
+钱包或Dapp与 EL 的通信，是通过标准化的 JSON-RPC API 进行的。
+
+如果你问余额，区块，日志等，这都属于 JSON-RPC 侧，它面向的是 钱包，DApp，基础设施和外部程序
+
+注意 JSON-RPC API != Engine API
+
+6.Engine API
+
+这个是EL与CL的内部接口，Engine API 不是对公众开放的通用 RPC。
+
+CL与EL不能随便通信，他们是通过Engine API 协作，其中最关键的就是 告诉 EL 当前 fork choice / 是否开始 build payload，把 execution payload 交给 EL 验证
+
+如果 JSON-RPC 是“用户调用 EL”，那 Engine API 就是 CL 调用 EL。
+
+所以从这页 Overview 的排布上你已经能看出一个清晰分工：
+
+钱包 / DApp -> JSON-RPC -> EL
+
+CL -> Engine API -> EL
+
+EL <-> DevP2P <-> 其他 EL
+<!-- DAILY_CHECKIN_2026-04-08_END -->
+
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 今天进入EL层的具体学习
 
 这可以比喻成一个账本记账的过程，只是比喻
@@ -145,6 +253,7 @@ B：当前的区块，就是刚刚那个新的账单
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 今天学习了Ethereum的发展历史，从网络的发展到后面的密码学，然后发展出来bitcoin 后面到Ethereum，一个很线性的介绍，告诉我们到底从开始到以太坊的发展历程
