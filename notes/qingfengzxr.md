@@ -21,6 +21,8 @@ timezone: UTC+8
     
 -   discovery4协议学习
     
+-   eip-1459学习
+    
 
 一些问题：
 
@@ -47,6 +49,7 @@ timezone: UTC+8
 
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 
 
 
