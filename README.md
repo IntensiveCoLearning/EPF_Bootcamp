@@ -97,10 +97,10 @@ EPS 官方会议和 ACD 会议总结
 | [zzzth9810-a11y](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/zzzth9810-a11y.md) | ✅ | ⭕️ |   | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [may-tonk](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/may-tonk.md) | ✅ | ✅ | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [Moxan1st](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/Moxan1st.md) | ✅ | ✅ |   | | | | | | | | | | | | | | | | | | | | | | | | | |
-| [pillowtalk-Qy](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/pillowtalk-Qy.md) | ✅ | ✅ |   | | | | | | | | | | | | | | | | | | | | | | | | | |
+| [pillowtalk-Qy](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/pillowtalk-Qy.md) | ✅ | ✅ | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [tutuQin](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/tutuQin.md) | ⭕️ | ⭕️ |   | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [midi-zhuanjia](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/midi-zhuanjia.md) | ⭕️ | ✅ | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | |
-| [SJW1111011](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/SJW1111011.md) | ⭕️ | ⭕️ |   | | | | | | | | | | | | | | | | | | | | | | | | | |
+| [SJW1111011](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/SJW1111011.md) | ⭕️ | ⭕️ | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [jingnanbei](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/jingnanbei.md) | ⭕️ | ⭕️ |   | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [xingyanghao0-hub](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/xingyanghao0-hub.md) | ⭕️ | ⭕️ |   | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [puhuiin](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/puhuiin.md) | ✅ | ✅ | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | |
@@ -161,7 +161,7 @@ EPS 官方会议和 ACD 会议总结
 | [Jiaqi-Zhou-Web](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/Jiaqi-Zhou-Web.md) | ⭕️ | ⭕️ | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [hhh835](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/hhh835.md) | ⭕️ | ⭕️ |   | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [zhexuanzhang627-del](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/zhexuanzhang627-del.md) | ✅ | ✅ | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | |
-| [0xWeakSheep](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/0xWeakSheep.md) | ✅ | ✅ |   | | | | | | | | | | | | | | | | | | | | | | | | | |
+| [0xWeakSheep](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/0xWeakSheep.md) | ✅ | ✅ | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [cxh993505935-sys](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/cxh993505935-sys.md) | ✅ | ✅ |   | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [whjin](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/whjin.md) | ⭕️ | ⭕️ |   | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [CryptoDuzey](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/CryptoDuzey.md) | ⭕️ | ⭕️ |   | | | | | | | | | | | | | | | | | | | | | | | | | |
@@ -204,6 +204,7 @@ EPS 官方会议和 ACD 会议总结
 | [qingge785](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/qingge785.md) | ⭕️ | ⭕️ |   | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [DrakenZeng](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/DrakenZeng.md) | ⭕️ | ⭕️ |   | | | | | | | | | | | | | | | | | | | | | | | | | |
 <!-- END_COMMIT_TABLE -->
+
 
 
 
