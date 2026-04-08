@@ -15,8 +15,36 @@ timezone: UTC+8
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-08
+<!-- DAILY_CHECKIN_2026-04-08_START -->
+根据视频的思考（[https://www.youtube.com/watch?v=1trSdmKR9co](https://www.youtube.com/watch?v=1trSdmKR9co)）：  
+FOCIL 让验证者委员会生成“包含列表（Inclusion List, IL）”，强制/激励构建者把列表里的交易包含进区块，从而解决 MEV、审查、交易卡住等问题，同时保持区块生产的灵活性。
+
+当前工作原理
+
+-   包含委员会从内存池拉交易（按优先费、在池时间等策略）。
+    
+-   IL 通过 P2P 广播。
+    
+-   构建者收到 IL 后，应把列表交易包含进 payload（可自行排序）。
+    
+-   验证者（attester）检查 payload 是否符合 IL，未包含可包含交易 → 可能触发 reorg。
+    
+-   当前不支持 blob 交易（因数据可用性未知），但未来会通过系统合约解决。
+    
+
+未来方向
+
+-   Frame Transactions：新型交易类型，把操作拆成“帧”（验证/执行分离），支持原生账户抽象（gas 赞助、会话密钥等）。FOCIL 将限制哪些 frame 能进 IL，控制验证者/构建者负载。
+    
+-   Blob Streaming：通过“票务”出售 blob 空间，提前传播、平滑带宽，提升吞吐。结合 FOCIL 可支持 blob 交易包含。
+    
+-   加密内存池集成：进一步提升隐私（仍在研究中）。
+<!-- DAILY_CHECKIN_2026-04-08_END -->
+
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 | 维度 | CPU 伪随机 | 熔岩灯（Lava Lamp） | PoC (Proof of Cat) |
 | --- | --- | --- | --- |
 | 能否被预测 | 依赖初始种子 种子若弱或可预测 → 整体可预测 | 物理混沌运动（液体对流、气泡） 实际难以精确建模 | 极难建模的极端物理过程 理论上几乎无法预测 |
@@ -37,6 +65,7 @@ timezone: UTC+8
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 以太坊的设计核心理念是简单、普适、模块化。 它起源于 Vitalik 等人在 2013-2014 年的愿景：构建一个图灵完备的虚拟机（EVM），让开发者能直接在区块链上编写任意去中心化应用，而无需底层复杂性。 早期区块链（如比特币）采用 UTXO 模型，而以太坊选择账户模型（Account-based），因为它更灵活、易实现、支持原生合约，且账户是可互换的（fungible）。 数据结构上采用 Merkle-Patricia Trie（MPT）实现高效可验证的状态管理；序列化使用 RLP（后续引入 SSZ 用于 Eth2）；共识从 PoW 演进到 PoS 的 Casper FFG + LMD GHOST（Gasper 组合）；网络层采用 discv5 DHT + GossipSub。 早期（2014-2016）设计强调“未来证明”，通过模块化封装复杂性，为后续 Layer 2 扩展和 Stateless 研究奠定基础.
 
