@@ -15,6 +15,8 @@ timezone: UTC+8
 ## Notes
 
 <!-- Content_START -->
-
-
+# 2026-04-08
+<!-- DAILY_CHECKIN_2026-04-08_START -->
+今天才发现活动开始了，先打个卡
+<!-- DAILY_CHECKIN_2026-04-08_END -->
 <!-- Content_END -->
