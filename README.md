@@ -108,7 +108,7 @@ EPS 官方会议和 ACD 会议总结
 | [rectinajh](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/rectinajh.md) | ⭕️ | ⭕️ |   | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [L-Macy](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/L-Macy.md) | ⭕️ | ✅ |   | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [kiwifruits686](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/kiwifruits686.md) | ⭕️ | ⭕️ |   | | | | | | | | | | | | | | | | | | | | | | | | | |
-| [yanwenzhe519-ctrl](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/yanwenzhe519-ctrl.md) | ✅ | ✅ |   | | | | | | | | | | | | | | | | | | | | | | | | | |
+| [yanwenzhe519-ctrl](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/yanwenzhe519-ctrl.md) | ✅ | ✅ | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [AlphaVeteran](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/AlphaVeteran.md) | ⭕️ | ⭕️ |   | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [David-0x221Eight](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/David-0x221Eight.md) | ✅ | ✅ | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [Karynam2](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/Karynam2.md) | ✅ | ✅ | ✅ | | | | | | | | | | | | | | | | | | | | | | | | | |
@@ -204,6 +204,7 @@ EPS 官方会议和 ACD 会议总结
 | [qingge785](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/qingge785.md) | ⭕️ | ⭕️ |   | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [DrakenZeng](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/DrakenZeng.md) | ⭕️ | ⭕️ |   | | | | | | | | | | | | | | | | | | | | | | | | | |
 <!-- END_COMMIT_TABLE -->
+
 
 
 
