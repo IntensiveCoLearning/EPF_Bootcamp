@@ -15,6 +15,25 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-08
+<!-- DAILY_CHECKIN_2026-04-08_START -->
+**Execution Layer 的规范**  
+执行层重点放在 **EELS**上，也就是以 Python 写成的执行层参考规范
 
+**EELS 本质上是“可执行的规范”。**  
+它是执行客户端核心组件的 Python reference implementation。
 
+**它可以看作 Yellow Paper 的程序员友好版继任者。**  
+EELS 是Yellow Paper 的 “spiritual successor”：相比 Yellow Paper 那种偏形式化、偏学术的表达，EELS 更适合开发者直接读代码理解执行语义。
+
+**它的价值不只是“解释规则”，还包括“跟踪升级”。**  
+`execution-specs` 仓库不只是放一个静态规范，它还持续跟踪网络升级，并按 fork 给出规范快照。仓库 README 里明确写了它包含 pyspec 和 network upgrades 的规范；渲染后的文档里还能直接看到按 fork 组织的内容，以及 fork 之间的 `diffs`。  
+官方博客特别强调，EELS 提供每个 fork 的完整协议快照，还能展示 fork 之间的差异；这比只看 EIP 更容易把握“当前链上真实规则”和“某次升级具体改动”。
+
+**EELS 也和测试直接连着。**  
+官方介绍里提到，它可以填充并执行状态测试，并且能结合 `execution-spec-tests` 把测试应用到生产客户端上。所以它不只是“读物”，也是实现验证和原型实验的重要基础。
+
+**执行层“协议规范”和“对外 API 规范”不是一回事。**  
+`execution-specs` 管的是执行层协议本身；而 JSON-RPC 这种客户端对外接口，官方放在单独的 `execution-apis` 仓库里。这个仓库把 Ethereum JSON-RPC 描述为所有执行客户端实现的标准接口。
+<!-- DAILY_CHECKIN_2026-04-08_END -->
 <!-- Content_END -->
