@@ -15,8 +15,464 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-09
+<!-- DAILY_CHECKIN_2026-04-09_START -->
+# 以太坊执行层规范 (EL Specs) 学习笔记
+
+> 基于 [epf.wiki/#/wiki/EL/el-specs](https://epf.wiki/#/wiki/EL/el-specs) 整理  
+> 参考来源：EELS 官方博客、ethereum/execution-specs、OpenZeppelin 技术解析
+
+* * *
+
+## 目录
+
+1.  [规范概览](#1-%E8%A7%84%E8%8C%83%E6%A6%82%E8%A7%88)
+    
+2.  [规范文档体系](#2-%E8%A7%84%E8%8C%83%E6%96%87%E6%A1%A3%E4%BD%93%E7%B3%BB)
+    
+3.  [EELS：可执行规范](#3-eels%E5%8F%AF%E6%89%A7%E8%A1%8C%E8%A7%84%E8%8C%83)
+    
+4.  [EELS 架构与模块结构](#4-eels-%E6%9E%B6%E6%9E%84%E4%B8%8E%E6%A8%A1%E5%9D%97%E7%BB%93%E6%9E%84)
+    
+5.  [核心功能深入：自下而上](#5-%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD%E6%B7%B1%E5%85%A5%E8%87%AA%E4%B8%8B%E8%80%8C%E4%B8%8A)
+    
+6.  [EIP 流程与规范演进](#6-eip-%E6%B5%81%E7%A8%8B%E4%B8%8E%E8%A7%84%E8%8C%83%E6%BC%94%E8%BF%9B)
+    
+7.  [关键 API 规范](#7-%E5%85%B3%E9%94%AE-api-%E8%A7%84%E8%8C%83)
+    
+8.  [测试框架](#8-%E6%B5%8B%E8%AF%95%E6%A1%86%E6%9E%B6)
+    
+9.  [重要概念速查](#9-%E9%87%8D%E8%A6%81%E6%A6%82%E5%BF%B5%E9%80%9F%E6%9F%A5)
+    
+
+* * *
+
+## 1\. 规范概览
+
+以太坊执行层（Execution Layer，EL）的规范并非一份单一文档，而是由多个相互配合的规范共同构成：
+
+| 规范 | 作用 | 仓库 |
+| --- | --- | --- |
+| EELS（Python 可执行规范） | 核心协议参考实现，每个 Fork 快照 | ethereum/execution-specs |
+| 黄皮书（Yellow Paper） | 原始数学形式化规范（已逐步被 EELS 取代） | ethereum/yellowpaper |
+| EIP（以太坊改进提案） | 描述协议变更的标准，仅记录 diff | ethereum/EIPs |
+| Execution APIs（JSON-RPC） | 执行客户端对外暴露的接口规范 | ethereum/execution-apis |
+| Engine API | EL 与 CL 之间的内部通信接口 | ethereum/execution-apis/engine |
+| execution-spec-tests | 用于验证客户端合规性的测试框架 | ethereum/execution-spec-tests |
+
+* * *
+
+## 2\. 规范文档体系
+
+### 2.1 历史演进：从黄皮书到 EELS
+
+```
+黄皮书（2014）
+  └── 数学符号表达，密集难读
+      ↓ 逐渐难以维护（post-Merge 后未同步更新）
+EELS（2021~2023 公开）
+  └── Python 实现，可读性优先
+  └── 每个 Fork 独立快照
+  └── 支持 EIP 原型验证
+```
+
+-   **黄皮书的局限**：使用晦涩的数学符号（如 $\\sigma$、$\\mu$ 等），The Merge 后逐渐不再与主网同步，对新贡献者极不友好
+    
+-   **EELS 的目标**：成为"精神上的黄皮书继承者"，面向程序员，可直接运行和测试
+    
+
+### 2.2 EIP 与 EELS 的关系
+
+```
+EIP（描述变更）  →  EELS（实现变更）  →  生产客户端（Geth/Nethermind/...）
+       ↓
+  只记录 diff                完整协议快照              混合多个 Fork 在同一代码库
+```
+
+**EIP 的不足**：只记录修改内容，无法展示协议全貌；而 EELS 为每个 Fork 提供完整的协议快照，大幅降低理解难度。
+
+* * *
+
+## 3\. EELS：可执行规范
+
+### 3.1 什么是 EELS
+
+**EELS**（Ethereum Execution Layer Specification）是以太坊执行层的 **Python 参考实现**，核心特性：
+
+-   🎯 **可读性优先**：代码风格偏向表达协议意图，而非追求运行性能
+    
+-   📸 **Fork 快照**：为每个硬分叉提供完整的独立代码快照，并提供 Fork 间的 diff 视图
+    
+-   🧪 **可执行**：能够填充和运行状态测试，跟踪主网状态
+    
+-   🔧 **EIP 原型平台**：EIP 作者可在 EELS 中快速原型化其提案
+    
+
+### 3.2 EELS 的局限
+
+EELS **不实现**以下功能：
+
+-   P2P 网络（需依赖生产客户端同步区块）
+    
+-   JSON-RPC API（由 `ethereum/execution-apis` 单独维护）
+    
+-   高性能优化（仅为参考，不用于生产环境）
+    
+
+### 3.3 EELS 的价值
+
+> "EELS 是 EIP 作者进行原型设计的首选，也是理解以太坊工作方式的最佳参考。"
+
+对不同受众的意义：
+
+-   **智能合约开发者**：快速查阅特定 EVM 指令在某 Fork 的精确行为
+    
+-   **客户端开发者**：查看 Fork 间的精确 diff，理解需实现的变更
+    
+-   **研究者/EIP 作者**：在正式规范之前先在 EELS 中验证方案可行性
+    
+
+* * *
+
+## 4\. EELS 架构与模块结构
+
+### 4.1 两大模块分类
+
+```
+EELS 快照
+├── EVM 模块（vm/）
+│   ├── 操作码（opcodes）实现
+│   ├── 预编译合约（precompiles）
+│   ├── Gas 计算
+│   ├── 栈、内存管理
+│   └── 解释器（interpreter）：执行 EVM 消息的入口
+│
+└── 区块链执行模块（blockchain execution）
+    ├── 区块（blocks）与交易（transactions）数据结构
+    ├── 状态（state）与状态树（trie）
+    ├── 区块验证与处理逻辑
+    └── Fork 管理（fork.py）
+```
+
+### 4.2 Prague Fork 文件结构（当前主网）
+
+```
+src/ethereum/prague/
+├── blocks.py          # 区块结构定义
+├── bloom.py           # Bloom 过滤器
+├── exceptions.py      # 异常类型
+├── fork_types.py      # Fork 相关类型
+├── fork.py            # 主入口：区块处理、状态转换
+├── requests.py        # EL→CL 请求（EIP-7685）
+├── state.py           # 世界状态管理
+├── transactions.py    # 交易类型定义
+├── trie.py            # Merkle Patricia Trie
+├── utils/             # 工具函数
+└── vm/
+    ├── eoa_delegation.py     # EIP-7702 EOA 委托
+    ├── exceptions.py
+    ├── gas.py                # Gas 计算
+    ├── instructions/         # 全部操作码实现
+    ├── interpreter.py        # EVM 解释器（核心入口）
+    ├── memory.py             # 内存管理
+    ├── precompiled_contracts/ # 预编译合约
+    ├── runtime.py
+    └── stack.py              # 栈操作
+```
+
+> **注意**：不同 Fork 的文件结构可能有所不同——某些 EIP 会新增或移除特定文件。
+
+* * *
+
+## 5\. 核心功能深入：自下而上
+
+以下按从底层到顶层的顺序梳理执行层的核心流程：
+
+```
+EVM 消息（Message）
+    ↓
+用户交易（User Transactions）
+    ↓
+系统交易（System Transactions）
+    ↓
+区块处理（Block Processing）
+    ↓
+状态转换（State Transition）
+```
+
+### 5.1 EVM 消息（Message）
+
+**入口函数**：`process_message_call(message: Message) -> MessageCallOutput`
+
+```python
+def process_message_call(message: Message) -> MessageCallOutput
+```
+
+`Message` 的关键字段：
+
+| 字段 | 说明 |
+| --- | --- |
+| caller | 消息发送者（即 Solidity 的 msg.sender） |
+| target | 目标地址（空 = 合约创建） |
+| current_target | 实际执行目标（创建时与 target 不同） |
+| code | 待执行的字节码 |
+| gas | Gas 限额 |
+| value | 转移的 ETH 数量（wei） |
+
+**执行分支**：
+
+-   `target` 为空 → **合约创建**：执行 init code，设置新合约 nonce=1，生成 runtime code
+    
+-   `target` 有地址 → **消息调用**：转移 value，循环执行字节码，一次一条 opcode
+    
+
+**返回值** `MessageCallOutput`：
+
+-   剩余 Gas、Gas 退款、事件日志、返回数据
+    
+
+### 5.2 系统交易（System Transactions）
+
+> **引入时间**：Cancun Fork（2024），始于 EIP-4788
+
+系统交易的特殊性：
+
+-   由节点**自动创建并执行**，不来自外部用户
+    
+-   `tx.origin` 和 `msg.sender` 均为 `SYSTEM_ADDRESS = 0xfff...ffe`
+    
+-   目标是**系统合约**（System Contract）：有状态的普通合约，但系统地址有特殊写权限
+    
+-   **不计入区块 Gas 限额**，不执行 EIP-1559 销毁语义
+    
+
+**两种变体**：
+
+| 变体 | 说明 | 使用场景 |
+| --- | --- | --- |
+| checked（检查型） | 若目标无代码或执行失败则区块无效 | EIP-7002（提款请求）、EIP-7251（合并请求） |
+| unchecked（非检查型） | 不执行任何检查 | EIP-4788（Beacon 根）、EIP-2935（历史存储） |
+
+**当前系统合约**（Prague Fork）：
+
+-   `BeaconRoots`（EIP-4788）：存储最近 8191 个 Beacon 区块根，供 EVM 查询
+    
+-   `HistoryStorage`（EIP-2935）：存储区块哈希历史
+    
+-   `WithdrawalRequest`（EIP-7002）：允许验证者从 EL 侧触发提款
+    
+-   `ConsolidationRequest`（EIP-7251）：允许验证者合并质押余额
+    
+
+### 5.3 用户交易（User Transactions）
+
+用户交易由外部账户签名后广播到网络。目前支持的交易类型：
+
+| 类型 ID | 名称 | 说明 |
+| --- | --- | --- |
+| Legacy | LegacyTransaction | 原始格式（无类型前缀） |
+| 0x01 | AccessListTransaction | EIP-2930，支持访问列表 |
+| 0x02 | FeeMarketTransaction | EIP-1559，引入 baseFee + tip |
+| 0x03 | BlobTransaction | EIP-4844，携带 blob 数据 |
+| 0x04 | SetCodeTransaction | EIP-7702，EOA 临时委托智能合约代码 |
+
+**交易处理流程**：
+
+1.  验证签名与 nonce
+    
+2.  预扣 Gas（`gas_limit * max_fee_per_gas`）
+    
+3.  执行消息调用（`process_message_call`）
+    
+4.  退还未使用的 Gas
+    
+5.  支付优先费（tip）给区块提议者
+    
+6.  销毁 base fee（EIP-1559）
+    
+
+### 5.4 区块处理（Block Processing）
+
+区块处理在 `fork.py` 中的 `apply_body` 函数实现：
+
+```
+apply_body(block_env, block_body):
+  1. 执行系统交易（BeaconRoots、HistoryStorage 等）
+  2. 逐笔处理用户交易
+  3. 处理提款（withdrawals）
+  4. 处理 EL→CL 请求（requests）
+  5. 验证 Gas 用量、收据根、日志 Bloom 等
+  6. 更新状态根
+```
+
+### 5.5 状态转换（State Transition）
+
+**顶层函数**：`state_transition(chain: BlockChain, block: Block) -> None`
+
+```python
+def state_transition(chain: BlockChain, block: Block) -> None:
+    # 1. 验证区块头（时间戳、Gas 上限、父区块哈希等）
+    # 2. 调用 apply_body 执行区块内容
+    # 3. 验证最终状态根
+    # 4. 将区块追加到链
+```
+
+这是执行层的最高层接口，接受来自共识层（通过 Engine API）的新区块，执行并更新链状态。
+
+* * *
+
+## 6\. EIP 流程与规范演进
+
+### 6.1 EIP 的生命周期
+
+```
+Idea（想法）
+  → Draft（草稿）：在 ethereum/EIPs 提 PR
+  → Review（审核）：技术讨论、安全分析
+  → Last Call（最后征询）：公开意见期
+  → Final（最终）：被接受，等待 Fork 纳入
+  → 纳入 Fork：在 EELS 中实现 → 编写测试 → 客户端实现
+```
+
+### 6.2 EIP 的分类
+
+| 类别 | 说明 | 例子 |
+| --- | --- | --- |
+| Core EIP | 协议核心变更，需要硬分叉 | EIP-1559、EIP-4844 |
+| ERC | 应用层标准（Token 标准等） | ERC-20、ERC-721 |
+| Networking EIP | P2P 网络相关 | EIP-2364 |
+| Interface EIP | ABI、JSON-RPC 等接口 | EIP-1474 |
+| Meta EIP | 流程、治理相关 | EIP-1 |
+
+### 6.3 Fork 激活机制演进
+
+| 时期 | 激活方式 | 说明 |
+| --- | --- | --- |
+| Frontier ~ Bellatrix | 区块高度（block number） | 到达指定区块号后激活 |
+| Paris（The Merge） | 总难度（Total Difficulty） | TD 到达 58750000000000000000000 |
+| Shanghai 之后 | 时间戳（timestamp） | 更精确，适配 PoS slot 机制 |
+
+* * *
+
+## 7\. 关键 API 规范
+
+### 7.1 JSON-RPC API
+
+执行客户端对外暴露的标准接口，规范位于 `ethereum/execution-apis`：
+
+-   所有执行客户端必须实现的统一接口
+    
+-   使用 OpenRPC 规范编写（YAML 格式）
+    
+-   主要命名空间：`eth_`、`net_`、`web3_`
+    
+
+常用方法示例：
+
+```
+eth_getBlockByHash      # 按哈希获取区块
+eth_getTransactionByHash # 获取交易详情
+eth_call                # 执行只读调用
+eth_estimateGas         # 估算 Gas 用量
+eth_sendRawTransaction  # 广播已签名交易
+```
+
+### 7.2 Engine API
+
+EL（执行层）与 CL（共识层）之间的**内部通信接口**，是 The Merge 引入的关键设计：
+
+| 方法 | 方向 | 说明 |
+| --- | --- | --- |
+| engine_forkchoiceUpdated | CL → EL | 通知 EL 当前最优链头（head/safe/finalized） |
+| engine_newPayload | CL → EL | 提交新执行载荷（一个区块的交易列表）请求验证 |
+| engine_getPayload | CL → EL | 请求 EL 构建新区块（出块时） |
+| engine_exchangeCapabilities | 双向 | 协商双方支持的 Engine API 版本 |
+
+**典型流程**：
+
+```
+CL 收到新 Beacon Block
+  → engine_newPayload（发送执行载荷给 EL 验证）
+  → EL 返回 VALID / INVALID / SYNCING
+  → engine_forkchoiceUpdated（更新链头）
+```
+
+* * *
+
+## 8\. 测试框架
+
+### 8.1 execution-spec-tests
+
+`ethereum/execution-spec-tests` 是执行层规范的**合规性测试框架**：
+
+-   测试用例用 **Python 编写**（而非手动编写 JSON fixtures）
+    
+-   通过 `t8n` 工具生成 JSON fixtures，可被任意执行客户端消费
+    
+-   主要关注**近期和即将到来的**规范变更
+    
+-   与 `ethereum/tests`（传统测试套件）互补，不互相取代
+    
+
+### 8.2 测试流程
+
+```
+Python 测试代码 (tests/**/*.py)
+  ↓ 由 t8n 工具执行
+JSON Fixtures（状态测试、区块测试）
+  ↓ 被各执行客户端消费
+验证客户端实现是否符合 EELS 规范
+```
+
+支持的 `t8n` 工具：
+
+-   `evm t8n`（go-ethereum/Geth）
+    
+-   其他执行客户端提供的 t8n 工具
+    
+
+* * *
+
+## 9\. 重要概念速查
+
+| 概念 | 解释 |
+| --- | --- |
+| EELS | Ethereum Execution Layer Specification，Python 参考实现 |
+| Fork 快照 | EELS 为每个硬分叉维护一份完整的独立代码，互不干扰 |
+| 系统交易 | 节点自动创建执行的交易，用于协议级系统合约调用 |
+| 系统合约 | 由系统地址（0xfff...ffe）管理的特殊链上合约 |
+| EIP-7702 | 允许 EOA 临时委托智能合约代码（账户抽象的关键一步） |
+| EIP-4844 Blob | 携带 blob 数据的新交易类型，用于降低 L2 数据成本 |
+| Engine API | EL 与 CL 之间的内部 JSON-RPC 接口，The Merge 后引入 |
+| t8n 工具 | 状态转换工具，用于生成测试 fixtures |
+| EL→CL 请求 | EIP-7685 引入的跨层请求机制（如 EIP-7002 提款请求） |
+| Precompile | 预编译合约，用原生代码（而非 EVM 字节码）实现的内置功能 |
+
+* * *
+
+## 延伸资源
+
+-   📦 **EELS 仓库**：[github.com/ethereum/execution-specs](https://github.com/ethereum/execution-specs)
+    
+-   🌐 **EELS 渲染文档**：[ethereum.github.io/execution-specs](https://ethereum.github.io/execution-specs)
+    
+-   🔍 **Fork 间 Diff**：[ethereum.github.io/execution-specs/diffs](https://ethereum.github.io/execution-specs/diffs/index.html)
+    
+-   📋 **Execution APIs**：[github.com/ethereum/execution-apis](https://github.com/ethereum/execution-apis)
+    
+-   🧪 **Spec Tests**：[github.com/ethereum/execution-spec-tests](https://github.com/ethereum/execution-spec-tests)
+    
+-   📰 **EELS 官方博客**：[blog.ethereum.org/2023/08/29/eel-spec](https://blog.ethereum.org/2023/08/29/eel-spec)
+    
+
+* * *
+
+_整理时间：2026年4月 | 基于 epf.wiki EL/el-specs 页面内容_
+<!-- DAILY_CHECKIN_2026-04-09_END -->
+
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 # **Ethereum Protocol**
 
 # 一、前史：密码朋克与比特币 (Prehistory)
