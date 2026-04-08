@@ -15,8 +15,80 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-08
+<!-- DAILY_CHECKIN_2026-04-08_START -->
+### 🧱 执行层的核心架构组件
+
+一个标准的以太坊执行层客户端（如 Geth 或 Reth）在其架构中通常包含以下几个核心模块：
+
+1\. API 接口层 (API Interfaces)
+
+-   **JSON-RPC API**：对外服务窗口。钱包（如 MetaMask）、DApp 和用户通过此接口查询链上状态（如 `eth_getBalance`）或提交交易（如 `eth_sendRawTransaction`）。
+    
+-   **Engine API**：**合并后引入的最关键内部接口**。EL 和 CL 之间通过基于 JWT 鉴权的 Engine API 进行高频通信。EL 必须完全听命于 CL 的共识指令。
+    
+
+2\. P2P 网络层 (DevP2P Networking)
+
+-   **节点发现 (Discovery)**：基于 Kademlia DHT（分布式哈希表）寻找并连接全球的其他以太坊 EL 节点。
+    
+-   **协议通信 (Eth Protocol)**：在节点之间广播（Gossip）未确认的新交易，并在节点同步时请求/发送历史区块数据和状态数据。
+    
+
+3\. 交易池 (Transaction Pool / Mempool)
+
+-   负责接收来自外部 RPC 或内部 P2P 网络的未打包交易。
+    
+-   **验证与排序**：节点会对交易进行初步验证（签名是否正确、Nonce 是否连续、余额是否够付 Gas）。验证通过后，将交易暂存并根据矿工费（Tip）高低进行排序，为打包区块做准备。
+    
+
+4\. 以太坊虚拟机 (EVM - Ethereum Virtual Machine)
+
+-   **状态转换引擎**：解析并执行智能合约的字节码。
+    
+-   **Gas 计费系统**：在执行每条 OP Code 指令时实时计算 Gas 消耗。如果 Gas 耗尽，则回滚状态转换，但扣除 Gas 费以防止恶意死循环攻击。
+    
+
+5\. 状态与存储层 (State & Storage Database)
+
+-   **MPT 树 (Merkle Patricia Trie)**：以太坊目前用于存储全局状态（账户余额、Nonce、合约代码、合约存储变量）的加密数据结构。（注：未来计划向 Verkle Trees 演进以支持无状态客户端）。
+    
+-   **底层数据库**：将 MPT 的节点数据持久化到硬盘上。不同客户端选用的底层数据库不同，如 LevelDB (Geth)、Pebble (Geth 新版)、MDBX (Erigon/Reth)。
+    
+
+* * *
+
+### 🔄 核心工作流：EL 与 CL 的交互 (Engine API 流程)
+
+理解 EL 架构的最佳方式是观察它在出块/同步时如何与 CL 配合：
+
+1.  **链头更新 (**`engine_forkchoiceUpdated`**)**：CL 监听网络共识，告诉 EL 目前哪一个区块是合法的“链头”。如果是本节点负责出块，CL 会通过该指令让 EL 开始从 Mempool 中挑选交易，准备构建新区块（Payload）。
+    
+2.  **提取负载 (**`engine_getPayload`**)**：CL 向 EL 索要刚刚构建好的执行负载（包含交易列表、状态根、Gas 使用量等），将其打包进共识层的信标链区块中，并向全网广播。
+    
+3.  **验证负载 (**`engine_newPayload`**)**：当节点收到其他节点广播的区块时，CL 会把其中的执行负载剥离出来发送给 EL。EL 通过 EVM 重新执行一遍里面的所有交易，确认状态根计算无误后，返回 `VALID` 信号给 CL。
+    
+
+* * *
+
+### 💻 主流执行层客户端 (EL Clients)
+
+以太坊高度重视客户端的多样性（Client Diversity）以保障网络安全。目前主流的 EL 架构实现包括：
+
+-   **Geth (Go-Ethereum)**：历史最悠久、目前网络占有率最高的 Go 语言客户端。
+    
+-   **Nethermind**：基于 C# 构建，企业级性能优越，深受机构节点运营商喜爱。
+    
+-   **Besu**：基于 Java，由 Hyperledger 维护，设计高度模块化。
+    
+-   **Reth**：由 Paradigm 团队使用 Rust 从零开发的客户端，以极高的同步速度、极致的性能和模块化架构著称。
+    
+-   **Erigon**：以极度优化的扁平化状态存储（Flat Storage）闻名，极大降低了全节点的硬盘需求。
+<!-- DAILY_CHECKIN_2026-04-08_END -->
+
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 # 以太坊执行层规范 (EL Specs / EELS) 学习笔记
 
 ## 1\. 简介 (Introduction)
@@ -81,6 +153,7 @@ EPF 实习计划
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 # 1\. 协议史前史 (Prehistory)
 
