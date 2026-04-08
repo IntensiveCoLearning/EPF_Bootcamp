@@ -26,7 +26,7 @@ timezone: UTC+8
 
 1） ENR的提出是为了解决什么问题？历史的机制有哪些不好的点？
 
-> EIP778 **Motivation：**本规范旨在通过定义一个灵活的格式——节点记录，用于连接信息，从而解除发现 v4 协议的限制。节点记录可以通过未来版本的节点发现协议进行中继。它们也可以通过 DNS、ENS、devp2p 子协议等任意其他机制进行中继。
+> EIP778 \*\*Motivation：\*\*本规范旨在通过定义一个灵活的格式——节点记录，用于连接信息，从而解除发现 v4 协议的限制。节点记录可以通过未来版本的节点发现协议进行中继。它们也可以通过 DNS、ENS、devp2p 子协议等任意其他机制进行中继。
 
 ```shell
 它要解决的第一个老问题，是 旧发现协议能携带的信息太少。EIP-778 直接点明了：discovery v4 原本主要只能中继节点公钥、IP 地址和两个端口，没法传更多信息。ENR 就是为了解掉这个限制，定义一个更灵活的节点记录格式。
@@ -41,10 +41,13 @@ timezone: UTC+8
 参考资料：
 
 -   [https://eips.ethereum.org/EIPS/eip-778](https://eips.ethereum.org/EIPS/eip-778)
+    
+-   [https://github.com/ethereum/devp2p/blob/master/dnsdisc.md](https://github.com/ethereum/devp2p/blob/master/dnsdisc.md)
 <!-- DAILY_CHECKIN_2026-04-08_END -->
 
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 
 
 [https://github.com/paradigmxyz/reth/issues/64](https://github.com/paradigmxyz/reth/issues/64)  
