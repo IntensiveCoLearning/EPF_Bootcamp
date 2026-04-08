@@ -15,8 +15,14 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-08
+<!-- DAILY_CHECKIN_2026-04-08_START -->
+今天要为周五的一个分享会写好所有的内容，所以比较忙，就先休息一天了
+<!-- DAILY_CHECKIN_2026-04-08_END -->
+
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 ![Imagen cargada](blob:https://chatgpt.com/7854bcbe-1d79-4afa-82fc-474d83076681)![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/pillowtalk-Qy/images/2026-04-06-1775506901020-image.png)
 
   
@@ -25,6 +31,7 @@ EPF 实习计划
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 1.简单了解了下[epf.wiki](http://epf.wiki)，以及在上面注册了自己的账户。
 
