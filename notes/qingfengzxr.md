@@ -15,8 +15,21 @@ timezone: UTC+8
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-08
+<!-- DAILY_CHECKIN_2026-04-08_START -->
+-   eip-778学习
+    
+-   discovery4协议学习
+    
+
+参考资料：
+
+-   [https://eips.ethereum.org/EIPS/eip-778](https://eips.ethereum.org/EIPS/eip-778)
+<!-- DAILY_CHECKIN_2026-04-08_END -->
+
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 [https://github.com/paradigmxyz/reth/issues/64](https://github.com/paradigmxyz/reth/issues/64)  
 阅读这个issue,了解reth当前的p2p实现的历史渊源
 <!-- DAILY_CHECKIN_2026-04-07_END -->
