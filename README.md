@@ -147,7 +147,7 @@ EPS 官方会议和 ACD 会议总结
 | [Eddie-534](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/Eddie-534.md) | ✅ | ✅ | ✅ |   | | | | | | | | | | | | | | | | | | | | | | | | |
 | [Easycoder-lin](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/Easycoder-lin.md) | ⭕️ | ✅ | ⭕️ |   | | | | | | | | | | | | | | | | | | | | | | | | |
 | [Wwangjinghan](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/Wwangjinghan.md) | ✅ | ✅ | ✅ |   | | | | | | | | | | | | | | | | | | | | | | | | |
-| [mark0-cn](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/mark0-cn.md) | ✅ | ✅ | ✅ |   | | | | | | | | | | | | | | | | | | | | | | | | |
+| [mark0-cn](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/mark0-cn.md) | ✅ | ✅ | ✅ | ✅ | | | | | | | | | | | | | | | | | | | | | | | | |
 | [fenixIves](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/fenixIves.md) | ⭕️ | ⭕️ | ✅ | ✅ | | | | | | | | | | | | | | | | | | | | | | | | |
 | [futureclover87](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/futureclover87.md) | ✅ | ✅ | ✅ | ✅ | | | | | | | | | | | | | | | | | | | | | | | | |
 | [panrui1984](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/panrui1984.md) | ✅ | ✅ | ⭕️ |   | | | | | | | | | | | | | | | | | | | | | | | | |
@@ -204,6 +204,7 @@ EPS 官方会议和 ACD 会议总结
 | [qingge785](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/qingge785.md) | ⭕️ | ⭕️ | ❌ | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [DrakenZeng](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/DrakenZeng.md) | ⭕️ | ⭕️ | ❌ | | | | | | | | | | | | | | | | | | | | | | | | | |
 <!-- END_COMMIT_TABLE -->
+
 
 
 
