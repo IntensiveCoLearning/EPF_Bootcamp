@@ -17,83 +17,330 @@ EPF 实习计划
 <!-- Content_START -->
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
-2026-04-08
+2026-04-09
 
-今天按第一週的脈絡把 The Protocol 全區過了一遍。
+今天深入讀了 [epf.wiki](http://epf.wiki) 上 Execution Layer 的兩篇核心文件：el-specs（EL 規範）和 el-architecture（客戶端架構），把 EL 從規範定義到工程實作的脈絡串起來。
 
-Prehistory（史前歷史）
+\---
 
-以太坊不是憑空冒出來的，背後是幾十年密碼學和隱私運動的累積。1980 年代 David Chaum 開始做匿名數位現金研究，1992 年 Eric Hughes、Timothy C. May、John Gilmore 成立了 Cypherpunks，核心信念就是：隱私是開放社會的基本權利，強加密是對抗審查的武器，去中心化系統是最終解方。
+EL Specification：執行層規範
 
-比特幣出現之前，密碼朋克們已經做了一堆嘗試：Adam Back 的 Hashcash（PoW 前身）、Wei Dai 的 B-money（匿名分散式電子現金）、Nick Szabo 的 Bit Gold（結合智能合約概念但沒解決雙花）、Hal Finney 的 RPOW（可重用工作量證明，但驗證還是靠中心伺服器）。
+執行層最早由 Yellow Paper 定義，現在最權威的規範是 EELS（ethereum/execution-specs），用 Python 寫的可執行規範。Yellow Paper 的 Paris 版本已經過時，沒涵蓋 Merge 之後的更新。
 
-2008 年中本聰發表白皮書，2009 年創世區塊上線，第一次真正解決了去中心化雙花問題。但比特幣被設計成極簡計算器——只做貨幣轉帳，腳本功能非常受限。Vitalik 在 2011 年接觸比特幣後意識到需要一個更通用的平台，不只是貨幣，而是能跑任意程式的世界電腦。這就是以太坊的起點。
+狀態轉換函數（STF）
 
-換個角度講，以太坊的誕生不是偶然，而是去中心化理念被中心化系統壓了太久之後的一次技術反撲。
+整個 EL 的存在就是為了回答兩個問題：這個區塊能不能接在鏈尾？接上之後狀態怎麼變？
 
-Architecture（整體架構）
+公式：σ(t+1) ≡ Π(σ(t), B)
 
-以太坊是分層的雙客戶端架構。三層模型：物理節點（跑客戶端軟體的機器）→ 以太坊網路（全球節點組成的 P2P 網路）→ EVM（裝在節點上的可信計算平台）。
+\- σ(t) = 當前區塊鏈狀態
 
-Merge 之後正式分成執行層（EL）和共識層（CL）：
+\- B = 當前區塊
 
-EL 負責交易執行和狀態管理。核心是 EVM，處理智能合約字節碼、維護帳戶餘額和合約狀態、透過 Gas 機制防止濫用。帳戶分兩種：EOA（私鑰控制）和 CA（合約帳戶，由 code 控制）。狀態轉換的本質就是一個函數：σ(t+1) = Π(σ(t), B)，接收區塊裡的交易，跑 EVM，輸出新狀態。主流客戶端有 Geth、Nethermind、Besu、Erigon、Reth。
+\- Π = 區塊層級的狀態轉換函數
 
-CL 負責共識、出塊和最終性。驗證者質押 32 ETH 參與出塊和投票，時間被結構化成 slot（12 秒）和 epoch。共識機制用 Casper FFG 處理最終性，LMD-GHOST 處理分叉選擇。
+\- σ(t+1) = 新狀態
 
-EL 和 CL 透過 Engine API 在本地協作。這個拆分的核心洞察是：「執行正確」和「全網同意哪次執行結果」是兩個不同的問題，分開處理後各自的升級空間大很多。
+!\[STF Overview\]([https://epf.wiki/images/el-specs/stf\_eels.png](https://epf.wiki/images/el-specs/stf_eels.png))
 
-網路層也是分開的——EL 的 P2P 主要 gossip 交易、維護 mempool，CL 的 P2P 主要 gossip 區塊、推進共識。節點發現用 discv5（基於 Kademlia DHT），資料傳播用 GossipSub。DHT 解決「怎麼找到別人」，Gossip 解決「找到之後怎麼高效傳資料」。
+重點是 σ 不等於程式碼裡的 State class。狀態不是存在某個特定位置的靜態檔案，而是透過 World State Collapse Function 動態計算出來的 Merkle root。這個概念上的區分很重要——數學模型裡的「狀態」和軟體實作裡的「狀態物件」是兩回事。
 
-另外值得一提的是 EELS（Ethereum Execution Layer Specification），用 Python 寫的執行層參考規範，算是 Yellow Paper 的工程師友好版。不只能讀，還能直接跑測試、按 fork 看 diff。Repo 在 ethereum/execution-specs，對外 API 則是另一個 repo：execution-apis。
+!\[State Diagram\]([https://epf.wiki/images/el-specs/state.png](https://epf.wiki/images/el-specs/state.png))
 
-Design Rationale（設計理念）
+STF 的完整流程：
 
-五個核心原則：Simplicity、Universality、Modularity、Non-discrimination、Agility。
+1\. 取得 parent block header
 
-Simplicity：不是說系統小，而是希望任何普通工程師都能理解並實作協議規範，降低對少數核心開發者的依賴。複雜度管理的策略是 sandwich model——底層共識盡量穩定乾淨，把髒活推到中間層（編譯器、序列化、客戶端實作），最外層的 L2 可以接受最多複雜度。
+2\. 驗證 excess blob gas（和 parent 比對）
 
-Universality：以太坊跟比特幣最根本的差異。BTC 的 Script 刻意受限，以太坊直接給一台圖靈完備的 VM，讓開發者自己組合任意邏輯。代價是狀態管理變重，但這是通用平台必須承受的。
+3\. 驗證當前區塊 header（和 parent 比對）
 
-Modularity：各組件盡量獨立演進，改一塊不會炸掉全局。Dagger、Patricia tree、SSZ、Proto-Danksharding 都是這個思路下的產物。
+4\. 確認 ommers 欄位為空（Merge 之後不再有 uncle blocks）
 
-Non-discrimination：協議不偏好也不打壓特定應用，靠費用機制讓濫用者自己承擔成本，而不是直接禁止某種用途。中立基礎設施的定位。
+5\. 執行區塊內所有交易，產出：gas used、trie roots、logs bloom、新 state
 
-Agility：協議不是一成不變的，透過 EIP 機制持續演化，接受「協議會變」這件事並且把它制度化。
+6\. 驗證執行結果和 header 裡宣告的參數一致（state\_root 必須吻合）
 
-為什麼選 Account model 而不是 UTXO：以太坊要支援有狀態的合約物件——有 storage、有 balance、有 code，長期存在且可被反覆呼叫。Account model 更適合表達這種世界狀態。好處是狀態更緊湊、fungibility 更好、合約互動更直觀；代價是需要 nonce 防重放、狀態膨脹嚴重、並行執行更難。後面很多 EIP 本質上都在給這個設計選擇補坑。
+7\. 通過就把區塊加到鏈上
 
-為什麼用 MPT：區塊鏈節點必須能在不信任對方的前提下驗證狀態。MPT 提供兩個能力：用單一 state\_root 承諾整套狀態，以及為任意狀態項提供 Merkle proof。區塊頭不需要裝整個狀態，只存 root hash，輕節點靠 proof 就能驗證。但 MPT 跑了多年後磁碟 I/O 成了瓶頸，所以有了 Verkle tree 的研究方向——proof 更小、更適合 stateless client。
+8\. 清理超過 255 個區塊的舊資料
 
-一句話：區塊鏈不是在保存所有狀態，而是在保存對狀態的加密承諾。
+9\. 任何驗證失敗就拋 Invalid Block
 
-為什麼需要 Gas：資源計量單位，也是 DoS 防禦機制。EIP-1559 把純競價模式改成 base fee + priority fee，base fee 根據上一個區塊的 gas 使用率動態調整並 burn 掉，priority fee 給 proposer 當小費。底層全用整數運算避開浮點數，確保全網算出來的結果一模一樣。
+區塊頭驗證與經濟模型
 
-為什麼 EVM 不追求極致性能：首要目標是跨實作一致性。所有客戶端必須對同一筆交易算出完全相同的結果，所以協議更看重規範明確、行為確定、錯誤語義一致，而不是單一實作的速度。EVM 被設計成保守、易驗證、全網可重複執行的抽象機器，犧牲效能換來共識友好性。
+區塊頭驗證就是一連串數學不等式，確保每個區塊符合協議規則：
 
-Evolution（演進歷史）
+\- gas used 不能超過 gas limit
 
-Frontier（2015）：最小可用版本，供開發者測試，Gas 上限硬編碼 5000，後來解凍拉到 3,141,592。
+\- gas limit 的變化幅度不能超過 parent 的 1/1024（漸進調整，不能暴力拉）
 
-Homestead（2016）：從測試進入穩定平台。合約創建 gas 從 21000 提到 53000、修復簽章延展性攻擊、新增 DELEGATECALL。同年 DAO fork 和兩次 DoS 回應升級（Tangerine Whistle / Spurious Dragon）重定價了低估的 opcode。2016 年定義了以太坊的現實主義——鏈上代碼會出錯，參數會被攻擊，社群必須在不中斷系統的前提下做集體選擇。
+\- gas limit 最低 5000
 
-Byzantium / Constantinople / Istanbul（2017-2020）：為擴展和 PoS 鋪路。降低區塊獎勵、延遲難度炸彈、加入 SNARK/STARK 相關的密碼學 precompile、優化 EVM 成本。2020 年 12 月 Beacon Chain 作為獨立鏈上線，開始 PoS 冷啟動。
+\- timestamp 必須嚴格遞增
 
-London（2021）：EIP-1559 引入，改革費用市場。
+\- base fee 必須符合 EIP-1559 計算規則
 
-The Merge（2022.9.15）：EL 和 CL 合併，PoW 正式退役。不是重啟新鏈，而是保留原有歷史、帳戶、餘額和合約狀態，只把「決定鏈頭的方式」換掉。能耗下降約 99.95%。
+\- parent hash 必須是 parent header 的 KEC(RLP) hash
 
-Shapella（2023）：啟用質押提款，把 Beacon Chain 的退出和提現能力打通到執行層。
+\- Merge 之後 difficulty = 0, nonce = 0x0000000000000000
 
-Dencun（2024）：EIP-4844 / Proto-Danksharding，引入 blob 交易，L2 資料發布成本大幅降低。
+\- blob gas 相關欄位的一致性驗證（EIP-4844）
 
-Pectra（2025）：EIP-7702 增強 EOA 可程式性、EIP-7002 和 EIP-7251 改善驗證者資金控制和資本效率。
+EIP-1559 base fee 動態調整
 
-整條演進線的邏輯：2015-2020 先活下來 → 2021-2022 重塑費用市場與共識 → 2023-2025 圍繞質押、L2 擴展、帳戶抽象做精細化升級。
+核心概念：gas target = gas limit / 2（彈性係數 ρ = 2）
+
+\- parent gas used = target → base fee 不變
+
+\- parent gas used > target → base fee 上漲（最多 ~12.5%）
+
+\- parent gas used < target → base fee 下降（最多 ~10%）
+
+\- base fee max change denominator ξ = 8，控制調整速率
+
+!\[Gas Used vs Base Fee\]([https://epf.wiki/images/el-specs/gasused-basefee.png](https://epf.wiki/images/el-specs/gasused-basefee.png))
+
+這張圖可以看到：函數呈現階梯狀線性遞增，最大變異在中點（gas target）處。精確命中 target 時 base fee 上漲約 1%。
+
+底層全部用自然數運算（ℕ），完全避開浮點數。這不是偶然——離散的自然數保證了全網在任何硬體上算出完全一致的結果，不會因為浮點精度差異導致分叉。
+
+長期模擬下（持續滿載 100K 個區塊），base fee 在 200 個區塊內就能從 wei 級別衝到 1 ETH，2000 個區塊內逼近理論上限。但 gas limit 本身是無上界的，會持續增長來適應需求，最終和 base fee 達到新均衡。
+
+!\[Long-term Gas Simulation\]([https://epf.wiki/images/el-specs/gas-limit-max.png](https://epf.wiki/images/el-specs/gas-limit-max.png))
+
+改變 ξ 和 ρ 對經濟模型的影響：
+
+!\[xi parameter effect\]([https://epf.wiki/images/el-specs/xi.png](https://epf.wiki/images/el-specs/xi.png))
+
+!\[rho and xi combined\]([https://epf.wiki/images/el-specs/rho-xi.png](https://epf.wiki/images/el-specs/rho-xi.png))
+
+ξ 越大，fee 調整越平滑；ρ 影響 inflection point 的位置。這兩個參數在 fork 之間不會變，但未來協議升級可以重新指定。
+
+Blob Gas 動態（EIP-4844）
+
+blob gas price 用類指數函數（Taylor expansion 近似）計算：
+
+\- gas used 低於 target（~393K，約 3 blobs/block）時，price 維持 1
+
+\- 超過 target 不會立刻漲價，但 excess gas 開始累積
+
+\- 持續超標導致 excess 突破閾值後，price 指數上升
+
+\- 只要一個區塊的 gas used 低於 target，累積的 excess 就可以被清掉
+
+!\[Blob Gas and Price\]([https://epf.wiki/images/el-specs/blob-gas-and-price.png](https://epf.wiki/images/el-specs/blob-gas-and-price.png))
+
+!\[Normalized Blob Gas\]([https://epf.wiki/images/el-specs/blob-gas-and-price-norm.png](https://epf.wiki/images/el-specs/blob-gas-and-price-norm.png))
+
+區塊執行流程（apply\_body）
+
+Header 驗證通過後進入執行階段。先做輕量驗證可以在不跑 EVM 的情況下就擋掉非法 payload，省下大量計算。
+
+1\. blobGasUsed 初始化為 0
+
+2\. gasAvailable 設為 header 的 gasLimit
+
+3\. 初始化 receipt trie、withdrawal trie、block logs
+
+4\. 存取 Beacon Block Roots Contract（EIP-4788）——讓 EVM 能以 trust-minimized 方式存取 CL 資料
+
+5\. 建構 System Transaction Message（system address → BEACON\_ROOTS\_ADDRESS）
+
+6\. 設定 VM 環境並處理 system call
+
+7\. 清理空帳戶
+
+8\. 逐筆處理交易：decode → 加入 tx trie → 恢復 sender address → 驗證 intrinsic validity → 算 effective gas price → 初始化環境 → 跑 EVM
+
+9\. 處理 validator withdrawals（EIP-4895）
+
+Gas 計算
+
+Intrinsic Gas = 基礎的 21000 + calldata 逐 byte 計費（非零 16 gas、零 4 gas）+ 合約創建額外 32000 + access list 費用
+
+Effective Gas Price：
+
+\- Type 0/1：直接用 gasPrice
+
+\- Type 2/3：baseFee + min(maxPriorityFeePerGas, maxFeePerGas - baseFee)
+
+Upfront Cost = effectiveGasFee + blobGasFee，在執行前先從 sender 扣除。
+
+交易執行六個階段
+
+Stage 1 - Checkpoint σ₀：驗證 → 扣 intrinsic gas → nonce+1 → 扣 upfront cost，這些改動不可逆
+
+Stage 2 - 正規化 & Substate 初始化：把各種交易類型統一成 Message 格式（caller, target, gas, value, data, code, depth...），根據 T\_to 決定是 contract creation 還是 call。初始化 substate（self-destruct set、log series、touched accounts、refund balance、access lists）
+
+Stage 3 - 主要執行 Ξ：這是 EVM 真正跑起來的地方
+
+Machine State μ = (gasAvailable, programCounter, memoryContents, activeWordsInMemory, stackContents)
+
+Stack: 256-bit word，最大深度 1024
+
+Memory: word-addressed byte array，按需擴展（擴展要扣 gas）
+
+PC: 追蹤當前執行到哪個 byte
+
+Single Execution Cycle O：讀取 currentOperation → 操作 stack → 扣 gas → 更新 PC
+
+PC 更新邏輯：
+
+\- JUMP → 跳到 stack top 指定的位置
+
+\- JUMPI → stack top ≠ 0 才跳
+
+\- PUSH1-PUSH32 → PC 跳過 data bytes
+
+\- 其他 → PC + 1
+
+遞迴執行函數 X 的邏輯：
+
+\- 如果觸發 exceptional halting（OOG 等）→ 返回空狀態
+
+\- 如果 currentOp = REVERT → 返回空狀態但保留 output
+
+\- 如果有 output（比如 CALL 系列指令的子 EVM 回傳結果）→ 把 output 寫回 parent memory
+
+\- 否則繼續遞迴呼叫
+
+Normal Halting：RETURN/REVERT 回傳 memory slice，STOP/SELFDESTRUCT 回傳空 tuple
+
+Stage 4/5/6（Provisional → Pre-Final → Final State）：規範裡標註 TODO，尚未完整文件化。
+
+Block Holistic Validity
+
+所有交易跑完之後的最終對帳：
+
+\- 所有 receipt 重新算出 receipts\_root，必須和 header 一致
+
+\- 最終狀態算出 state\_root，必須和 header 一致
+
+\- 累計 gas 不能超過 block gas limit
+
+\- 原子性：沒有「部分接受交易」這回事，全部正確或整個區塊作廢
+
+\---
+
+EL Architecture：客戶端架構
+
+!\[Architecture Overview\]([https://epf.wiki/images/el-architecture/architecture-overview.png](https://epf.wiki/images/el-architecture/architecture-overview.png))
+
+EL 客戶端不只是跑 STF，還要：維護區塊鏈本地副本、透過 DevP2P 和其他 EL 客戶端 gossip、管理交易池、回應 CL 的請求。
+
+核心元件
+
+EVM：虛擬化的 CPU。跟 JVM 的設計動機一樣——不同硬體（x86、ARM、RISC-V）有不同指令集，結果可能不同，所以需要一個虛擬化層確保全網一致。以太坊的 sandwich complexity model：最外層（EVM bytecode）和最上層（Solidity）都盡量簡單，複雜度集中在中間（compiler）。
+
+State：以太坊維護完整的 global state（address → account state 的映射），不像 BTC 只保存 UTXO。State 包含地址、餘額、合約 code/storage、MPT 結構和底層資料庫。
+
+DevP2P：EL 客戶端之間的 P2P 通訊層。交易先存到 mempool，再透過 gossip 傳播。每個收到交易的節點都要先驗證才轉發。
+
+JSON-RPC API：對外接口，錢包和 DApp 透過這個標準 API 查詢狀態或發送交易。
+
+Engine API
+
+Engine API 是 EL 暴露給 CL 的內部介面，不對外公開。用 JSON-RPC over HTTP + JWT 認證（JWT 認證 payload 來源是 CL，但不加密流量）。一個 EL 只能被一個 CL 驅動，但一個 CL 可以連多個 EL 做冗餘。
+
+兩大類 endpoint：
+
+newPayload（V1/V2/V3）：CL 收到新 beacon block 後，抽出 execution payload 丟給 EL 驗證。EL 會：
+
+\- 檢查 parent hash 是否存在且匹配
+
+\- 驗證額外的 execution commitments（Cancun 之後的資料）
+
+\- 執行交易、更新狀態
+
+\- 回傳狀態：VALID / INVALID / SYNCING / ACCEPTED
+
+!\[New Payload Flow\]([https://epf.wiki/images/el-architecture/new-payload.png](https://epf.wiki/images/el-architecture/new-payload.png))
+
+forkChoiceUpdated（V1/V2/V3）：CL 送出 fork choice update（head / safe / finalized block hashes），如果被選為 proposer 還會帶 payload attributes 觸發 block building。EL 會：
+
+\- 更新 canonical head
+
+\- 如果有 payload attributes 就開始 build block
+
+\- 回傳 status + payloadId
+
+!\[Fork Choice Updated Flow\]([https://epf.wiki/images/el-architecture/forkchoice-updated.png](https://epf.wiki/images/el-architecture/forkchoice-updated.png))
+
+啟動流程：CL 先呼叫 engine\_exchangeCapabilities 協商支援的 API 版本 → 發送初始 forkChoiceUpdated → EL 如果還在追趕就回 SYNCING，追上了回 VALID。
+
+Payload Validation
+
+!\[Payload Validation Routine\]([https://epf.wiki/images/el-architecture/payload-validation-routine.png](https://epf.wiki/images/el-architecture/payload-validation-routine.png))
+
+Merge 之後 EL 的角色被大幅簡化。以前 EL 要自己管共識、出塊順序、reorg，現在這些都交給 CL。EL 本質上就是個 STF executor。從 CL 的角度看，整個 EL 就是一個 notify\_new\_payload 的黑盒——丟 payload 進去，回傳 bool。
+
+用 Geth 的簡化 Go 代碼理解 STF：
+
+\`\`\`go
+
+func stf(parent, block, state) (state, error) {
+
+if err := VerifyHeaders(parent, block); err != nil {
+
+return nil, err // header 驗證失敗
+
+}
+
+for \_, tx := range block.Transactions() {
+
+res, err := [vm.Run](http://vm.Run)(block.header(), tx, state)
+
+if err != nil {
+
+return nil, err // 任何一筆交易失敗 → 整個區塊無效
+
+}
+
+state = res // 累積狀態更新
+
+}
+
+return state, nil
+
+}
+
+\`\`\`
+
+header 驗證失敗的例子：gas limit 單一區塊跳太多（超過 parent 的 1/1024）、block number 不連續、1559 base fee 計算不正確。交易執行失敗的話整個區塊直接作廢，不存在部分接受。
+
+同步機制
+
+Full Sync：從 genesis 開始重跑每一個區塊、每一筆交易，重建完整 state trie。最安全但最慢，mainnet 上可能要跑好幾天。注意 EIP-4444 實施後就不再支援從 genesis full sync，會改成 checkpoint sync。
+
+Snap Sync：選一個最近的 finalized block 當 pivot，只下載該 block 的 trie leaves（帳戶和 storage slots）+ Merkle proofs + contract bytecode，在本地重建。之後進入 healing phase 補齊不一致的資料，再從 pivot 之後開始執行交易追到 chain tip。時間從天級降到小時級。
+
+交易池
+
+Legacy Pool：用 price-sorted heap 排序，兩個 heap——一個按 effective tip 排（urgent heap），一個按 gas fee cap 排（floating heap）。飽和時從比較大的 heap 踢交易。
+
+Blob Pool：同樣有 priority heap 但用 logarithmic function 做 eviction，實作文件寫得很詳細（Geth 原始碼裡有大段註解）。
+
+資料庫後端
+
+LevelDB：早期預設，LSM-tree 架構，寫入高吞吐但有 write amplification 問題。已停止維護。
+
+Pebble：Geth 現在的預設後端，同樣 LSM-tree 但改善了 write stall（支援多個 active memtable）、compaction 控制更精細、batch 和 snapshot 語義更強。
+
+MDBX：Erigon 使用，不同的設計哲學（B+tree based），讀取效能好、memory-mapped。
+
+\---
+
+小結
+
+el-specs 把 EL 的行為用數學精確定義，從區塊頭驗證的不等式到 EVM 遞迴執行函數都有形式化描述。el-architecture 則從工程角度拆解客戶端怎麼把這些規範落地——Engine API 怎麼和 CL 對接、sync 怎麼做、交易池怎麼管理、資料怎麼存。
+
+兩篇合在一起看，就是「規範說該怎麼做」和「客戶端實際怎麼做」的完整對照。
 <!-- DAILY_CHECKIN_2026-04-09_END -->
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 2026-04-08
 
@@ -156,6 +403,7 @@ EELS（Ethereum Execut
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
