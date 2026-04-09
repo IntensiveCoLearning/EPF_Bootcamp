@@ -15,8 +15,339 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-09
+<!-- DAILY_CHECKIN_2026-04-09_START -->
+# EL Specs
+
+**执行层的任务，本质上就是实现状态转移函数（State Transition Function, STF）。**  
+也就是回答两个问题：
+
+1.  **这个区块能不能接到链上**
+    
+2.  **接上后，全局状态会怎样变化**
+    
+
+## 1\. 执行层到底在做什么
+
+  
+**EL 负责“给定一个区块，按规则执行并产出新状态”。  
+公式上就是：**
+
+-   旧状态：`σ_t`
+    
+-   当前区块：`B`
+    
+-   新状态：`σ_(t+1) = Π(σ_t, B)`
+    
+
+可以把它理解为：
+
+-   **区块级 STF**：处理整个 block
+    
+-   **交易级 STF**：逐笔执行 transaction
+    
+-   **EVM 执行**：真正跑 bytecode，修改状态
+    
+
+## 2\. 区块执行的大致流程
+
+block 处理流程：
+
+1.  取父区块 header
+    
+2.  校验当前区块 header
+    
+3.  检查 ommers 为空
+    
+4.  执行区块内所有交易
+    
+5.  得到 gas used、交易树根、收据树根、logs bloom、state
+    
+6.  检查这些结果是否和 block header 一致
+    
+7.  一致才把区块加入链上，否则判为 invalid block
+    
+
+## 3\. Header 校验里最值得记的点
+
+文档列了很多 header validity 条件，最值得记的是这几类：
+
+### 3.1 资源约束
+
+-   `gasUsed <= gasLimit`
+    
+-   gas limit 不能相对父块突变太多
+    
+-   gas limit 不能低于最小值 5000
+    
+
+### 3.2 时间与链关系
+
+-   当前块时间戳必须大于父块
+    
+-   区块号必须等于父块号 + 1
+    
+-   `parentHash` 必须匹配父块 header 哈希
+    
+
+### 3.3 Merge 之后的痕迹
+
+这页明确体现了 **PoS 后执行层的“后 Merge 规则”**：
+
+-   `difficulty = 0`
+    
+-   `nonce = 0x0000000000000000`
+    
+-   ommers hash 固定为空列表哈希
+    
+
+这说明：  
+**今天 EL 还在处理 block，但它已经不再承担 PoW 挖矿语义。**
+
+### 3.4 EIP-4844 相关字段
+
+文档还纳入了 blob 相关 header 校验：
+
+-   `blobGasUsed`
+    
+-   `excessBlobGas`
+    
+-   `MaxBlobGasPerBlock`
+    
+-   `TargetBlobGasPerBlock`
+    
+
+这表示：  
+**执行层规范已经把 blob 交易带来的新资源维度纳入了状态转移规则。**
+
+## 4\. 经济模型：这页重点讲了 EIP-1559
+
+文档花了不少篇幅展开 base fee 公式，主要机制：
+
+-   gas target = 父块 gas limit 的一半
+    
+-   如果父块 gasUsed 高于 target，base fee 上升
+    
+-   低于 target，base fee 下降
+    
+-   调整幅度受常数 `ξ = 8` 限制，避免变化过猛
+    
+
+**EIP-1559 让手续费不是纯拍卖，而是有一个可预测、按拥堵程度自动调节的 base fee。**  
+而且 base fee 会被 burn，priority fee 才是给打包者的激励。
+
+## 5\. 交易执行层面要记什么
+
+交易级状态转移函数 `Υ(σ_t, T_index)`，流程是：
+
+1.  先检查交易本身是否合法
+    
+2.  合法后进入 EVM
+    
+3.  EVM 根据 calldata、value、code、上下文执行
+    
+4.  成功则提交状态与子状态
+    
+5.  失败则回滚状态，gas 处理按规则执行
+    
+
+**交易失败不等于“什么都没发生”**：
+
+-   状态可能回滚
+    
+-   但 gas 可能已经消耗掉
+    
+-   只有成功执行，logs / refund 等 substate 才会提交
+    
+
+## 6\. EVM 执行模型
+
+EVM 执行可以抽象成几个函数：
+
+-   `Ξ`：程序执行函数
+    
+-   `X`：递归执行函数，驱动整段 code 跑完
+    
+-   `O`：单步 opcode 执行推进
+    
+
+### 可以这样理解
+
+-   `X` 像主循环
+    
+-   每一步执行一个 opcode
+    
+-   每一步都会消耗 gas
+    
+-   可能正常结束、REVERT、或者异常终止（比如 OOG）
+    
+
+**所以 EVM 不是“直接跑完一段代码”，而是“在 gas 约束下逐步解释执行”。**
+
+# Client Architecture
+
+**执行层客户端 = 状态转移引擎 + 网络层 + 交易池 + 对共识层暴露的 Engine API**
+
+## 1\. 执行层客户端到底负责什么
+
+执行层客户端不只是“跑交易”。它还要做几件事：
+
+-   验证区块并保存本地区块链副本
+    
+-   通过 DevP2P 和其他 EL 客户端通信
+    
+-   维护 mempool
+    
+-   响应共识层的驱动与请求
+    
+
+所以它本质上是一个**被共识层驱动的执行系统**。
+
+## 2\. 这套架构里最关键的几个部件
+
+### 2.1 EVM
+
+-   EVM 是以太坊的虚拟执行引擎
+    
+-   作用类似“统一指令语义”的虚拟 CPU
+    
+-   目的是让不同硬件、不同客户端执行同一笔交易时得到一致结果
+    
+
+**你可以把 EVM 理解成：保证全网计算结果一致的最核心抽象层。**
+
+### 2.2 State
+
+-   以太坊是**全局状态机**
+    
+-   状态里包含地址、余额、合约代码、存储，以及相关数据结构和数据库
+    
+-   文档明确拿它和比特币 UTXO 模型作对比：以太坊维护的是 global state，而不是仅维护 UTXO 集合。
+    
+
+### 2.3 Transactions
+
+-   交易触发状态转移
+    
+-   交易先进入 mempool
+    
+-   再通过 EL 客户端在 P2P 网络中传播
+    
+-   其他节点收到后会先验证，再继续转发
+    
+
+**所以交易不是直接“上链”，而是先在网络里扩散、校验、等待打包。**
+
+### 2.4 DevP2P
+
+-   DevP2P 是执行层客户端之间通信的接口和网络基础
+    
+-   新节点靠 bootnodes 接入网络
+    
+-   区块、交易、状态同步都依赖这个网络栈。
+    
+
+### 2.5 JSON-RPC API
+
+-   钱包和 DApp 与执行层交互，走的是标准 JSON-RPC
+    
+-   用来查询状态、发送交易等
+    
+
+这部分是**外部应用面向 EL 的公开接口**。
+
+### 2.6 Engine API
+
+-   Engine API 只用于 **CL 和 EL 的内部通信**
+    
+-   不是给钱包或 DApp 用的
+    
+-   主要有两类调用：
+    
+    -   `engine_newPayload`：校验并插入 payload
+        
+    -   `engine_forkchoiceUpdated`：更新 fork choice，并在需要时触发构建新区块
+        
+-   启动时，CL 和 EL 还会先通过 `engine_exchangeCapabilities` 交换支持的 API 版本
+    
+
+## 3\. Merge 之后，执行层的定位变了
+
+这篇文档很关键的一点是明确说明：
+
+**Merge 之后，执行层不再负责链上共识、区块排序和重组决策；这些职责转给了共识层。执行层现在主要承担状态转移函数（STF）。**
+
+这点非常重要，因为它解释了为什么今天 EL 的系统边界更清晰：
+
+-   **CL 决定哪条链是 head / safe / finalized**
+    
+-   **EL 负责验证 payload、执行交易、更新状态**
+    
+
+## 4\. 状态转移函数怎么理解
+
+文档用一个简化的 Geth 风格伪代码说明 STF 的流程：
+
+1.  先验证 header
+    
+2.  再按顺序执行区块里的每笔交易
+    
+3.  任何一笔交易出错，整个区块无效
+    
+4.  全部成功，得到新区块对应的新状态
+    
+
+**EL 的核心工作就是“给定父块和当前块，算出这个块是否合法，以及新状态是什么”。**
+
+## 5\. CL 和 EL 的典型协作流程
+
+### 节点启动
+
+-   CL 先和 EL 做 capability exchange
+    
+-   然后发送 `forkchoiceUpdated`
+    
+-   如果 EL 还没追上链，会返回 `SYNCING`
+    
+-   追上后会返回 `VALID`。
+    
+
+### 验证者正常工作时
+
+-   每个 slot，CL 都会给 EL 发 `forkchoiceUpdated`
+    
+-   如果轮到本验证者提议区块，CL 会附带 payload attributes，让 EL 开始 build payload
+    
+-   EL 返回 `payloadId`
+    
+-   CL 后续通过 `engine_getPayload` 取回构建好的 execution payload
+    
+-   若收到别人出的 beacon block，CL 会把其中 execution payload 抽出来，调用 `engine_newPayload` 让 EL 校验。
+    
+
+## 6\. 状态同步
+
+文档提到，执行客户端要验证和构建区块，必须有足够新的 world state。  
+为此会通过 DevP2P 子协议进行同步：
+
+-   `eth/*`：同步区块头、区块体、收据
+    
+-   `snap/1`：做状态快照同步
+    
+
+并且客户端一般有两类同步策略：
+
+-   **full sync**
+    
+-   **snap sync**
+    
+
+区别在于 snap sync 从较新的检查点启动，而不是从 genesis 一块块完整重放。
+<!-- DAILY_CHECKIN_2026-04-09_END -->
+
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 # Design rationale
 
 ## 1\. 设计哲学
@@ -177,6 +508,7 @@ EPF 实习计划
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
 
+
 # Architecture
 
 **以太坊当前的协议架构，核心是“双层结构”**：
@@ -218,6 +550,7 @@ EPF 实习计划
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 # Prehistory
