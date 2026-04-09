@@ -15,8 +15,213 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-09
+<!-- DAILY_CHECKIN_2026-04-09_START -->
+# EVM 作为状态转换引擎
+
+应用层常说 “EVM 负责执行智能合约”，但这不足以说明它在协议中的真实位置。核心要弄清楚：以太坊为什么需要这台虚拟机，它执行什么，以及和 world state、Gas、交易、调用语义的关系。
+
+只把 EVM 看作合约运行时，容易只关注语言与开发体验；协议层更关心它如何把一笔交易和前状态转换成全网公认的后状态。这决定 EVM 的核心不是功能丰富，而是确定性、可重复、可多客户端实现。
+
+* * *
+
+## 机制
+
+### 1\. EVM 的协议位置：状态转换函数的执行器
+
+执行层最核心的工作，是把前状态 S 在输入下转为后状态 S'，输入通常是区块中的交易序列。EVM 让这套状态转换通过确定性执行机逐步完成。
+
+EVM 回答三个问题：
+
+-   交易触发的代码逻辑由谁执行
+    
+-   执行过程中资源如何计量
+    
+-   执行结果如何影响账户、存储和收据
+    
+
+EVM 的核心身份是**状态转换规则的执行载体**，而非可编程平台。
+
+### 2\. EVM 是栈机，基本计算单元是 256-bit word
+
+EVM 是栈式机器，stack 最大深度 1024，基本元素是 256-bit word。
+
+-   栈机模型让指令语义更容易形式化与多实现复现
+    
+-   256-bit 宽度适配哈希、签名、模运算等密码学对象
+    
+
+EVM 不追求通用 CPU 式效率，而是选择适合确定性复现的计算模型。
+
+### 3\. stack /memory/storage：三种完全不同的状态层次
+
+stack
+
+即时运算区，多数 opcode 靠压栈、弹栈、计算完成，生命周期最短，只服务当前指令计算。
+
+memory
+
+一次执行上下文里的临时线性字节数组，用于组装参数、保存中间结果、构造返回值、搬运 calldata/returndata。执行结束不持久，但扩张消耗 gas。
+
+storage
+
+属于账户对象的持久化状态，挂在账户 storageRoot 下。SLOAD/SSTORE 操作的是链上状态本身，而非临时空间。
+
+三者层级：
+
+-   stack：指令级临时运算
+    
+-   memory：调用级临时状态
+    
+-   storage：账户级持久状态
+    
+
+### 4\. opcode 不是语言特性，而是协议级执行语义
+
+Solidity、Vyper 最终编译为 EVM 字节码，由 opcode 组成。协议要求多客户端对齐的是 opcode 行为，而非高级语言语法。
+
+opcode 主要类型：
+
+-   算术与位运算：ADD、SUB、MUL、AND 等
+    
+-   栈操作：PUSH、POP、DUP、SWAP
+    
+-   环境读取：ADDRESS、CALLER、CALLVALUE、CHAINID
+    
+-   存储访问：SLOAD、SSTORE
+    
+-   内存与复制：MLOAD、MSTORE、CALLDATACOPY
+    
+-   控制流：JUMP、JUMPI、STOP
+    
+-   调用相关：CALL、DELEGATECALL、STATICCALL
+    
+-   合约创建：CREATE、CREATE2
+    
+
+EVM 是执行 opcode 规则的机器，语言只是入口。
+
+### 5\. call frame 与 execution context
+
+EVM 执行不是平铺指令流，每次 message call 或 contract creation 都会生成新执行上下文（call frame）。
+
+执行上下文包含：
+
+-   当前执行账户地址
+    
+-   调用者地址
+    
+-   调用附带 value
+    
+-   当前可用 gas
+    
+-   当前 calldata
+    
+-   当前 memory/stack 视图
+    
+
+合约调用另一合约是**上下文切换**，而非普通函数跳转，这是理解三种调用差异的前提。
+
+### 6\. revert、return data 与执行失败语义
+
+EVM 不是简单成功 / 崩溃，REVERT 提供可回滚并携带错误数据的路径。
+
+-   RETURN：带回执行结果数据
+    
+-   REVERT：回滚当前 frame 状态变更，返回错误数据
+    
+-   returndata 可被上层调用者读取
+    
+
+应用层看到 require/revert message，协议层看到 call frame、状态回滚、returndata 处理。
+
+* * *
+
+## 流程
+
+### 1\. 一次 message call 的最小执行路径
+
+1.  交易导入执行环境，确定 sender、to、gas、value、data
+    
+2.  to 指向合约账户时，创建新 execution context
+    
+3.  calldata 放入上下文，初始化 stack/memory
+    
+4.  EVM 从代码程序计数器起点逐条执行 opcode
+    
+5.  执行中可读写存储、扩展内存、发起外部调用、写日志
+    
+6.  SSTORE 触发时修改账户持久化状态
+    
+7.  执行结束返回数据或 revert 数据，结算 gas
+    
+8.  结果提交到外层状态转换，影响 receipt 与状态根
+    
+
+核心是**执行上下文如何建立、消耗资源、产生状态与结果**。
+
+### 2\. contract creation 与 message call 的区别
+
+message call：
+
+-   目标为已存在账户
+    
+-   执行现有代码
+    
+-   可修改当前或其他账户状态
+    
+
+contract creation：
+
+-   无现成目标代码
+    
+-   先执行 creation code
+    
+-   返回值成为新账户 runtime code
+    
+-   新地址由 sender+nonce 或 CREATE2 导出
+    
+
+创建合约是独立的状态转换路径。
+
+* * *
+
+## 边界与易混点
+
+1.  EVM 不等于 Solidity：协议绑定字节码与 opcode 语义，而非源语言
+    
+2.  memory 不等于 storage：临时空间 vs 长期状态，gas 成本与生命周期完全不同
+    
+3.  外部调用不等于普通函数调用：涉及上下文切换、gas 传递、状态回滚、权限边界
+    
+4.  revert 不等于节点错误：revert 是协议内建执行语义，非客户端实现错误
+    
+
+* * *
+
+EVM 的核心作用是把**交易请求转为协议承认的状态变化**。栈机模型、256-bit word、三层状态、call frame、revert 语义都围绕这个目标。从状态转换函数看待 EVM，细节才会清晰。
+
+* * *
+
+## 未解
+
+-   CALL、DELEGATECALL、STATICCALL 在权限与安全上的细分差异
+    
+-   部分历史 opcode 与 gas 定价保留至今的原因
+    
+-   EOF 新对象格式对代码布局与控制流的改变
+    
+
+* * *
+
+## 小结
+
+EVM 是执行层承载状态转换的核心机器。stack/memory/storage 定义状态层次，opcode 定义执行语义，call frame 定义上下文边界，Gas 定义资源约束。它是整个执行层大图的中心。
+<!-- DAILY_CHECKIN_2026-04-09_END -->
+
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 # 执行层规范与客户端架构
 
 进入协议层时，很容易把某个客户端的行为直接当成协议本身，或只看抽象规范却不懂真实软件落地。执行层规范和客户端架构正卡在这条边界上，今天要把 “规则写在哪里” 和 “规则由谁实现、怎样协作” 拆开。
@@ -192,6 +397,7 @@ txpool 自带执行层经济与语义约束，不只是缓存层。
 
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 
 # 设计取舍与协议演进
 
@@ -390,6 +596,7 @@ Trie 在协议里最重要的功能是状态承诺和 proof，而不是单纯替
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
