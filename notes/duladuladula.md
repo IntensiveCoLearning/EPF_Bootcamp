@@ -15,8 +15,462 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-09
+<!-- DAILY_CHECKIN_2026-04-09_START -->
+执行层核心规范和EL 客户端模块总览总结
+
+* * *
+
+# 一、执行层核心规范（Protocol View）
+
+执行层可以形式化为一个状态机系统：
+
+```
+State + Transactions → New State
+```
+
+其规范核心可以拆为 6 大子系统：
+
+* * *
+
+## 1\. 状态系统（State System）
+
+**规范要点：**
+
+-   全局状态：`σ = {address → account}`
+    
+-   数据结构：**Merkle Patricia Trie（MPT）**
+    
+-   状态承诺：`stateRoot`
+    
+
+**约束：**
+
+-   状态必须可验证（Merkle Proof）
+    
+-   状态更新必须 deterministic
+    
+
+* * *
+
+## 2\. 状态转换函数（STF）
+
+核心定义：
+
+```
+σ' = Υ(σ, T)
+```
+
+执行流程（强规范）：
+
+1.  nonce 校验
+    
+2.  预扣 Gas
+    
+3.  EVM 执行
+    
+4.  状态写入
+    
+5.  Gas 结算
+    
+6.  receipt 生成
+    
+
+**关键点：**
+
+-   任意客户端必须逐字节一致执行
+    
+-   任意偏差 → 分叉（consensus failure）
+    
+
+* * *
+
+## 3\. 交易规范（Transaction Spec）
+
+**多类型交易（EIP-2718）**
+
+-   Legacy
+    
+-   EIP-1559（动态费用）
+    
+-   EIP-2930（Access List）
+    
+-   EIP-4844（Blob Tx）
+    
+
+**核心字段约束：**
+
+-   `nonce`：严格递增
+    
+-   `gasLimit`：上限约束
+    
+-   `maxFeePerGas` ≥ `baseFee`
+    
+
+* * *
+
+## 4\. Gas 与费用市场
+
+**本质：资源计量系统**
+
+### 核心机制：
+
+-   opcode 定价（静态 + 动态）
+    
+-   Gas 消耗不可逆
+    
+-   Out-of-Gas → revert
+    
+
+### EIP-1559：
+
+-   `baseFee`（协议销毁）
+    
+-   `priorityFee`（激励验证者）
+    
+
+* * *
+
+## 5\. EVM 执行规范
+
+**执行模型：**
+
+-   Stack-based VM
+    
+-   256-bit word
+    
+-   单线程、确定性
+    
+
+**执行上下文：**
+
+-   `msg.sender`
+    
+-   `msg.value`
+    
+-   `msg.data`
+    
+-   `gas`
+    
+
+**关键约束：**
+
+-   最大调用深度：1024
+    
+-   storage 写入高成本（SSTORE）
+    
+
+* * *
+
+## 6\. 区块执行规范（Block Execution）
+
+执行层验证：
+
+-   所有交易顺序执行
+    
+-   最终：
+    
+    -   `stateRoot`
+        
+    -   `receiptsRoot`
+        
+    -   `gasUsed`
+        
+
+必须匹配区块 header
+
+* * *
+
+## 7\. EL ↔ CL 接口（Engine API）
+
+执行层不是孤立的：
+
+-   共识层决定“哪个区块”
+    
+-   执行层决定“区块是否合法”
+    
+
+核心接口：
+
+-   `engine_newPayload`
+    
+-   `engine_forkchoiceUpdated`
+    
+-   `engine_getPayload`
+    
+
+* * *
+
+# 二、EL 客户端模块总览（Implementation View）
+
+把上面规范映射到客户端（如 Geth / Nethermind），可以拆成如下模块：
+
+* * *
+
+## 1\. 网络层（P2P Networking）
+
+**职责：**
+
+-   交易传播（Tx Gossip）
+    
+-   区块传播
+    
+-   状态同步
+    
+
+**协议：**
+
+-   devp2p
+    
+-   eth/66+
+    
+
+* * *
+
+## 2\. 交易池（TxPool）
+
+**核心作用：**
+
+-   缓存未打包交易（mempool）
+    
+
+**子逻辑：**
+
+-   nonce 排序
+    
+-   Gas 价格排序
+    
+-   替换规则（Replace-by-fee）
+    
+
+**约束：**
+
+-   必须保证可执行性（连续 nonce）
+    
+
+* * *
+
+## 3\. 区块处理器（Block Processor）
+
+对应协议里的 **区块执行规范**
+
+**职责：**
+
+-   按顺序执行交易
+    
+-   调用 EVM
+    
+-   生成新状态
+    
+
+**关键校验：**
+
+-   gasUsed
+    
+-   stateRoot
+    
+-   receiptsRoot
+    
+
+* * *
+
+## 4\. EVM 执行引擎
+
+对应协议里的 **EVM 规范**
+
+模块拆分：
+
+-   Interpreter（解释器）
+    
+-   Opcode 实现
+    
+-   Gas 计费器
+    
+-   Call Stack 管理
+    
+
+* * *
+
+## 5\. 状态数据库（State DB）
+
+对应协议里的 **状态系统**
+
+**实现细节：**
+
+-   MPT Trie
+    
+-   LevelDB / RocksDB 存储
+    
+-   snapshot / cache
+    
+
+**功能：**
+
+-   账户读取/写入
+    
+-   storage 管理
+    
+-   状态回滚（journal）
+    
+
+* * *
+
+## 6\. 区块链管理器（Blockchain）
+
+**职责：**
+
+-   维护 canonical chain
+    
+-   处理分叉（fork choice 由 CL 提供）
+    
+-   区块持久化
+    
+
+* * *
+
+## 7\. 共识接口层（Engine API Client）
+
+对应协议：
+
+-   EL ↔ CL 通信
+    
+
+**职责：**
+
+-   接收 CL payload
+    
+-   返回执行结果
+    
+-   提供区块构建能力
+    
+
+* * *
+
+## 8\. 同步模块（Sync）
+
+**模式：**
+
+-   Full Sync
+    
+-   Snap Sync
+    
+-   Beam Sync（历史）
+    
+
+**目标：**
+
+-   快速重建 state
+    
+
+* * *
+
+## 9\. 日志与事件系统（Logs / Filters）
+
+对应：
+
+-   receipt / logs
+    
+
+**用途：**
+
+-   DApp 查询
+    
+-   事件订阅
+    
+
+* * *
+
+## 10\. RPC 服务层
+
+**接口：**
+
+-   JSON-RPC（eth\_\*）
+    
+
+**功能：**
+
+-   查询状态
+    
+-   发送交易
+    
+-   调试接口（debug\_trace）
+    
+
+* * *
+
+# 三、规范 → 模块映射（核心理解）
+
+| 协议规范 | 客户端模块 |
+| --- | --- |
+| 状态模型（MPT） | State DB |
+| 状态转换函数 | Block Processor |
+| EVM 规范 | EVM Engine |
+| Gas 机制 | Gas Metering（EVM 内） |
+| 交易规范 | TxPool |
+| 区块执行 | Blockchain + Processor |
+| Engine API | Consensus Interface |
+
+* * *
+
+# 四、整体执行流程（端到端）
+
+一笔交易从进入系统到落链：
+
+```
+1. P2P 接收交易
+2. TxPool 排序缓存
+3. CL 触发打包（proposer）
+4. EL 构建区块（执行交易）
+5. 生成 Execution Payload
+6. 提交给 CL
+7. CL 共识确认
+8. EL 持久化状态
+```
+
+* * *
+
+# 五、关键工程难点（你需要特别理解）
+
+## 1\. 状态膨胀（State Explosion）
+
+-   storage 无限增长
+    
+-   trie 性能瓶颈
+    
+
+## 2\. Gas 定价复杂性
+
+-   SSTORE / cold access / warm access
+    
+-   多 EIP 叠加（2200, 2929, 3529）
+    
+
+## 3\. 执行确定性
+
+-   不允许任何非确定性行为
+    
+-   不同客户端必须完全一致
+    
+
+## 4\. 同步性能
+
+-   state rebuild 成本极高
+    
+-   snapshot / stateless 研究中
+    
+
+* * *
+
+# 六、一句话总结（更工程版）
+
+> **执行层规范定义“必须做什么”，EL 客户端模块实现“如何高效且一致地做到”。**
+
+* * *
+<!-- DAILY_CHECKIN_2026-04-09_END -->
+
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 以太坊的核心哲学 = 用最小的底层规则（简洁 + 通用），通过模块化和封装控制复杂性，同时保持中立和可演进，让上层应用自由生长.
 
 区块链级协议总结
@@ -427,6 +881,7 @@ DHT + Gossip → 网络传播
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
 
+
 参加例会
 
 ![例会2.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/duladuladula/images/2026-04-07-1775563199079-__2.png)![例会1.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/duladuladula/images/2026-04-07-1775563217747-__1.png)
@@ -434,6 +889,7 @@ DHT + Gossip → 网络传播
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 首先了解了一下以太坊产生的一些相关历史,然后阅读和理解以太坊协议分层和模块关系,其中出现了挺多不了解的专业名词,例如EL,CL,P2P网络,PoS等,使用AI进行了相对应的理解,并生成了对应的文档.
