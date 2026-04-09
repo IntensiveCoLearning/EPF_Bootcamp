@@ -15,8 +15,39 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-09
+<!-- DAILY_CHECKIN_2026-04-09_START -->
+### 今日阅读
+
+完成「以太坊执行层全景解析」剩余章节（P2P 网络、Snap Sync、JSON-RPC、总结），阅读「Running Ethereum - Node workshop」的节点运行 Workshop 指引以了解实操层面的准备工作，并回顾「Intro to execution - Resources」的 p2p high-level 和 JSON-RPC 部分做整体收束。
+
+### 串联逻辑
+
+前两天关注的是**单个节点内部**发生了什么（验证、构建、EVM），今天把视角拉到**节点之间**——数据怎么流动、新节点怎么加入网络。devp2p 是底层通道，eth 子协议解决"历史数据获取 + 交易广播"，snap 子协议解决"状态快速同步"。最后以 JSON-RPC 作为执行层对外的统一接口收尾，完成从内到外、从计算到通信的全景。
+
+### 重点研究
+
+-   **交易传播中的随机图论与抵抗审查性**：√n 优化的理论基础是 gossip protocol 在随机图上的扩散速率——在 random regular graph 上，向 O(√n) 个邻居转发即可在 O(log n) 轮内实现全网覆盖。但现实网络并非理想随机图：ISP 级别的审查、地理聚类、eclipse attack 都可能破坏拓扑的随机性假设。这也是为什么 devp2p 的 peer discovery 基于 Kademlia DHT，但又做了以太坊特定的修改（如 node ID 绑定 secp256k1 公钥）来增强 Sybil 抵抗。当前学术界对 P2P 层审查抵抗性的研究（如 Dandelion++ 协议对交易源 IP 的保护）也与此直接相关。另外，加密 mempool 的难点在于它与区块构建的张力——如果交易内容对 builder 不可见，如何进行有效排序？这导向了 threshold encryption、commit-reveal scheme 等密码学原语的应用研究。
+    
+-   **Snap Sync 与状态膨胀的结构性矛盾**：Snap Sync 的 Healing 问题本质上可以建模为一个 moving target problem：状态树的变化速率 ΔS/Δt 与下载速率的比值决定了 Healing 是否收敛。而以太坊状态的持续膨胀（当前约 300+ GB trie nodes）正在使这个问题恶化。这也是 Verkle Tree、state expiry、Portal Network 等方案的深层动机——它们不只是为了减小证明大小，更是为了让新节点的 bootstrapping 保持可行性。从系统设计角度看，这是一个 liveness 问题：如果新节点无法在合理时间内同步完成，网络的去中心化程度就会实质性降低。
+    
+-   **同步的安全模型：从弱主观性到形式化信任谱系**：Snap Sync 的安全性建立在三层信任之上：① 弱主观性检查点（信任某个 checkpoint provider）；② Merkle proof 对每批下载数据的完整性验证；③ 经济多数假设（质押量足够大使得全网作恶不可行）。其中①是最弱的环节——如果 checkpoint provider 被攻陷，新节点可以被引导到一条假链上。这也是为什么以太坊社区强调"从多个独立源获取 checkpoint"。从更广泛的角度，这构成了一个信任谱系：Full Sync → Snap Sync → Light Client → Ultra-Light Client，每一级都用额外的信任假设换取同步效率。这与学术上对 bootstrapping trust 的研究（如 Buterin 的 weak subjectivity paper）直接对应。
+    
+-   **加密 Mempool 的开放问题**：现有方案（如 Cosmos 链上的尝试）必须泄露 Gas 量、发送者地址等元数据才能让构建者工作，但这些元数据本身就是强信息泄露（Gas 量可推断交易复杂度，发送者地址更是直接暴露身份）。这本质上是一个 privacy-utility trade-off：在当前的账户模型下，nonce 顺序性约束使得完全加密几乎不可能，因为 builder 必须知道交易的先后顺序才能确保 nonce 合法性。可能的突破方向包括转向 UTXO 模型的部分语义、或者基于 delay encryption 的新原语。
+    
+
+### 收获
+
+今天把视角从单节点拉到网络层面后，发现执行层的很多设计约束不是来自计算逻辑，而是来自网络的物理性质：带宽有限、延迟不可消除、拓扑不可信。节点 Workshop 的存在本身也说明了一个问题：如果运行一个全节点的门槛持续升高（状态膨胀、硬件要求、同步时间），那么去中心化就不再是一个二元状态，而是一个随硬件成本和网络条件连续变化的度量。
+
+### Insight
+
+**以太坊的去中心化不是一个静态属性，而是一个受状态增长率约束的动态量。** 去中心化的实质是"任意人都能在合理成本内独立验证链的状态"。这意味着它受到三个变量的共同约束：状态大小的增长速率、消费者硬件的进步速率、以及同步协议的效率。当状态膨胀快于硬件进步和协议优化时，全节点数量就会自然下降，去中心化程度随之降低，Verkle Tree、EIP-4444、Portal Network 本质上都是在试图改变这个不等式的方向。
+<!-- DAILY_CHECKIN_2026-04-09_END -->
+
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 ### 今日阅读
 
 继续推进「以太坊执行层全景解析」的第四、五章（go-ethereum 实现细节 + EVM 深入），并对照「Intro to execution - Resources」中 EVM high-level 和 Block building 部分的大纲来理清脉络。
@@ -47,6 +78,7 @@ EPF 实习计划
 
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 
 ### 今日阅读
 
