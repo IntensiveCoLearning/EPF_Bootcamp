@@ -15,8 +15,14 @@ timezone: UTC+8
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-09
+<!-- DAILY_CHECKIN_2026-04-09_START -->
+今天大概浏览了一遍EPF wiki相关的内容，还没开始学习，明天正式开启
+<!-- DAILY_CHECKIN_2026-04-09_END -->
+
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 今天才发现活动开始了，先打个卡
 <!-- DAILY_CHECKIN_2026-04-08_END -->
 <!-- Content_END -->
