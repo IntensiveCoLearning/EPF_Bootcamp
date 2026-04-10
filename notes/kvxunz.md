@@ -15,8 +15,14 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-10
+<!-- DAILY_CHECKIN_2026-04-10_START -->
+打卡
+<!-- DAILY_CHECKIN_2026-04-10_END -->
+
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 Consensus Layer (CL) architecture
 
 \> Many blockchain consensus protocols are _forkful_. Forkful chains use a fork choice rule, and sometimes undergo reorganisations.
@@ -307,6 +313,7 @@ state.slot = Slot(state.slot + 1)
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
 
+
 \# Ethereum 前史
 
 \> "Heroes are heroes because they are heroic in behavior, not because they won or lost." — Nicholas Taleb
@@ -588,6 +595,7 @@ Ethereum (2015)
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 对密码学有个大概了解
