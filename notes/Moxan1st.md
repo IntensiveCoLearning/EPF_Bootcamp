@@ -15,8 +15,18 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-10
+<!-- DAILY_CHECKIN_2026-04-10_START -->
+# Week1 Day 6
+
+Vibe coding 到神志不清了——完成基本可用的前端，但是后台功能不全，问一个少一个。
+
+明天看看ERC-8211能不能整合上
+<!-- DAILY_CHECKIN_2026-04-10_END -->
+
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
+
 Week 1 Day 4
 
 [Li.Fi](http://Li.Fi) 黑客松头脑风暴——CoinBuddy
@@ -29,6 +39,7 @@ Week 1 Day 4
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
 
+
 # Week 1 Day 2
 
 1.复习 Help2Earn 核心AI概念——LLM、Agent、Skill、Tool、MCP
@@ -36,6 +47,7 @@ Week 1 Day 4
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 # Week 1 Day 1
