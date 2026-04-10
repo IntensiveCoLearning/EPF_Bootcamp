@@ -19,16 +19,24 @@ timezone: UTC+8
 <!-- DAILY_CHECKIN_2026-04-10_START -->
 KDA协议详解：  
 [https://github.com/apachecn/succinctly-zh-pt3/blob/master/docs/kademlia-protocol/SUMMARY.md](https://github.com/apachecn/succinctly-zh-pt3/blob/master/docs/kademlia-protocol/SUMMARY.md)
+
+还需要弄清楚的问题是：
+
+1）为什么discovery4要升级为5，有哪些缺陷，解决什么问题？
+
+2）KDA 和 Gossip的差异在哪里？分别都适合哪些场景
 <!-- DAILY_CHECKIN_2026-04-10_END -->
 
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
+
 
 -   了解devp2p的架构设计
 <!-- DAILY_CHECKIN_2026-04-09_END -->
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 -   eip-778学习
@@ -63,6 +71,7 @@ KDA协议详解：
 
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 
 
 
