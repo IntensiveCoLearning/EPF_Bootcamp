@@ -15,8 +15,39 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-10
+<!-- DAILY_CHECKIN_2026-04-10_START -->
+### 今日阅读
+
+主要阅读了「09 Consensus Layer」中的 Overview 概览与 Client architecture 客户端架构两篇，同时对照「03 CL Deep dive」中 Gasper 共识机制的讲座大纲与互动问题，梳理从拜占庭容错到 Gasper 组合协议的理论脉络。
+
+### 串联逻辑
+
+从执行层转入共识层，首先要回答一个问题：共识层的"共识"到底在解决什么？从 BFT 的经典定义出发——在不可靠基础设施上构建可靠分布式系统——然后理解 PoS 并非共识协议本身，而是 Sybil 抵抗机制，再过渡到以太坊实际的共识协议 Gasper。Gasper 可粗略表示为 $\\text{Gasper} = \\text{LMD GHOST} \\oplus \\text{Casper FFG}$ ，其中 $\\oplus$ 并非数学意义上的"直和"，而是两个子协议在同一验证者集合上的工程耦合。架构层面则关注合并后的双层客户端结构（Beacon Node + Validator Client）以及 CL 与 EL 之间通过 Engine API 的交互语义。
+
+### 重点研究
+
+-   **Gasper 的组合语义与 CAP 定理的工程权衡**：Gasper 将 LMD GHOST 的 liveness 保证与 Casper FFG 的 safety 保证"螺栓式"（bolt together）拼接。然而这种组合并非形式化证明下的结果，而是一种工程上的折中。根据 CAP 定理，在网络分区（Partition）条件下，系统无法同时满足一致性（Consistency）与可用性（Availability）；以太坊在此处显式选择了 liveness 优先——分区期间两侧各自出块但无法 finalize，极端情况下可能分裂为两条不可调和的链。这一设计选择直接影响跨链桥的安全模型：依赖 finality 的桥（如基于 Casper FFG checkpoint 的轻客户端桥）在分区期间会停摆，而依赖 confirmation depth 的桥则面临回滚风险。从学术角度看，Gasper 论文（Neu et al., 2021）后续被指出存在 liveness 攻击向量，催生了 view-merge 等修补方案——这说明"两个各自安全的子协议组合后不一定仍然安全"，是协议组合理论（protocol composition）中的经典难题。
+    
+-   **Fork choice 作为客户端本地逻辑的深层含义**：fork choice rule 的变更不需要硬分叉，原因在于它属于客户端侧逻辑，不改变状态转换函数 $f(S, B) = S'$ 。这意味着 fork choice 的安全性分析不能假设所有节点运行相同版本——异构 fork choice 视图（heterogeneous fork choice views）下的网络行为是一个开放的研究问题。以 Proposer Boost 为例：它给及时到达的区块额外赋予 $w\_{\\text{boost}}$ 权重以防 balancing attack，但也引入了新的时序敏感性——若 proposer 的区块延迟到达，boost 可能被错误地授予或未授予，对地理位置偏远的验证者产生系统性不利。
+    
+-   **Reorg 的频率分布与 MEV 的激励扭曲**：短距离 reorg（1–2 个区块）在正常网络延迟下属于预期行为，但 MEV 的存在使得 proposer 有动机主动发起 ex-post reorg——在观察到下一个区块的内容后，回滚并替换为包含更多 MEV 的区块。这不再是网络层的偶发现象，而是经济激励驱动的策略性行为。学术上，此类问题被建模为"时间强盗攻击"（time-bandit attack），其可行性取决于 reorg 的深度 $d$ 与 finality 的距离：当 $d$ 小于 finalization lag 时，攻击者可以在不触发 slashing 的条件下重写历史。EIP-3675 后的单 slot finality（SSF）研究正是试图从根本上消除这一攻击面——若每个 slot 都能 finalize，则 reorg 在协议语义上不再可能。
+    
+-   **验证者集合规模与委员会安全性的概率边界**：当前以太坊约有 $N \\approx 10^6$ 个活跃验证者，每个 epoch（32 slots）将验证者均匀分配到各 slot。每个 slot 的委员会规模至少为 $n = 128$ 。这个数字来自严格的概率分析：设攻击者控制全网 $\\beta < 1/3$ 比例的质押量，则在大小为 $n$ 的委员会中攻击者占据 $\\geq 2n/3$ 席位的概率可由超几何分布的尾部界给出，当 $n = 128$ 且 $\\beta = 1/3$ 时，该概率 $p < 10^{-12}$ 。但这一分析假设了理想均匀随机抽样。RANDAO 的可操纵性——proposer 可以选择不揭示 RANDAO reveal 以影响下一轮洗牌——构成了实际的攻击面。设 proposer 通过 $k$ 次连续出块机会进行"随机数磨削"（RANDAO grinding），其可操纵的熵量级约为 $O(k)$ bits。Single Secret Leader Election（SSLE）的研究旨在消除此攻击面，但目前尚无效率足够高的方案进入生产。
+    
+
+### 收获
+
+Gasper 的组合语义存在已知的理论缺陷（如 bouncing attack），fork choice 的修补是持续的工程过程，而 MEV 对 proposer 激励的扭曲正在从根本上改变共识层的博弈结构。共识层的安全性并非静态属性，而是攻击者策略空间与协议防御机制之间持续演化的动态均衡。
+
+### 💡 Insight
+
+**子协议各自满足局部最优性质，不保证组合后的系统满足全局最优。** LMD GHOST 在纯 liveness 场景下表现良好，Casper FFG 在纯 safety 场景下具有严格的 accountable safety 证明（若 finality 被违反，可以识别并惩罚 $\\geq 1/3$ 的质押量），但两者组合后的交互效应——如 unrealized justification 导致的 reorg 攻击——需要额外的"胶水逻辑"（proposer boost、fork choice filter 修改等）来修补。这与形式化验证领域中"组合验证"（compositional verification）的困难性直接对应：对子系统 $A$ 和 $B$ 分别成立的性质 $\\varphi\_A$ 和 $\\varphi\_B$ ，不能直接推出 $A \\| B \\models \\varphi\_A \\wedge \\varphi\_B$ 。
+<!-- DAILY_CHECKIN_2026-04-10_END -->
+
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
+
 ### 今日阅读
 
 完成「以太坊执行层全景解析」剩余章节（P2P 网络、Snap Sync、JSON-RPC、总结），阅读「Running Ethereum - Node workshop」的节点运行 Workshop 指引以了解实操层面的准备工作，并回顾「Intro to execution - Resources」的 p2p high-level 和 JSON-RPC 部分做整体收束。
@@ -48,6 +79,7 @@ EPF 实习计划
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
 
+
 ### 今日阅读
 
 继续推进「以太坊执行层全景解析」的第四、五章（go-ethereum 实现细节 + EVM 深入），并对照「Intro to execution - Resources」中 EVM high-level 和 Block building 部分的大纲来理清脉络。
@@ -78,6 +110,7 @@ EPF 实习计划
 
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 
 
 ### 今日阅读
