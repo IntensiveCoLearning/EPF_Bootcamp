@@ -15,8 +15,329 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-10
+<!-- DAILY_CHECKIN_2026-04-10_START -->
+# EVM
+
+**EVM（Ethereum Virtual Machine）本质上是以太坊这个“状态机”的状态转移执行器。**  
+它接收交易作为输入，执行字节码，最后把以太坊从旧世界状态推进到新世界状态。
+
+## 1\. 总体流程
+
+交易输入 → EVM 执行 → 状态变化 → 新的 world state
+
+## 2\. EVM 为什么要做成“虚拟机”
+
+-   现实世界里，不同硬件和操作系统的执行环境不同。
+    
+-   EVM 作为虚拟机，提供统一抽象层。
+    
+-   开发者写出的合约会先编译成 **EVM bytecode**，再由不同客户端在不同平台上执行。
+    
+
+**意义：保证“同一份字节码，在全网不同节点上得到一致结果”。**
+
+## 3\. EVM 里最重要的 4 个数据区域
+
+### Stack
+
+-   主要给 opcode 做即时计算用。
+    
+-   是 LIFO 结构。
+    
+-   最大 **1024** 个元素，每个元素 **32 字节**。
+    
+-   实际可直接通过 `DUP` / `SWAP` 触达的只有顶部 **16** 项。
+    
+
+### Memory
+
+-   临时内存，只在本次执行期间有效。
+    
+-   是字节数组，按需扩展。
+    
+-   常见操作：`MSTORE`、`MLOAD`、`MSTORE8`。
+    
+
+### Calldata
+
+-   只读输入区。
+    
+-   来自交易输入或 message call。
+    
+-   常见读取方式：`CALLDATALOAD`、`CALLDATACOPY`。
+    
+
+### Storage
+
+-   合约持久化存储。
+    
+-   属于账户状态的一部分，会跨交易保留。
+    
+-   常见操作：`SSTORE`、`SLOAD`。
+    
+-   因为会影响全网复制的 world state，所以很贵。
+    
+
+## 4\. 字节码怎么跑起来
+
+-   EVM bytecode 本质上是一串字节。
+    
+-   每个字节可能是 **opcode**，也可能是 opcode 的 **operand**。
+    
+-   `PUSH*` 这类指令会带操作数。
+    
+-   EVM 用 **program counter** 跟踪下一条要执行的指令。
+    
+-   `JUMP` / `JUMPDEST` 负责控制流。
+    
+
+**EVM 就是一个按字节码逐条解释执行的机器。**
+
+## 5\. Gas 为什么重要
+
+  
+**如果没有 gas，EVM 的循环和计算可能无限消耗资源，造成 DoS 风险。**
+
+所以：
+
+-   每个 opcode 都有 gas 成本
+    
+-   交易执行过程中 gas 不够就会停止
+    
+-   gas 机制把计算资源显式定价
+    
+
+因此 EVM 常被描述为 **quasi Turing complete**，因为它理论上有灵活控制流，但实际被 gas 限制了。
+
+# Transaction anatomy
+
+**交易本质上是“由外部账户发起、经签名授权、提交给执行层客户端并在全网传播的指令”。**  
+它的作用不是单纯转账，还包括**创建合约**和**调用合约代码**。
+
+## 1\. 交易是什么
+
+一笔交易由 **EOA（外部账户）** 发起，经密码学签名后，通过 **JSON-RPC** 提交给执行层客户端，再通过 **DevP2P** 广播到网络。文档强调，交易是执行层接收用户意图的标准入口。
+
+## 2\. 一笔交易的核心字段
+
+-   **nonce**：发送方已发交易计数，用来防重放，也会参与合约地址计算。
+    
+-   **gasPrice / gasLimit**：前者决定每单位 gas 愿付多少，后者限定本次执行最多可消耗多少 gas。
+    
+-   **to**：决定交易模式。为空表示**创建合约**；指向外部账户表示**转账**；指向合约账户表示**执行合约**。
+    
+-   **value**：转移的 ETH 数量。
+    
+-   **data / init**：合约调用时是输入数据；合约创建时是 init bytecode。
+    
+-   **签名** `(v, r, s)`：证明这笔交易确实由发送方授权。
+    
+
+## 3\. nonce 为什么很重要
+
+**nonce 至少承担三件事：**
+
+-   **防重放攻击**：同一笔交易不能被别人反复广播骗走更多资金。
+    
+-   **决定合约地址**：在合约创建模式下，发送方地址和 nonce 会参与新合约地址的计算。
+    
+-   **替换 pending 交易**：当交易卡住时，可以发一笔**相同 nonce、但更高 gas price** 的新交易去覆盖旧交易；有些钱包也利用这一点做“取消交易”。不过文档明确说，这种替换**不保证一定成功**，仍受网络和打包方行为影响。
+    
+
+## 4\. 合约创建是怎么发生的
+
+合约创建交易的 `to` 为空，`data` 里放的不是运行时代码本体，而是 **init code**。  
+**init code 只在创建时执行一次，它的返回值才会成为合约账户里真正保存的 runtime bytecode。** 这是理解部署流程的关键。
+
+文档给了一个很直观的例子：先写一段运行时代码，让它执行 `6 * 7` 并把结果写入存储槽 `0`；然后再写 init code，把这段运行时代码复制到内存并 `RETURN` 出去，最终部署到链上。
+
+## 5\. 合约执行是怎么发生的
+
+在合约已经部署后，再发一笔交易：
+
+-   `to` 指向该合约地址
+    
+-   `value` 可以为空
+    
+-   `data` 也可以为空
+    
+
+EVM 就会执行该合约的 runtime bytecode。文档示例里，这次执行后可以读到 storage slot `0 = 0x2a`，也就是十进制 **42**。
+
+所以可以把两种模式分清楚：
+
+| 模式 | to 字段 | data 含义 | 结果 |
+| --- | --- | --- | --- |
+| 创建合约 | 空 | init code | 返回 runtime code 并生成新合约 |
+| 调用合约 | 合约地址 | 调用输入 | 执行已部署的 runtime code |
+
+## 6\. Receipt 是什么
+
+**receipt 不是交易本身，而是交易执行后的产物。**  
+无论交易成功还是失败，都会对应一个 receipt，并被提交到区块的 **Receipt Trie**。
+
+文档列出的 receipt 关键内容包括：
+
+-   **Transaction Type**
+    
+-   **Status（0 或 1）**
+    
+-   **Gas Used**
+    
+-   **Logs**
+    
+-   **Logs Bloom**
+    
+
+其中最常用的理解是：
+
+-   `status=1` 表示成功
+    
+-   `status=0` 表示失败
+    
+-   `logs` 是合约事件输出
+    
+-   `logs bloom` 是为了让应用更快筛选某地址或事件签名是否可能出现在该区块里
+    
+
+## 7\. Typed Transaction 为什么重要
+
+后半段的重点是 **EIP-2718**。它给交易和 receipt 都引入了 **typed envelope**，核心格式是：
+
+-   `Typed Transaction = Transaction Type + Transaction Payload`
+    
+-   `Typed Receipt = Transaction Type + Receipt Payload`
+    
+
+这样做的目的很明确：  
+**让以太坊以后可以更容易扩展新的交易类型，同时保留对旧版 legacy 交易的兼容性。** 在 EIP-2718 之前，扩展新交易类型会比较别扭，因为都被 RLP 老格式限制住了。
+
+识别方式：
+
+-   首字节在 `[0x00, 0x7f]`，是 **typed**
+    
+-   首字节 `>= 0xc0`，是 **legacy RLP list**
+    
+
+# Data Structures
+
+**以太坊执行层最核心的数据结构是 Merkle Patricia Trie（MPT），并围绕它组织出 Transaction Trie、Receipt Trie、World State Trie 和每个合约自己的 Storage Trie。**
+
+## 1\. 三层概念
+
+### 1.1 Merkle Tree
+
+-   作用偏**完整性验证**
+    
+-   叶子放数据，非叶子节点放子节点哈希
+    
+-   最上面的根哈希就是 **Merkle Root**
+    
+-   只要底层数据变了，根哈希就会变，因此适合做包含性证明和篡改检测。
+    
+
+### 1.2 Patricia Trie
+
+-   作用偏**高效键值存储与查找**
+    
+-   通过路径压缩，把公共前缀合并，减少空间浪费
+    
+-   值主要放在叶子节点，更利于紧凑存储。
+    
+
+### 1.3 Merkle Patricia Trie（MPT）
+
+**MPT = Merkle Tree 的可验证性 + Patricia Trie 的高效检索。**  
+它是以太坊执行层最关键的底层结构。MPT 里主要有三类节点：
+
+-   **Branch node**：分叉导航，17 个槽位
+    
+-   **Extension node**：压缩公共路径
+    
+-   **Leaf node**：存具体 key-value 数据
+    
+
+另外，MPT 以 **nibble（半字节，十六进制一位）** 作为路径单位，每个节点最多分 16 个分支。
+
+## 2\. 以太坊里有哪些核心 Trie
+
+### 2.1 Transaction Trie
+
+-   **每个区块各有一棵**
+    
+-   存这个区块里的所有交易
+    
+-   key 是交易在区块中的 **index**
+    
+-   value 是 **RLP 编码后的交易**
+    
+
+它是**区块级静态结构**：区块一旦确定，这棵 trie 就不会再变。
+
+### 2.2 Receipt Trie
+
+-   **每个区块各有一棵**
+    
+-   存每笔交易执行后的 **receipt**
+    
+-   key 同样是交易在区块里的 **index**
+    
+-   主要作用是提供**交易结果的可验证记录**
+    
+
+它很重要的一点是：节点在同步历史区块时，可以重建 receipt trie，并用 block header 里的 `receiptsRoot` 校验，不需要为了拿 receipts 而把所有历史交易重新执行一遍。
+
+### 2.3 World State Trie
+
+**这是执行层最核心的一棵 trie。**  
+它表示“当前整条链的全局状态”：
+
+-   key：`keccak-256(address)`
+    
+-   value：账户对象的 **RLP 编码状态**
+    
+
+账户对象里最关键的字段是：
+
+-   `nonce`
+    
+-   `balance`
+    
+-   `storageRoot`
+    
+-   `codeHash`
+    
+
+注意：**World State Trie 本体不直接写进链里，写进每个区块头的是它的** `stateRoot`**。** 这个根哈希就是对全局状态的密码学承诺。
+
+### 2.4 Storage Trie
+
+-   **每个合约账户各有一棵**
+    
+-   用来存这个合约自己的持久化 storage
+    
+-   key 是 256-bit storage slot index，插入前会做 `keccak-256`
+    
+-   value 是对应 slot 的值
+    
+
+这棵 trie 通过账户对象里的 `storageRoot` 挂到 World State Trie 上。  
+EOA 没有实际可用的 storage trie；合约的 storage 主要通过 `SSTORE` 写入、`SLOAD` 读取。
+
+## 3\. 这四棵 Trie 的关系
+
+| Trie | 作用 | 生命周期 |
+| --- | --- | --- |
+| Transaction Trie | 存区块里的交易 | 每块一棵，区块确定后不变 |
+| Receipt Trie | 存区块里交易执行结果 | 每块一棵，区块确定后不变 |
+| World State Trie | 存当前全局账户状态 | 持续演化 |
+| Storage Trie | 存单个合约的持久化存储 | 跟随合约状态演化 |
+<!-- DAILY_CHECKIN_2026-04-10_END -->
+
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
+
 # EL Specs
 
 **执行层的任务，本质上就是实现状态转移函数（State Transition Function, STF）。**  
@@ -348,6 +669,7 @@ EVM 执行可以抽象成几个函数：
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
 
+
 # Design rationale
 
 ## 1\. 设计哲学
@@ -509,6 +831,7 @@ EVM 执行可以抽象成几个函数：
 <!-- DAILY_CHECKIN_2026-04-07_START -->
 
 
+
 # Architecture
 
 **以太坊当前的协议架构，核心是“双层结构”**：
@@ -550,6 +873,7 @@ EVM 执行可以抽象成几个函数：
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
