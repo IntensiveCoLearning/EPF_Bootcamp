@@ -15,8 +15,339 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-10
+<!-- DAILY_CHECKIN_2026-04-10_START -->
+学习交易字段与生命周期和EVM 执行模型基础,AI总结
+
+* * *
+
+# 一、交易（Transaction）字段结构
+
+以 Ethereum 为例，交易分为几种类型（Legacy / EIP-1559 / EIP-2930），核心字段如下：
+
+## 1\. 通用核心字段（所有交易都有）
+
+| 字段 | 含义 | 工程要点 |
+| --- | --- | --- |
+| from | 发送者地址 | 由签名恢复（不是直接存储） |
+| to | 接收者地址 | 为空 = 合约创建 |
+| value | 转账金额 | 单位：wei |
+| nonce | 账户交易序号 | 防重放 + 顺序执行 |
+| data | 输入数据 | 调用函数或部署代码 |
+| gasLimit | 最大 Gas | 防止无限执行 |
+| v,r,s | 签名 | 椭圆曲线签名 |
+
+* * *
+
+## 2\. EIP-1559（当前主流）
+
+| 字段 | 含义 |
+| --- | --- |
+| maxFeePerGas | 用户愿意支付的最高 gas 价格 |
+| maxPriorityFeePerGas | 给矿工/验证者的小费 |
+
+👉 实际费用：
+
+```
+gasPrice = min(maxFeePerGas, baseFee + priorityFee)
+```
+
+* * *
+
+## 3\. 合约调用 data 结构
+
+```
+data = function_selector(4 bytes) + 参数编码
+```
+
+示例：
+
+```
+0xa9059cbb + 地址 + 数量
+```
+
+* * *
+
+# 二、交易生命周期（Transaction Lifecycle）
+
+从用户发起到最终确认：
+
+## 1\. 构造与签名
+
+-   钱包（如 MetaMask）构造交易
+    
+-   使用私钥签名
+    
+-   得到 raw transaction
+    
+
+* * *
+
+## 2\. 广播（P2P 网络）
+
+-   通过 Peer-to-peer network 广播
+    
+-   节点进行基本校验：
+    
+    -   签名正确
+        
+    -   nonce 合法
+        
+    -   余额足够支付 gas
+        
+
+进入 **mempool（交易池）**
+
+* * *
+
+## 3\. 打包（Block Inclusion）
+
+-   验证者选择交易（按 gas 费排序）
+    
+-   构建区块
+    
+
+在 Proof of Stake 中：
+
+-   proposer 负责打包
+    
+-   builder（MEV）可能参与
+    
+
+* * *
+
+## 4\. 执行（Execution）
+
+由 Ethereum Virtual Machine 执行：
+
+-   状态读取（账户 / storage）
+    
+-   执行 opcode
+    
+-   更新状态树（Merkle Patricia Trie）
+    
+
+* * *
+
+## 5\. 共识确认（Finality）
+
+-   区块被链接受
+    
+-   在 Ethereum 2.0 中：
+    
+    -   Slot → Epoch → Finalized
+        
+
+* * *
+
+## 生命周期总结（工程视角）
+
+```
+构造 → 签名 → 广播 → mempool → 打包 → EVM执行 → 状态变更 → Finality
+```
+
+* * *
+
+# 三、EVM 执行模型（核心）
+
+## 1\. 基本架构
+
+Ethereum Virtual Machine 是：
+
+-   **基于栈（Stack-based）虚拟机**
+    
+-   256-bit word
+    
+-   确定性执行（deterministic）
+    
+
+* * *
+
+## 2\. 四大数据区
+
+| 区域 | 特点 | 生命周期 |
+| --- | --- | --- |
+| Stack | 最多 1024 层 | 临时 |
+| Memory | 线性内存 | 调用期间 |
+| Storage | 持久存储 | 链上 |
+| Calldata | 只读输入 | 调用期间 |
+
+* * *
+
+## 3\. 执行流程
+
+一次交易执行大致为：
+
+```
+1. 扣除 upfront gas
+2. 加载 calldata
+3. 执行 opcode（逐条）
+4. 状态修改（storage）
+5. gas 消耗
+6. 成功 or revert
+7. 退还剩余 gas
+```
+
+* * *
+
+## 4\. Opcode 执行机制
+
+典型 opcode：
+
+| 类别 | 示例 |
+| --- | --- |
+| 算术 | ADD, MUL |
+| 存储 | SLOAD, SSTORE |
+| 控制流 | JUMP |
+| 外部调用 | CALL |
+| 合约创建 | CREATE |
+
+👉 特点：
+
+-   每条 opcode 有 gas 成本
+    
+-   防止 DoS 攻击
+    
+
+* * *
+
+## 5\. Gas 机制（关键）
+
+核心设计目标：
+
+-   防止无限循环
+    
+-   衡量计算资源
+    
+-   激励验证者
+    
+
+执行规则：
+
+```
+gas_used += opcode_cost
+```
+
+特殊点：
+
+-   `SSTORE` 很贵
+    
+-   `CALL` 会带 gas 传递
+    
+-   `REVERT` 不消耗全部 gas
+    
+
+* * *
+
+## 6\. 调用模型（Message Call）
+
+合约之间调用：
+
+```
+CALL / DELEGATECALL / STATICCALL
+```
+
+关键区别：
+
+| 类型 | storage | msg.sender |
+| --- | --- | --- |
+| CALL | 被调用合约 | 调用者 |
+| DELEGATECALL | 调用者 | 原始调用者 |
+
+* * *
+
+## 7\. 状态模型
+
+EVM 操作的是 **账户模型（Account Model）**
+
+账户包含：
+
+-   nonce
+    
+-   balance
+    
+-   storageRoot
+    
+-   codeHash
+    
+
+* * *
+
+# 四、执行结果（Transaction Receipt）
+
+执行后生成：
+
+| 字段 | 说明 |
+| --- | --- |
+| status | 成功 / 失败 |
+| gasUsed | 消耗 gas |
+| logs | 事件日志 |
+| contractAddress | 新合约地址 |
+
+* * *
+
+# 五、关键设计总结（面试高频）
+
+## 1\. 为什么要 nonce？
+
+-   防重放攻击
+    
+-   保证交易顺序
+    
+
+* * *
+
+## 2\. 为什么要 gas？
+
+-   限制计算资源
+    
+-   防止 DoS
+    
+-   市场化定价执行资源
+    
+
+* * *
+
+## 3\. EVM 为什么是栈机？
+
+优点：
+
+-   简单
+    
+-   易验证
+    
+-   易实现跨平台一致性
+    
+
+缺点：
+
+-   不利于优化（相比寄存器 VM）
+    
+
+* * *
+
+## 4\. 执行 vs 共识分离（EL / CL）
+
+现代以太坊架构：
+
+| 层 | 作用 |
+| --- | --- |
+| EL（执行层） | 处理交易 + EVM |
+| CL（共识层） | 决定区块顺序 |
+
+* * *
+
+# 六、一句话总结
+
+> Web3 交易本质是：  
+> **签名驱动的状态转换请求 → 经 P2P 广播 → 被区块打包 → 在 EVM 中按 gas 约束执行 → 最终改变全局状态。**
+
+* * *
+<!-- DAILY_CHECKIN_2026-04-10_END -->
+
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
+
 执行层核心规范和EL 客户端模块总览总结
 
 * * *
@@ -471,6 +802,7 @@ State + Transactions → New State
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
 
+
 以太坊的核心哲学 = 用最小的底层规则（简洁 + 通用），通过模块化和封装控制复杂性，同时保持中立和可演进，让上层应用自由生长.
 
 区块链级协议总结
@@ -882,6 +1214,7 @@ DHT + Gossip → 网络传播
 <!-- DAILY_CHECKIN_2026-04-07_START -->
 
 
+
 参加例会
 
 ![例会2.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/duladuladula/images/2026-04-07-1775563199079-__2.png)![例会1.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/duladuladula/images/2026-04-07-1775563217747-__1.png)
@@ -889,6 +1222,7 @@ DHT + Gossip → 网络传播
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
