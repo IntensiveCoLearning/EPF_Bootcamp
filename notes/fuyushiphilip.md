@@ -15,8 +15,67 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-10
+<!-- DAILY_CHECKIN_2026-04-10_START -->
+Opcode · Stack · Memory · Storage · Calldata · Rever  
+  
+**1\. EVM**
+
+-   **Deterministic** — same input → same output on all nodes.
+    
+-   **256-bit stack machine** (max 1024 elements).
+    
+-   **State root** reflects final state after each transaction.
+    
+-   **Atomic transactions** — all or nothing.
+    
+
+### **2\. Memory Model & Data Locations**
+
+-   **Stack** — temporary, very low cost.
+    
+-   **Memory** — per-call temporary, low cost.
+    
+-   **Storage** — permanent, high cost (20k gas).
+    
+-   **Calldata** — read-only external input, extremely cheap.
+    
+-   Storage writes are expensive because of permanent global consensus; Memory/Stack are discarded after execution.
+    
+
+### **3\. Errors & Rollback**
+
+-   `revert` — rolls back state, returns remaining gas (not all gas).
+    
+-   `assert` **/** `panic` — internal errors, consumes **all** remaining gas.
+    
+-   `require` **/** `revert` — for input/condition checks (preferred).
+    
+-   **Events** — for off-chain indexing, do **not** change state root.
+    
+
+  
+Opcode (short for Operation Code) is the low-level instruction that the Ethereum Virtual Machine (EVM) directly understands and executes.
+
+Solidity = high-level language (human readable)
+
+Bytecode = compiled contract (machine readable)
+
+Opcode = individual human-readable names for each byte in the bytecode  
+  
+
+| Concept | Takeaway |
+| --- | --- |
+| Opcode | Basic instruction the EVM executes (1 byte each) |
+| Mnemonic | Human-readable name (e.g., ADD, SSTORE) |
+| Gas | Each opcode has a fixed gas cost |
+| Memory model | Different opcodes target Stack, Memory, Storage, or Calldata |
+| Determinism | Same sequence of opcodes → same result on all nodes |
+<!-- DAILY_CHECKIN_2026-04-10_END -->
+
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
+
 **Fork Choice · Finality · Slot · Epoch · Checkpoint · Slashing**
 
 -   **Fork Choice**: Determines which chain is the correct one when temporary disagreements occur.
@@ -40,6 +99,7 @@ EPF 实习计划
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 **EIP-1559**  
   
@@ -66,6 +126,7 @@ EIP-1559 introduced Type 2 transactions (EIP-1559 transactions), splitting fees 
 
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 
 
 ![Screenshot 2026-04-07 at 7.07.19 PM.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/fuyushiphilip/images/2026-04-07-1775560105106-Screenshot_2026-04-07_at_7.07.19_PM.png)![Screenshot 2026-04-07 at 7.15.48 PM.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/fuyushiphilip/images/2026-04-07-1775560560940-Screenshot_2026-04-07_at_7.15.48_PM.png)![Screenshot 2026-04-07 at 7.15.11 PM.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/fuyushiphilip/images/2026-04-07-1775560527376-Screenshot_2026-04-07_at_7.15.11_PM.png)
