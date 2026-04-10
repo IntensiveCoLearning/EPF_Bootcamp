@@ -15,13 +15,20 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-10
+<!-- DAILY_CHECKIN_2026-04-10_START -->
+今天学习了下以太坊Layer 2 扩容链 和EVM 兼容 Layer 1公链
+<!-- DAILY_CHECKIN_2026-04-10_END -->
+
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
+
 ETH Garden Lv12 close
 <!-- DAILY_CHECKIN_2026-04-09_END -->
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 ETH 关卡挑战到LV9
 <!-- DAILY_CHECKIN_2026-04-08_END -->
@@ -30,11 +37,13 @@ ETH 关卡挑战到LV9
 <!-- DAILY_CHECKIN_2026-04-07_START -->
 
 
+
 参加EPF周会 & Infinite Garden
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
