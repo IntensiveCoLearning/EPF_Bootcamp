@@ -177,7 +177,7 @@ EPS 官方会议和 ACD 会议总结
 | [1sh1ro](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/1sh1ro.md) | ⭕️ | ⭕️ | ✅ | ✅ | ✅ | | | | | | | | | | | | | | | | | | | | | | | |
 | [zhaojinxiu6](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/zhaojinxiu6.md) | ✅ | ✅ | ✅ | ✅ | ✅ | | | | | | | | | | | | | | | | | | | | | | | |
 | [Caterpillar0620](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/Caterpillar0620.md) | ⭕️ | ⭕️ | ❌ | | | | | | | | | | | | | | | | | | | | | | | | | |
-| [marsmu1213](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/marsmu1213.md) | ✅ | ✅ | ✅ | ✅ |   | | | | | | | | | | | | | | | | | | | | | | | |
+| [marsmu1213](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/marsmu1213.md) | ✅ | ✅ | ✅ | ✅ | ✅ | | | | | | | | | | | | | | | | | | | | | | | |
 | [ybk-1](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/ybk-1.md) | ✅ | ✅ | ✅ | ✅ | ✅ | | | | | | | | | | | | | | | | | | | | | | | |
 | [leopc999](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/leopc999.md) | ✅ | ✅ | ✅ | ✅ | ✅ | | | | | | | | | | | | | | | | | | | | | | | |
 | [looken-awayry](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/looken-awayry.md) | ⭕️ | ⭕️ | ❌ | | | | | | | | | | | | | | | | | | | | | | | | | |
@@ -204,6 +204,7 @@ EPS 官方会议和 ACD 会议总结
 | [qingge785](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/qingge785.md) | ⭕️ | ⭕️ | ❌ | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [DrakenZeng](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/DrakenZeng.md) | ⭕️ | ⭕️ | ❌ | | | | | | | | | | | | | | | | | | | | | | | | | |
 <!-- END_COMMIT_TABLE -->
+
 
 
 
