@@ -15,13 +15,21 @@ timezone: UTC+8
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-10
+<!-- DAILY_CHECKIN_2026-04-10_START -->
+KDA协议详解：  
+[https://github.com/apachecn/succinctly-zh-pt3/blob/master/docs/kademlia-protocol/SUMMARY.md](https://github.com/apachecn/succinctly-zh-pt3/blob/master/docs/kademlia-protocol/SUMMARY.md)
+<!-- DAILY_CHECKIN_2026-04-10_END -->
+
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
+
 -   了解devp2p的架构设计
 <!-- DAILY_CHECKIN_2026-04-09_END -->
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 -   eip-778学习
     
@@ -55,6 +63,7 @@ timezone: UTC+8
 
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 
 
 
