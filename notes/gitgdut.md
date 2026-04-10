@@ -15,8 +15,24 @@ timezone: UTC+8
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-10
+<!-- DAILY_CHECKIN_2026-04-10_START -->
+深入学习了以下内容：
+
+-   [EL Specs](https://epf.wiki/#/wiki/EL/el-specs)（执行层核心规范）
+    
+-   [Client architecture（客户端架构概述）](https://epf.wiki/#/wiki/EL/el-architecture)（EL 客户端模块总览）
+    
+-   [EVM（以太坊虚拟机基础）](https://epf.wiki/#/wiki/EL/evm)（EVM 执行模型基础）
+    
+-   [Transaction anatomy（交易结构）](https://epf.wiki/#/wiki/EL/transaction)（交易字段与生命周期）
+    
+-   [Data Structures（数据结构概述）](https://epf.wiki/#/wiki/EL/data-structures)（区块与状态相关结构）
+<!-- DAILY_CHECKIN_2026-04-10_END -->
+
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 参加了会议，理解了以下内容  
 1\. Devnet 进展更新与极限压测⽬容
 
@@ -33,6 +49,7 @@ timezone: UTC+8
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 今天看了prehistory部分，了解了密码学的历史，对以太坊加密算法的密码学基础有了初步的认识
 <!-- DAILY_CHECKIN_2026-04-06_END -->
