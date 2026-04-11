@@ -15,8 +15,18 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-11
+<!-- DAILY_CHECKIN_2026-04-11_START -->
+今天主要学习了Block Building，周六竟然还要上一天实验课，我已心力憔悴
+
+block building部分聚焦区块产生及之后过程，cl提出新区块，驱动el构建区块，在交易池中选择交易写入区块，执行交易，更新状态，返回payload，广播，进入下次循环。
+
+这期水了(
+<!-- DAILY_CHECKIN_2026-04-11_END -->
+
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 重新梳理了一下之前学的：
 
 主要分为L1L2L3:
@@ -65,6 +75,7 @@ evm分成了el ，cl 两部分：
 
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
+
 
 今天主要学习了EL Architecture部分
 
@@ -227,6 +238,7 @@ evm分成了el ，cl 两部分：
 <!-- DAILY_CHECKIN_2026-04-08_START -->
 
 
+
 今天上一天课，水一天。  
 看见epf.wiki上的大段大段的英文，冷汗更是直流（  
 底层的东西真是任重而道远，也就是看不懂的意思（  
@@ -238,6 +250,7 @@ evm分成了el ，cl 两部分：
 
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 
 
 
@@ -253,6 +266,7 @@ evm分成了el ，cl 两部分：
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
