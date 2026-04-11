@@ -23,11 +23,13 @@ EPF 实习计划
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
 
+
 打卡
 <!-- DAILY_CHECKIN_2026-04-10_END -->
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 Consensus Layer (CL) architecture
@@ -322,6 +324,7 @@ state.slot = Slot(state.slot + 1)
 
 
 
+
 \# Ethereum 前史
 
 \> "Heroes are heroes because they are heroic in behavior, not because they won or lost." — Nicholas Taleb
@@ -603,6 +606,7 @@ Ethereum (2015)
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
