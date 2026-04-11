@@ -15,8 +15,422 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-11
+<!-- DAILY_CHECKIN_2026-04-11_START -->
+\---
+
+\## Transaction Lifecycle: From Creation to Finality
+
+\`\`\`
+
+Wallet Signed Tx → Txpool → Inclusion (in a block) → Confirmation → Finality
+
+\`\`\`
+
+\---
+
+\## 1. Signed Transaction
+
+A **Signed Transaction** is a raw transaction cryptographically signed by the sender's private key.
+
+\### Structure
+
+| Field | Description |
+
+|-------|-------------|
+
+| `nonce` | Sender's transaction count (prevents replay attacks) |
+
+| `to` | Recipient address (or `null` for contract creation) |
+
+| `value` | ETH amount to transfer (in wei) |
+
+| `gas` | Maximum gas willing to pay |
+
+| `gasPrice` | Price per gas unit (or `maxFeePerGas` / `maxPriorityFeePerGas` for EIP-1559) |
+
+| `data` | Calldata (function selector + arguments) |
+
+| `v, r, s` | Signature components (from private key) |
+
+\### Why Signing Matters
+
+\- **Authenticity** — Proves the sender authorized the transaction
+
+\- **Integrity** — Cannot be altered without invalidating signature
+
+\- **Non-repudiation** — Sender cannot deny sending it
+
+\- **Determinism** — Same signed tx → same hash on all nodes
+
+\`\`\`javascript
+
+// Simplified example
+
+const tx = {
+
+nonce: 5,
+
+to: "0x...",
+
+value: "1.0 ETH",
+
+gas: 21000,
+
+gasPrice: "50 gwei",
+
+data: "0x"
+
+};
+
+const signedTx = await wallet.signTransaction(tx);
+
+// → 0xf86a... (RLP-encoded signed transaction)
+
+\`\`\`
+
+\---
+
+\## 2. Txpool (Transaction Pool)
+
+The **Txpool** (also called **mempool**) is a pending transaction queue on each Ethereum node.
+
+\### Key Concepts
+
+| Term | Description |
+
+|------|-------------|
+
+| **Pending** | Transactions ready for inclusion (nonce = current account nonce) |
+
+| **Queued** | Transactions waiting for earlier nonces to be processed |
+
+| **Local Tx** | Added by node's own RPC (higher priority) |
+
+| **Remote Tx** | Received from peer nodes via gossip |
+
+\### Txpool Organization
+
+\`\`\`
+
+Account A: nonce 3 (pending), nonce 4 (queued), nonce 5 (queued)
+
+Account B: nonce 1 (pending)
+
+Account C: nonce 7 (pending), nonce 8 (queued)
+
+\`\`\`
+
+\### Txpool Rules
+
+\- Validates signature, balance, nonce, gas limit
+
+\- Removes transactions after block inclusion
+
+\- Drops transactions that expire (age or low gas price)
+
+\- Maximum size limit (configurable per node)
+
+\### Common Txpool RPC Methods
+
+| Method | Purpose |
+
+|--------|---------|
+
+| `txpool_status` | Number of pending + queued transactions |
+
+| `txpool_content` | All pending/queued transactions (detailed) |
+
+| `txpool_inspect` | Summary view (lightweight) |
+
+\---
+
+\## 3. Inclusion
+
+**Inclusion** means a transaction has been selected by a validator/miner and added to a candidate block.
+
+\### How Inclusion Happens
+
+1\. Validator selects transactions from txpool (prioritizing highest gas price / priority fee)
+
+2\. Transactions are executed in order (by nonce, within block)
+
+3\. Valid block is proposed to the network
+
+\### Inclusion Criteria
+
+| Factor | Impact |
+
+|--------|--------|
+
+| **Gas price / Priority fee** | Higher = faster inclusion |
+
+| **Nonce** | Must match sender's current nonce |
+
+| **Account balance** | Must cover gas cost + value |
+
+| **Block gas limit** | ~30M gas per block → limited slots |
+
+\### Time to Inclusion
+
+\- Fast (high gas): 1-2 blocks (~12-24 seconds)
+
+\- Normal (medium gas): 3-5 blocks
+
+\- Slow (low gas): Maybe never (gets dropped from txpool)
+
+\---
+
+\## 4. Confirmation
+
+A **Confirmation** occurs when a block containing your transaction is **built upon by subsequent blocks**.
+
+\### Confirmation Count
+
+\`\`\`
+
+Block 100: Your transaction included ← 1 confirmation
+
+Block 101: Built on Block 100 ← 2 confirmations
+
+Block 102: Built on Block 101 ← 3 confirmations
+
+...
+
+\`\`\`
+
+\### Confirmation vs. Inclusion
+
+| State | Meaning | Safety Level |
+
+|-------|---------|--------------|
+
+| **Included** | Transaction is in a block | Low (could be reorged) |
+
+| **1 confirmation** | 1 block built on top | Low |
+
+| **6 confirmations** | 6 blocks built on top | Medium (standard for exchanges) |
+
+| **12+ confirmations** | Many blocks built on top | Very high |
+
+\### Why Confirmations Matter
+
+\- **Reorg protection** — Longer chain = harder to reverse
+
+\- **Finality approaching** — Probability of reversal decreases exponentially
+
+\- **Industry standard** — Most exchanges wait 12-20 confirmations
+
+\### Probability of Reversal
+
+| Confirmations | Risk of reversal (estimate) |
+
+|---------------|----------------------------|
+
+| 0 | ~10% (uncle/orphan risk) |
+
+| 1 | ~1% |
+
+| 6 | ~0.01% |
+
+| 12 | ~0.0001% |
+
+\---
+
+\## 5. Finality
+
+**Finality** means a transaction **cannot be reverted** under normal network conditions.
+
+\### Types of Finality
+
+| Type | Description | Ethereum |
+
+|------|-------------|----------|
+
+| **Probabilistic** | Gets more certain over time (PoW) | Legacy (discontinued) |
+
+| **Economic** | Too expensive to revert (PoS) | ✅ Current |
+
+| **Absolute** | Guaranteed irreversible | Not in Ethereum |
+
+\### Ethereum PoS Finality (Since Merge 2022)
+
+\- **Checkpoints** occur every epoch (32 blocks, ~6.4 minutes)
+
+\- **Two rounds of voting** by validators
+
+\- **Justified** → **Finalized** after 2 epochs (~12.8 minutes)
+
+\- Finalized transactions **cannot be reverted** without burning >33% of all staked ETH (~$10B+)
+
+\### Finality Comparison
+
+| Network | Finality Time | Mechanism |
+
+|---------|---------------|-----------|
+
+| Bitcoin | ~1 hour (6 blocks) | Probabilistic |
+
+| Ethereum (PoS) | ~12-15 minutes | Economic (Casper FFG) |
+
+| Solana | ~1-2 seconds | Proof of History |
+
+| Traditional finance | Instant (centralized) | Legal/trust |
+
+\---
+
+\## 6. Replacement Transaction
+
+A **Replacement Transaction** is a new transaction that **replaces an existing pending transaction** in the txpool.
+
+\### Replacement Rules (EIP-1559 & Legacy)
+
+The new transaction must:
+
+\- Have the **same nonce** as the pending one
+
+\- Have a **higher gas price** (legacy) or **higher priority fee** (EIP-1559)
+
+\- Have the **same "from" address**
+
+\### Why Replace a Transaction?
+
+| Scenario | How |
+
+|----------|-----|
+
+| **Speed up (gas bump)** | Increase gas price, keep same nonce |
+
+| **Cancel** | Send 0 ETH to self, same nonce, higher gas |
+
+| **Fix parameters** | Change `to`, `value`, or `data`, higher gas |
+
+\### Example: Canceling a Stuck Transaction
+
+\`\`\`javascript
+
+// Stuck transaction (nonce 10, gas price 10 gwei)
+
+// Too slow → stuck in txpool
+
+// Cancel transaction (nonce 10, higher gas price)
+
+const cancelTx = {
+
+nonce: 10, // Same nonce
+
+to: myAddress, // Send to self
+
+value: 0, // 0 ETH
+
+gas: 21000,
+
+maxPriorityFeePerGas: "2 gwei", // Higher than original
+
+maxFeePerGas: "100 gwei"
+
+};
+
+await wallet.sendTransaction(cancelTx);
+
+// Original transaction is replaced
+
+\`\`\`
+
+\### Replacement Caveats
+
+| Condition | Result |
+
+|-----------|--------|
+
+| Same nonce, lower gas | **Ignored** (does nothing) |
+
+| Same nonce, higher gas | **Replaces** the transaction |
+
+| Same nonce, already included | **Invalid** (nonce already used) |
+
+| Different nonce | **New independent transaction** |
+
+\---
+
+\## Complete Lifecycle Diagram
+
+\`\`\`
+
+┌─────────────┐
+
+│ 1. SIGNED │ ← Private key signing
+
+│ TX │
+
+└──────┬──────┘
+
+↓
+
+┌─────────────┐
+
+│ 2. TXPOOL │ ← Pending + Queued
+
+│ (mempool) │ (gossip to peers)
+
+└──────┬──────┘
+
+↓ (selected by validator)
+
+┌─────────────┐
+
+│ 3. INCLUSION│ ← In a block (mined/proposed)
+
+└──────┬──────┘
+
+↓ (more blocks added)
+
+┌─────────────┐
+
+│ 4. CONFIRM- │ ← 1, 6, 12+ blocks on top
+
+│ ATION │
+
+└──────┬──────┘
+
+↓ (2 epochs pass)
+
+┌─────────────┐
+
+│ 5. FINALITY │ ← Cannot revert (PoS finalized)
+
+└─────────────┘
+
+↑ (same nonce, higher gas)
+
+REPLACEMENT TX → Bypasses txpool rules
+
+\`\`\`
+
+\---
+
+\## Key Summary Table
+
+| Concept | Definition | Timeframe | Reversible? |
+
+|---------|------------|-----------|-------------|
+
+| **Signed Tx** | Cryptographically authenticated transaction | Before submission | N/A |
+
+| **Txpool** | Pending transaction queue on node | Seconds to hours | Yes (replace) |
+
+| **Inclusion** | Transaction added to a block | ~12 seconds | Yes (reorg) |
+
+| **Confirmation** | Blocks built on top | Minutes | Decreasing probability |
+
+| **Finality** | Economically irreversible | ~12-15 min | No (except 33+% attack) |
+
+| **Replacement Tx** | Same nonce, higher gas | Instant (replace) | Replaces pending |
+<!-- DAILY_CHECKIN_2026-04-11_END -->
+
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 Opcode · Stack · Memory · Storage · Calldata · Rever  
   
 **1\. EVM**
@@ -76,6 +490,7 @@ Opcode = individual human-readable names for each byte in the bytecode
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
 
+
 **Fork Choice · Finality · Slot · Epoch · Checkpoint · Slashing**
 
 -   **Fork Choice**: Determines which chain is the correct one when temporary disagreements occur.
@@ -99,6 +514,7 @@ Opcode = individual human-readable names for each byte in the bytecode
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 **EIP-1559**  
@@ -126,6 +542,7 @@ EIP-1559 introduced Type 2 transactions (EIP-1559 transactions), splitting fees 
 
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 
 
 
