@@ -15,8 +15,322 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-11
+<!-- DAILY_CHECKIN_2026-04-11_START -->
+# RLP
+
+**RLP（Recursive‑Length Prefix）是以太坊执行层中核心的数据编码/序列化格式，用于把任意嵌套的二进制数据结构序列化成确定性字节流。**  
+它保证不同客户端之间在交换区块、交易、状态等信息时能**按同一规则编码/解码**，从而支持一致性验证和网络互操作。
+
+## 1\. RLP 的目的与作用
+
+-   **标准化数据编码**：确保节点之间对数据结构的表示一致。
+    
+-   **节省空间**：对嵌套结构进行紧凑编码，适合链上/网络传输。
+    
+-   **用于执行层对象序列化**：区块、交易、账户状态等都广泛采用 RLP。
+    
+
+## 2\. RLP 能处理的项（Item）
+
+RLP 可编码以下三类“待编码对象”：
+
+1.  **字节串（byte array）**
+    
+2.  **正整数** （转换为不带前导零的大端字节串后编码）
+    
+3.  **嵌套列表**（列表内每个元素也必须是 RLP Item）
+    
+
+## 3\. 编码规则概要
+
+RLP 的编码根据输入类型和长度不同分成几种情况：
+
+### 3.1 单字节
+
+-   如果是单个字节且在 `0x00–0x7F` 范围内，则**该字节本身就是编码结果**。
+    
+
+### 3.2 字符串
+
+-   **短字符串（≤55 字节）**：`0x80 + 长度` 前缀 + 内容。
+    
+-   **长字符串（>55 字节）**：用 `0xB7 + len(len)` 前缀 + len（大端） + 内容。
+    
+
+### 3.3 列表
+
+-   **短列表**：`0xC0 + 列表编码总长度` + 列表内容。
+    
+-   **长列表**：类似长字符串，用更长的长度前缀。
+    
+
+这些规则支持嵌套结构递归编码，使任意复杂的数据结构都能统一编码。
+
+## 4\. 解码规则概要
+
+-   RLP 解码以**首字节前缀**判断当前是单字节/短/长 string 或 list，然后递归解析出原始数据结构。
+    
+
+## 5\. 为什么 RLP 重要
+
+-   **一致性**：任何客户端只要按 RLP 规范编码/解码，就能确保读出完全一致的数据结构。
+    
+-   **高效性**：相比通用格式（如 JSON），RLP 更简洁、更适合低层协议的数据交换。
+    
+-   **基础性**：执行层几乎所有链上对象（例如区块头、交易、账户状态）都通过 RLP 编码序列化后进行哈希及传播。
+    
+
+## 6\. 适合记住的要点
+
+1.  **RLP 是执行层核心的序列化协议**，专门设计来编码嵌套的二进制数据结构。
+    
+2.  **它既不是 JSON 也不是 protobuf**，而是更简洁的“长度前缀 + 数据”格式。
+    
+3.  **单字节、小/长字符串与列表编码的首字节前缀范围不同**，可以通过前缀判定结构类型。
+    
+
+# DevP2P
+
+DevP2P（Ethereum Dev Peer‑to‑Peer Protocol）是执行层节点之间的基础点对点通信栈。它规定了如何发现节点、建立加密连接以及交换区块、交易等协议消息，从而使执行客户端能够在去中心化网络中协作。
+
+### 1\. 网络基础
+
+-   **协议栈**：EL（Execution Layer）使用 TCP（可靠、顺序传输）传输信息，UDP（快速、无连接）用于节点发现。
+    
+-   **节点类型**：每个以太坊节点包含执行客户端（交易传播）和共识客户端（区块传播），各自维护独立 P2P 网络。
+    
+
+### 2\. 节点发现（Discv 协议）
+
+-   **Discv4/Discv5**：基于 Kademlia DHT，节点通过 bootstrap 节点加入网络。
+    
+-   **发现流程**：
+    
+    1.  新节点向 bootstrap 节点发送 PING。
+        
+    2.  bootstrap 响应 PONG → 节点验证连接。
+        
+    3.  FIND-NEIGHBOURS 请求 → 获取邻居列表。
+        
+-   **数据结构**：
+    
+    -   **ENR（Ethereum Node Record）**：节点连接信息、加密密钥和元数据。
+        
+    -   **k-buckets**：存储节点信息，每桶最多 16 个节点，按最近活动排序。
+        
+-   **Discv5 改进**：
+    
+    -   加密通信（AES-GCM）、服务发现（Topic-based）、自适应路由。
+        
+    -   支持扩展 ENR，消除对时钟依赖，优化大网络可扩展性。
+        
+
+### 3\. 信息传输（RLPx 协议）
+
+-   **协议特点**：
+    
+    -   TCP 基础，安全加密通信。
+        
+    -   支持多路复用（Multiplexing）与子协议。
+        
+-   **连接建立**：
+    
+    1.  节点发现后，用 secp256k1 临时密钥进行握手。
+        
+    2.  建立认证、生成 session keys（前向安全）。
+        
+-   **加密机制**：
+    
+    -   AES-128-CTR 消息加密
+        
+    -   HMAC-SHA-256 消息完整性校验
+        
+    -   ECDH（椭圆曲线 Diffie-Hellman）生成共享密钥
+        
+-   **消息封装**：
+    
+    -   帧结构：header-ciphertext + frame-ciphertext + MAC
+        
+    -   支持多个应用层协议并行运行
+        
+
+### 4\. 核心消息类型（Wire/子协议）
+
+| 消息 | 功能 |
+| --- | --- |
+| Ping/Pong | 验证节点可达性 |
+| FindNode/Neighbors | 查询并返回邻居节点 |
+| ENRRequest/ENRResponse | 请求/响应节点记录 |
+| WhoAreYou/Handshake | 节点认证、加密会话建立 |
+| TalkReq/TalkResp | 自定义应用通信 |
+
+### 5\. 常用 Ethereum 子协议
+
+-   **eth**：区块和交易传播
+    
+-   **snap**：状态同步
+    
+-   **les**：轻客户端支持
+    
+-   **portal**：去中心化状态/区块/交易查询网络
+    
+
+**总结**：以太坊 EL 的 DevP2P 网络分为发现层（UDP、Discv4/5）和传输层（TCP、RLPx），通过加密握手、Kademlia 路由、ENR 记录实现去中心化、高安全性、可扩展的节点通信机制
+
+# JSON-RPC
+
+### 1\. JSON-RPC 概述
+
+-   JSON-RPC 是基于 JSON 的远程过程调用协议，允许客户端调用远程服务器函数并获取结果。
+    
+-   在以太坊中，JSON-RPC 是执行层（EL）与共识层（CL）交互、用户与网络交互的主要方式。
+    
+-   请求格式统一：
+    
+
+```
+{
+  "id": 1,
+  "jsonrpc": "2.0",
+  "method": "<prefix_methodName>",
+  "params": [...]
+}
+```
+
+-   参数说明：
+    
+    -   `id`：请求唯一标识
+        
+    -   `jsonrpc`：协议版本
+        
+    -   `method`：调用方法
+        
+    -   `params`：方法参数，可为空数组
+        
+
+### 2\. 方法命名空间
+
+-   方法由命名空间前缀 + 方法名组成，用 `_` 分隔。
+    
+-   常见命名空间及用途：
+    
+    | Namespace | 描述 | 是否敏感 |
+    | --- | --- | --- |
+    | eth | Ethereum 核心交互，如读取余额、发送交易 | 可能 |
+    | web3 | 工具函数 | 否 |
+    | net | 节点网络信息 | 否 |
+    | txpool | 交易池检查 | 否 |
+    | debug | 状态调试，如区块/交易原始数据 | 否 |
+    | trace | 状态追踪，Parity 风格 | 否 |
+    | admin | 节点配置 | 是 |
+    | rpc | RPC 服务信息 | 否 |
+    
+
+### 3\. 常用 `eth` 方法
+
+-   `eth_blockNumber`：返回最新区块号
+    
+-   `eth_call`：立即执行交易，不上链
+    
+-   `eth_chainId`：返回链 ID
+    
+-   `eth_estimateGas`：估算交易所需 Gas
+    
+-   `eth_getBalance(address, block)`：查询账户余额
+    
+-   `eth_getBlockByHash/hash`：获取区块信息
+    
+-   `eth_getCode(address, block)`：获取智能合约代码
+    
+-   `eth_getLogs(filter)`：获取日志
+    
+
+### 4\. debug 命名空间
+
+-   用于原始数据访问和状态检查，可能计算量大：
+    
+    -   `debug_getBadBlocks`：返回最近的错误区块
+        
+    -   `debug_getRawBlock`：返回 RLP 编码区块
+        
+    -   `debug_getRawTransactions`：返回 EIP-2718 编码交易
+        
+
+### 5\. Engine API
+
+-   Execution 客户端对共识客户端的通信接口，非用户接口
+    
+-   使用 JSON-RPC + JWT 认证，确保安全
+    
+-   核心方法：
+    
+    | 方法 | 参数 | 描述 |
+    | --- | --- | --- |
+    | engine_exchangeTransitionConfigurationV1 | 共识客户端配置 | 配置交换 |
+    | engine_forkchoiceUpdatedV1* | forkchoice_state, payload attributes | 更新 forkchoice 状态，触发 payload 构建 |
+    | engine_getPayloadBodiesByHashV1* | block_hash | 返回执行 payload |
+    | engine_getPayloadV1* | forkchoice_state, payload attributes | 获取构建好的执行 payload |
+    | debug_newPayloadV1* | tx_hash | payload 验证信息，调试用 |
+    
+
+### 6\. 数据编码与传输
+
+-   参数统一使用 16 进制（`0x` 前缀）
+    
+-   JSON-RPC 可通过 HTTP、WSS、IPC 等协议传输：
+    
+    -   HTTP：单向请求-响应
+        
+    -   WSS：双向连接，可订阅事件
+        
+    -   IPC：本地进程通信，速度快
+        
+
+### 7\. 使用方式示例
+
+-   curl:
+    
+
+```
+curl <node-endpoint> -X POST -H "Content-Type: application/json" \
+-d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
+```
+
+-   JS/TS axios:
+    
+
+```
+import axios from 'axios';
+const response = await axios.post(node, {
+  jsonrpc: '2.0',
+  method: 'eth_getBalance',
+  params: [address, 'latest'],
+  id: 1,
+});
+```
+
+-   web3 库封装：
+    
+
+```
+from web3 import Web3
+w3 = Web3(Web3.HTTPProvider('http://localhost:8545'))
+w3.eth.get_balance('0xaddress')
+```
+
+```
+import { ethers } from "ethers";
+const provider = new ethers.providers.JsonRpcProvider('http://localhost:8545');
+await provider.getBlockNumber();
+```
+
+**总结**：JSON-RPC 是以太坊 EL 与用户/CL 的主要接口，命名空间划分明确，参数统一使用 16 进制，支持多种传输方式。Engine API 专注于 EL-CL 通信，安全性高，常用于 forkchoice 和 payload 构建。web3 库对方法进行了封装，方便开发者调用。
+<!-- DAILY_CHECKIN_2026-04-11_END -->
+
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 # EVM
 
 **EVM（Ethereum Virtual Machine）本质上是以太坊这个“状态机”的状态转移执行器。**  
@@ -337,6 +651,7 @@ EOA 没有实际可用的 storage trie；合约的 storage 主要通过 `SSTORE`
 
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
+
 
 # EL Specs
 
@@ -670,6 +985,7 @@ EVM 执行可以抽象成几个函数：
 <!-- DAILY_CHECKIN_2026-04-08_START -->
 
 
+
 # Design rationale
 
 ## 1\. 设计哲学
@@ -832,6 +1148,7 @@ EVM 执行可以抽象成几个函数：
 
 
 
+
 # Architecture
 
 **以太坊当前的协议架构，核心是“双层结构”**：
@@ -873,6 +1190,7 @@ EVM 执行可以抽象成几个函数：
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
