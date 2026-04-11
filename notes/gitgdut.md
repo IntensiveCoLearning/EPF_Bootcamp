@@ -15,8 +15,14 @@ timezone: UTC+8
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-11
+<!-- DAILY_CHECKIN_2026-04-11_START -->
+今天大概啃完了el的英文文档，虽然我大二，很多计算机底层东西并不熟悉，但对ethereum有的底层运行有了基本的认识
+<!-- DAILY_CHECKIN_2026-04-11_END -->
+
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 深入学习了以下内容：
 
 -   [EL Specs](https://epf.wiki/#/wiki/EL/el-specs)（执行层核心规范）
@@ -32,6 +38,7 @@ timezone: UTC+8
 
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 
 参加了会议，理解了以下内容  
 1\. Devnet 进展更新与极限压测⽬容
@@ -49,6 +56,7 @@ timezone: UTC+8
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 今天看了prehistory部分，了解了密码学的历史，对以太坊加密算法的密码学基础有了初步的认识
