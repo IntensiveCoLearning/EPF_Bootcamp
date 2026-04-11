@@ -15,8 +15,255 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-11
+<!-- DAILY_CHECKIN_2026-04-11_START -->
+交易字段与生命周期和区块与状态相关结构学习,AI总结
+
+* * *
+
+# 一、交易（Transaction）结构
+
+在 Web3 / 区块链系统中，一笔交易是**状态变化的最小触发单元**。以 Ethereum 为例，典型交易包含：
+
+## 1\. 核心字段
+
+| 字段 | 作用 |
+| --- | --- |
+| from | 发起地址（由签名推导） |
+| to | 接收方地址（EOA 或合约地址） |
+| nonce | 防止重放攻击、保证顺序 |
+| value | 发送的原生代币数量 |
+| gasLimit | 允许消耗的最大 Gas |
+| gasPrice / maxFeePerGas | 手续费参数 |
+| data | 调用合约方法 / 传参 |
+| signature (v,r,s) | 证明交易由私钥签署 |
+
+> ⚠️ 合约部署时 `to` 为空，`data` 包含字节码。
+
+* * *
+
+## 2\. 交易类型（演进）
+
+常见类型包括：
+
+-   普通转账
+    
+-   合约调用
+    
+-   合约创建
+    
+-   EIP-1559 交易（动态手续费）
+    
+
+* * *
+
+# 二、交易生命周期（Transaction Lifecycle）
+
+## 1\. 创建与签名
+
+客户端通过私钥对交易进行签名：
+
+```
+构造交易 → 私钥签名 → 得到 Raw Transaction
+```
+
+此时交易还未进入链上。
+
+* * *
+
+## 2\. 进入交易池（Mempool）
+
+-   节点校验格式、余额、nonce
+    
+-   合格交易进入本地交易池
+    
+-   通过 P2P 网络广播
+    
+
+关键校验包括：
+
+-   nonce 是否正确
+    
+-   余额是否足够支付 value + gas
+    
+-   签名是否有效
+    
+
+* * *
+
+## 3\. 打包进区块
+
+出块者（矿工 / 验证者）：
+
+-   从交易池选择交易
+    
+-   执行交易
+    
+-   更新状态
+    
+-   生成区块
+    
+
+* * *
+
+## 4\. 执行与状态转换
+
+每笔交易执行时会：
+
+-   读取当前世界状态
+    
+-   执行 EVM 指令
+    
+-   修改账户状态
+    
+-   产生收据（Receipt）
+    
+
+若失败：
+
+-   状态回滚
+    
+-   仍消耗 Gas
+    
+
+* * *
+
+## 5\. 交易最终确认
+
+当区块被足够多后续区块确认后：
+
+-   交易视为最终确定
+    
+-   状态不可逆（概率性最终性）
+    
+
+* * *
+
+# 三、区块结构（Block Structure）
+
+区块是交易的容器，同时记录状态演进。
+
+## 1\. 区块核心组成
+
+| 部分 | 说明 |
+| --- | --- |
+| Header | 区块元信息 |
+| Transactions | 交易列表 |
+| Receipts | 执行结果 |
+| State Root | 状态树根哈希 |
+
+* * *
+
+## 2\. 区块头（Block Header）关键字段
+
+| 字段 | 作用 |
+| --- | --- |
+| parentHash | 父区块哈希 |
+| stateRoot | 全局状态树根 |
+| transactionsRoot | 交易树根 |
+| receiptsRoot | 收据树根 |
+| timestamp | 时间戳 |
+| gasLimit / gasUsed | 区块 Gas 限制与使用 |
+| baseFee | 基础费用（动态调整） |
+
+* * *
+
+# 四、状态模型（State Model）
+
+## 1\. 账户模型（Account-Based Model）
+
+Ethereum Virtual Machine 使用账户模型，账户分为：
+
+-   外部账户（EOA）
+    
+-   合约账户（Contract）
+    
+
+每个账户包含：
+
+| 字段 | 含义 |
+| --- | --- |
+| nonce | 交易计数 |
+| balance | 余额 |
+| storageRoot | 存储树根 |
+| codeHash | 合约代码哈希 |
+
+* * *
+
+## 2\. 世界状态（World State）
+
+-   维护所有账户的状态
+    
+-   使用树结构存储
+    
+
+世界状态使用：
+
+-   Merkle Patricia Trie
+    
+
+作用：
+
+-   高效验证
+    
+-   支持轻节点证明
+    
+-   确保不可篡改
+    
+
+* * *
+
+# 五、执行与收据（Execution & Receipt）
+
+每笔交易执行后生成 Receipt：
+
+包含：
+
+-   status（成功 / 失败）
+    
+-   gasUsed
+    
+-   logs（事件）
+    
+-   bloom filter
+    
+
+日志用于：
+
+-   事件监听
+    
+-   dApp 交互
+    
+
+* * *
+
+# 六、交易与状态关系总结
+
+```
+交易 → 执行 → 状态变化 → 生成收据 → 打包入区块
+            ↓
+        更新 World State Root
+```
+
+* * *
+
+# 七、核心设计思想
+
+-   **确定性执行**
+    
+-   **状态最小化存储**
+    
+-   **可验证性（Merkle Proof）**
+    
+-   **去信任化**
+    
+
+* * *
+<!-- DAILY_CHECKIN_2026-04-11_END -->
+
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 学习交易字段与生命周期和EVM 执行模型基础,AI总结
 
 * * *
@@ -347,6 +594,7 @@ EVM 操作的是 **账户模型（Account Model）**
 
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
+
 
 执行层核心规范和EL 客户端模块总览总结
 
@@ -803,6 +1051,7 @@ State + Transactions → New State
 <!-- DAILY_CHECKIN_2026-04-08_START -->
 
 
+
 以太坊的核心哲学 = 用最小的底层规则（简洁 + 通用），通过模块化和封装控制复杂性，同时保持中立和可演进，让上层应用自由生长.
 
 区块链级协议总结
@@ -1215,6 +1464,7 @@ DHT + Gossip → 网络传播
 
 
 
+
 参加例会
 
 ![例会2.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/duladuladula/images/2026-04-07-1775563199079-__2.png)![例会1.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/duladuladula/images/2026-04-07-1775563217747-__1.png)
@@ -1222,6 +1472,7 @@ DHT + Gossip → 网络传播
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
