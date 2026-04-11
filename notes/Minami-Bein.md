@@ -15,8 +15,67 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-11
+<!-- DAILY_CHECKIN_2026-04-11_START -->
+今天重点学习了 **Ethereum 网络通信机制**，主要包括：
+
+-   DevP2P 协议（节点之间的 P2P 通信机制）
+    
+-   交易与区块在网络中的传播方式
+    
+-   JSON-RPC 接口的实际作用（客户端与节点交互）
+    
+-   节点在执行层中的角色划分
+    
+
+通过这一部分的学习，对“交易是如何从用户传播到全网”的过程有了更清晰的认知。  
+从整体流程角度，对交易广播过程进行了梳理：
+
+1.  用户通过钱包或 SDK 构造交易
+    
+2.  使用 JSON-RPC 将交易发送到某个节点
+    
+3.  节点验证交易合法性后放入本地 mempool
+    
+4.  通过 DevP2P 协议，将交易广播给其他节点
+    
+5.  网络中节点逐步同步交易数据，最终被矿工/验证者打包
+    
+
+重点理解了两个关键点：
+
+-   **JSON-RPC 是入口（用户 → 节点）**
+    
+-   **DevP2P 是传播（节点 → 节点）**
+    
+
+同时对比发现：
+
+-   JSON-RPC 更偏“应用层接口”
+    
+
+DevP2P 更偏“底层网络协议”  
+今天的核心收获是把“交易执行”与“交易传播”这两个过程区分开来：
+
+-   之前更关注交易如何执行（EVM 层）
+    
+-   今天开始理解交易如何在网络中流动（Network 层）
+    
+
+逐渐建立起一个更完整的链路认知：
+
+> 用户 → JSON-RPC → 节点 → P2P 网络 → 全网传播 → 区块打包 → EVM 执行
+
+同时也意识到：
+
+-   网络层的效率直接影响交易确认速度
+    
+-   客户端节点不仅是执行者，也是网络参与者
+<!-- DAILY_CHECKIN_2026-04-11_END -->
+
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 今天主要围绕 **Ethereum 交易结构与执行流程** 进行学习，重点包括：
 
 -   Transaction 的核心字段（nonce / gas / to / value / data）
@@ -84,6 +143,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-08-1775669487734-image.png)
 
 维修bug
@@ -91,6 +151,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 ![77170d6b7c728564014b6c86870cb6aa.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-07-1775578871375-77170d6b7c728564014b6c86870cb6aa.png)
@@ -103,11 +164,13 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775491855322-image.png)![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775492614139-image.png)
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
