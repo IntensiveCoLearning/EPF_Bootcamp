@@ -15,8 +15,106 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-12
+<!-- DAILY_CHECKIN_2026-04-12_START -->
+04/12
+
+Protocol History and Evolution
+
+## 一、整体理解：协议不是一次设计，而是不断演化
+
+**EN:** Ethereum protocol is not designed once and fixed, but evolves through continuous upgrades.  
+**中:** 以太坊协议并不是一次性设计完成的系统，而是在实践中不断迭代升级的过程。
+
+这一部分的核心不是记住每个升级细节，而是理解：  
+👉 Ethereum 是一个“live system”（活系统），通过 **EIPs + hard fork** 持续演进。  
+👉 每一阶段都在解决“上一阶段暴露的问题”，逐步走向更稳定、更复杂的系统。
+
+* * *
+
+## 二、Frontier：起点是“可运行”，不是“完美”
+
+**EN:** Frontier was a beta launch focused on enabling developers to experiment and build.  
+**中:** Frontier 是一个偏实验性质的 beta 版本，重点是“让系统跑起来”。
+
+Frontier（2015）标志着 Ethereum 主网上线，它的设计思路非常务实：  
+不是追求完美，而是先让开发者可以部署合约、开始实验。
+
+关键特点包括：
+
+-   Gas limit 很低（5000），用于控制系统风险
+    
+-   允许开发者开始构建 dApp 和工具
+    
+-   引入 “canary contracts”（金丝雀机制）用于升级协调  
+    
+
+👉 **理解重点：**  
+Frontier 本质是一个“可启动系统（bootstrapping phase）”，  
+目标是：让网络活起来，而不是优化体验或性能。
+
+* * *
+
+## 三、Homestead：从“能用”到“更可靠”
+
+**EN:** Homestead marked Ethereum’s transition from experimental to more stable and mature.  
+**中:** Homestead 标志着以太坊从实验阶段进入更稳定、可用的阶段。
+
+Homestead（2016）开始处理 Frontier 中暴露的现实问题，重点在于：  
+👉 提升系统可靠性、安全性、以及规则的严谨性
+
+几个关键改进 ：
+
+1\. Gas 机制调整，从“鼓励尝试” → “开始约束行为”
+
+2\. 交易签名安全（malleability 修复），提升交易不可篡改性（integrity）
+
+3\. Out-of-gas 处理更严格，系统从“宽松容错” → “明确失败机制”
+
+4\. Difficulty 调整算法优化，开始关注系统运行的稳定性（performance consistency）
+
+5\. 新 opcode：DELEGATECALL（EIP-7），支持更灵活的合约调用结构（如代理模式）。
+
+6\. 网络协议前向兼容（EIP-8）
+
+* * *
+
+## 四、The Merge：架构级跃迁（不是小修小补）
+
+**EN:** The Merge replaced Proof-of-Work with Proof-of-Stake.  
+**中:** The Merge 将共识机制从 PoW 切换为 PoS。
+
+The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethereum 从“单层系统” → “模块化分层系统”
+
+### 核心变化
+
+-   从 PoW → PoS（不再需要挖矿）
+    
+-   引入 Beacon Chain（独立的共识层）
+    
+-   执行层（Execution）与共识层（Consensus）分离，协议可以独立演进不同层，为未来扩展（如 rollups、Danksharding）打基础  
+    
+
+* * *
+
+## 五、总结：从历史看到设计逻辑
+
+### 1️⃣ Frontier
+
+👉 目标：让系统存在（make it exist）
+
+### 2️⃣ Homestead
+
+👉 目标：让系统可靠（make it reliable）
+
+### 3️⃣ The Merge
+
+👉 目标：让系统可扩展（make it scalable & modular）
+<!-- DAILY_CHECKIN_2026-04-12_END -->
+
 # 2026-04-11
 <!-- DAILY_CHECKIN_2026-04-11_START -->
+
 04/11
 
 还得再休一天，睡觉更重要
@@ -27,6 +125,7 @@ EPF 实习计划
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
 
+
 04/10
 
 今天折腾网络，休息下
@@ -36,6 +135,7 @@ EPF 实习计划
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 04/08
@@ -276,6 +376,7 @@ Ethereum’s design can be summarized as:
 
 
 
+
 04/07
 
 ## 🧩 核心结构（Core Structure）
@@ -380,6 +481,7 @@ Ethereum’s design can be summarized as:
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
