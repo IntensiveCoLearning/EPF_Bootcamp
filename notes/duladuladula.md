@@ -15,8 +15,445 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-12
+<!-- DAILY_CHECKIN_2026-04-12_START -->
+RLP 编码规则和节点间 P2P 通信协议和节点对外接口规范学习,AI总结
+
+* * *
+
+# 一、RLP 编码规则（Recursive Length Prefix）
+
+RLP 是 Ethereum 中最基础的序列化协议，用于：
+
+-   交易（Transaction）
+    
+-   区块（Block Header / Body）
+    
+-   状态树节点（Merkle Patricia Trie）
+    
+
+👉 本质：**把任意嵌套结构（字符串 / 列表）编码成字节流**
+
+* * *
+
+## 1\. 数据模型（非常关键）
+
+RLP 只支持两种类型：
+
+-   **Byte String（字节数组）**
+    
+-   **List（列表，递归嵌套）**
+    
+
+👉 没有：
+
+-   int（整数本质是编码后的 bytes）
+    
+-   struct（通过 list 表达）
+    
+
+* * *
+
+## 2\. 编码规则（核心逻辑）
+
+### （1）单字节（0x00 ~ 0x7f）
+
+```text
+编码 = 自身
+```
+
+例如：
+
+```text
+0x7f → 0x7f
+```
+
+* * *
+
+### （2）短字符串（0–55 bytes）
+
+```text
+编码 = 0x80 + len + 数据
+```
+
+例：
+
+```text
+"cat" (3 bytes)
+→ 0x83 + "cat"
+→ 83636174
+```
+
+* * *
+
+### （3）长字符串（>55 bytes）
+
+```text
+编码 = 0xb7 + len(len) + len + 数据
+```
+
+👉 需要额外编码“长度的长度”
+
+* * *
+
+### （4）短列表（0–55 bytes payload）
+
+```text
+编码 = 0xc0 + len + 所有元素编码拼接
+```
+
+例：
+
+```text
+["cat","dog"]
+
+cat → 83 636174
+dog → 83 646f67
+
+payload = 636174646f67 (6 bytes)
+
+→ c6 + payload
+→ c68363617483646f67
+```
+
+* * *
+
+### （5）长列表（>55 bytes）
+
+```text
+编码 = 0xf7 + len(len) + len + payload
+```
+
+* * *
+
+## 3\. 设计特点
+
+-   **极简（Minimal Encoding）**
+    
+-   **无类型（Type-less）**
+    
+-   **递归结构（适合树）**
+    
+-   **确定性（Deterministic）**
+    
+
+* * *
+
+## 4\. 使用场景
+
+| 数据结构 | 是否使用 RLP |
+| --- | --- |
+| 交易 | ✅ |
+| 区块头 | ✅ |
+| 状态 trie 节点 | ✅ |
+| ABI 编码 | ❌（用 ABI） |
+
+* * *
+
+# 二、节点间 P2P 通信协议
+
+以 Ethereum 为例，其 P2P 基于：
+
+👉 **devp2p 协议栈**
+
+* * *
+
+## 1\. 总体架构
+
+```text
+TCP → RLPx → DevP2P → 子协议（eth / snap）
+```
+
+* * *
+
+## 2\. 核心组件
+
+### （1）节点发现（Discovery）
+
+协议：
+
+-   discv4（基于 Kademlia）
+    
+-   discv5（改进版）
+    
+
+作用：
+
+-   找节点
+    
+-   建立邻居表
+    
+
+* * *
+
+### （2）RLPx（加密通信层）
+
+👉 安全传输层（类似 TLS）
+
+功能：
+
+-   ECDH 密钥交换
+    
+-   AES 加密
+    
+-   身份认证（Node ID）
+    
+
+* * *
+
+### （3）DevP2P（多路复用）
+
+作用：
+
+-   在一个连接上跑多个协议
+    
+
+* * *
+
+### （4）子协议（最关键）
+
+eth 协议（执行层）
+
+功能：
+
+-   传播区块
+    
+-   传播交易
+    
+-   同步链数据
+    
+
+常见消息：
+
+-   `NewBlock`
+    
+-   `Transactions`
+    
+-   `GetBlockHeaders`
+    
+-   `BlockBodies`
+    
+
+* * *
+
+snap 协议
+
+👉 用于 **快速状态同步（snap sync）**
+
+* * *
+
+## 3\. 通信流程（典型）
+
+```text
+1. 发现节点（discv4）
+2. 建立 TCP 连接
+3. RLPx 握手（加密）
+4. 协议协商（capabilities）
+5. 开始 eth/snap 通信
+```
+
+* * *
+
+## 4\. 数据编码
+
+👉 所有 P2P 消息：
+
+-   **使用 RLP 编码**
+    
+
+* * *
+
+## 5\. 特点
+
+-   去中心化
+    
+-   点对点 gossip
+    
+-   无全局协调
+    
+-   异步传播
+    
+
+* * *
+
+# 三、节点对外接口（JSON-RPC 规范）
+
+用户 / 钱包 / DApp 与节点交互，主要通过：
+
+👉 JSON-RPC over HTTP / WebSocket
+
+* * *
+
+## 1\. 典型客户端
+
+-   Geth
+    
+-   Nethermind
+    
+-   Erigon
+    
+
+* * *
+
+## 2\. API 分类
+
+### （1）eth\_\*（最核心）
+
+| 方法 | 作用 |
+| --- | --- |
+| eth_blockNumber | 当前区块 |
+| eth_getBalance | 查询余额 |
+| eth_call | 本地执行 |
+| eth_sendRawTransaction | 发送交易 |
+
+* * *
+
+### （2）net\_\*（网络信息）
+
+-   net\_version
+    
+-   net\_peerCount
+    
+
+* * *
+
+### （3）web3\_\*（基础）
+
+-   web3\_clientVersion
+    
+
+* * *
+
+### （4）debug\_\*（调试）
+
+-   debug\_traceTransaction
+    
+
+* * *
+
+## 3\. 请求格式
+
+```json
+{
+  "jsonrpc": "2.0",
+  "method": "eth_blockNumber",
+  "params": [],
+  "id": 1
+}
+```
+
+* * *
+
+## 4\. 响应格式
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": 1,
+  "result": "0x10d4f"
+}
+```
+
+* * *
+
+## 5\. 关键能力
+
+### （1）交易发送
+
+```text
+用户 → 钱包签名 → 节点 → P2P 网络传播
+```
+
+* * *
+
+### （2）只读调用（eth\_call）
+
+-   不上链
+    
+-   不消耗 gas
+    
+
+* * *
+
+### （3）事件订阅（WebSocket）
+
+-   newHeads
+    
+-   logs
+    
+
+* * *
+
+## 6\. 安全问题
+
+-   不应暴露公网（尤其 debug\_\*）
+    
+-   需要认证（JWT / reverse proxy）
+    
+
+* * *
+
+# 四、三者关系（核心理解）
+
+```text
+        用户 / DApp
+             ↓
+       JSON-RPC API
+             ↓
+        本地执行（EVM）
+             ↓
+        P2P 网络传播
+             ↓
+        其他节点验证
+             ↓
+        区块链状态更新
+```
+
+* * *
+
+## 数据流闭环
+
+```text
+交易创建
+→ RLP 编码
+→ JSON-RPC 发送
+→ 节点接收
+→ P2P 广播
+→ 打包进区块
+→ 全网同步
+```
+
+* * *
+
+# 五、对比总结
+
+| 模块 | 作用 | 面向对象 |
+| --- | --- | --- |
+| RLP | 数据编码 | 内部结构 |
+| P2P | 节点通信 | 节点之间 |
+| JSON-RPC | 外部接口 | 用户 / DApp |
+
+* * *
+
+# 六、关键认知（面试/架构重点）
+
+1.  **RLP 是底层数据格式**
+    
+2.  **P2P 是传播机制**
+    
+3.  **JSON-RPC 是入口接口**
+    
+4.  三者形成完整执行层闭环
+    
+5.  所有链上数据最终都会走 RLP
+    
+
+* * *
+<!-- DAILY_CHECKIN_2026-04-12_END -->
+
 # 2026-04-11
 <!-- DAILY_CHECKIN_2026-04-11_START -->
+
 交易字段与生命周期和区块与状态相关结构学习,AI总结
 
 * * *
@@ -263,6 +700,7 @@ Ethereum Virtual Machine 使用账户模型，账户分为：
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 学习交易字段与生命周期和EVM 执行模型基础,AI总结
 
@@ -594,6 +1032,7 @@ EVM 操作的是 **账户模型（Account Model）**
 
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
+
 
 
 执行层核心规范和EL 客户端模块总览总结
@@ -1052,6 +1491,7 @@ State + Transactions → New State
 
 
 
+
 以太坊的核心哲学 = 用最小的底层规则（简洁 + 通用），通过模块化和封装控制复杂性，同时保持中立和可演进，让上层应用自由生长.
 
 区块链级协议总结
@@ -1465,6 +1905,7 @@ DHT + Gossip → 网络传播
 
 
 
+
 参加例会
 
 ![例会2.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/duladuladula/images/2026-04-07-1775563199079-__2.png)![例会1.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/duladuladula/images/2026-04-07-1775563217747-__1.png)
@@ -1472,6 +1913,7 @@ DHT + Gossip → 网络传播
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
