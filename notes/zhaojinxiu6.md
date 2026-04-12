@@ -15,13 +15,20 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-12
+<!-- DAILY_CHECKIN_2026-04-12_START -->
+整理部分所学笔记，然后看了协议层。
+<!-- DAILY_CHECKIN_2026-04-12_END -->
+
 # 2026-04-11
 <!-- DAILY_CHECKIN_2026-04-11_START -->
+
 整理笔记ing。
 <!-- DAILY_CHECKIN_2026-04-11_END -->
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 看了一些交易出块，以及出块奖励的分配
 <!-- DAILY_CHECKIN_2026-04-10_END -->
@@ -30,11 +37,13 @@ EPF 实习计划
 <!-- DAILY_CHECKIN_2026-04-09_START -->
 
 
+
 今天继续看交易字段以及账户类型
 <!-- DAILY_CHECKIN_2026-04-09_END -->
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -47,11 +56,13 @@ EPF 实习计划
 
 
 
+
 看完了Protocol部分。
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
