@@ -15,8 +15,14 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-12
+<!-- DAILY_CHECKIN_2026-04-12_START -->
+打卡
+<!-- DAILY_CHECKIN_2026-04-12_END -->
+
 # 2026-04-11
 <!-- DAILY_CHECKIN_2026-04-11_START -->
+
 打卡
 <!-- DAILY_CHECKIN_2026-04-11_END -->
 
@@ -24,11 +30,13 @@ EPF 实习计划
 <!-- DAILY_CHECKIN_2026-04-10_START -->
 
 
+
 打卡
 <!-- DAILY_CHECKIN_2026-04-10_END -->
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -325,6 +333,7 @@ state.slot = Slot(state.slot + 1)
 
 
 
+
 \# Ethereum 前史
 
 \> "Heroes are heroes because they are heroic in behavior, not because they won or lost." — Nicholas Taleb
@@ -606,6 +615,7 @@ Ethereum (2015)
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
