@@ -15,8 +15,16 @@ timezone: UTC+8
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-12
+<!-- DAILY_CHECKIN_2026-04-12_START -->
+明天补回吧，这两天事情比较多，mark一下。  
+  
+主要是继续推进P2P模块和原理的学习。
+<!-- DAILY_CHECKIN_2026-04-12_END -->
+
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 KDA协议详解：  
 [https://github.com/apachecn/succinctly-zh-pt3/blob/master/docs/kademlia-protocol/SUMMARY.md](https://github.com/apachecn/succinctly-zh-pt3/blob/master/docs/kademlia-protocol/SUMMARY.md)
 
@@ -32,11 +40,13 @@ KDA协议详解：
 
 
 
+
 -   了解devp2p的架构设计
 <!-- DAILY_CHECKIN_2026-04-09_END -->
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -73,6 +83,7 @@ KDA协议详解：
 
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 
 
 
