@@ -15,8 +15,201 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-12
+<!-- DAILY_CHECKIN_2026-04-12_START -->
+26.4.12 今天学习了节点对外接口规范  
+  
+**一、概述**
+
+-   JSON-RPC 是一种基于 JSON 的远程过程调用协议，属于执行 API 规范的一部分
+    
+-   允许用户在客户端上调用远程服务器函数并获取返回结果
+    
+-   共识层（CL）与执行层（EL）之间通过 Engine API 进行交互，同样基于 JSON-RPC
+    
+
+* * *
+
+### **二、API 通用结构**
+
+所有 JSON-RPC 请求遵循统一格式：
+
+-   id：请求的唯一标识符
+    
+-   jsonrpc：JSON-RPC 协议版本（如 "2.0"）
+    
+-   method：要调用的方法，格式为 `命名空间_方法名`
+    
+-   params：方法参数数组，无参数时为空数组
+    
+
+* * *
+
+### **三、命名空间**
+
+方法由命名空间前缀和方法名组成，用下划线分隔。客户端需实现规范要求的最小方法集，也可提供客户端特有的方法。
+
+**常见命名空间**
+
+-   eth：核心以太坊交互接口，用于读取余额、创建交易等，可能涉及敏感数据
+    
+-   web3：提供 web3 客户端的实用功能，非敏感
+    
+-   net：提供节点网络信息，非敏感
+    
+-   txpool：检查交易池，非敏感
+    
+-   debug：检查以太坊状态，支持 Geth 风格追踪，非敏感
+    
+-   trace：检查以太坊状态，支持 Parity 风格追踪，非敏感
+    
+-   admin：配置节点，敏感
+    
+-   rpc：提供 RPC 服务器及其模块信息，非敏感
+    
+
+敏感命名空间（如 admin、eth）可用于配置节点或访问节点中存储的账户数据。
+
+* * *
+
+### **四、常用方法示例**
+
+**eth 命名空间**
+
+-   eth\_blockNumber：返回最新区块号
+    
+-   eth\_call：立即执行消息调用，不上链
+    
+-   eth\_chainId：返回当前链 ID
+    
+-   eth\_estimateGas：估算交易或调用的 Gas 用量
+    
+-   eth\_gasPrice：返回当前每单位 Gas 的价格（Wei）
+    
+-   eth\_getBalance：查询指定地址的余额
+    
+-   eth\_getBlockByHash / eth\_getBlockByNumber：按哈希或区块号查询区块信息
+    
+-   eth\_getCode：查询指定地址的代码
+    
+-   eth\_getLogs：返回匹配过滤条件的日志数组
+    
+-   eth\_getStorageAt：查询指定存储位置的值
+    
+
+**debug 命名空间**
+
+提供对以太坊状态的原始数据访问，适用于区块浏览器或研究场景。部分方法计算量大，公共 RPC 提供方常限制或仅允许安全方法。
+
+-   debug\_getBadBlocks：返回客户端见过的近期坏区块
+    
+-   debug\_getRawBlock：返回 RLP 编码的区块
+    
+-   debug\_getRawHeader：返回 RLP 编码的区块头
+    
+-   debug\_getRawReceipts：返回 EIP-2718 二进制编码的收据数组
+    
+-   debug\_getRawTransactions：返回 EIP-2718 二进制编码的交易数组
+    
+
+* * *
+
+### **五、Engine API**
+
+-   执行层在独立的认证端口上提供 Engine API，而非普通 HTTP JSON-RPC 端口
+    
+-   该接口仅供共识层访问，不是面向用户的 API
+    
+-   用于共识层与执行层之间的通信，交换共识、分叉选择和区块验证信息
+    
+-   通信通过 HTTP 上的 JSON-RPC 进行，使用 JSON Web Token（JWT）认证发送方身份（不提供流量加密）
+    
+-   恶意外部方无法访问该接口
+    
+
+**核心方法**
+
+-   engine\_exchangeTransitionConfigurationV1：在 CL 和 EL 之间交换配置详情
+    
+-   engine\_forkchoiceUpdatedV1：更新分叉选择状态，可选启动区块构建
+    
+-   engine\_getPayloadBodiesByHashV1：根据区块哈希返回对应的执行载荷体
+    
+-   engine\_getPayloadV1：获取 EL 构建的执行载荷
+    
+-   debug\_newPayloadV1：返回执行载荷验证详情，用于调试
+    
+
+带星号的方法有多个版本以支持网络升级。
+
+* * *
+
+### **六、编码规范**
+
+参数采用十六进制编码，带 `0x` 前缀
+
+-   数字 65 表示为 `"0x41"`
+    
+-   数字 0 表示为 `"0x0"`
+    
+-   无效写法：`"0x"`（无数字）、`"ff"`（无前缀）
+    
+-   哈希、账户地址、字节数组同样使用 `0x` 前缀的十六进制编码，如 `"0x400"` 表示十进制 1024，不允许前导零
+    
+
+* * *
+
+### **七、传输协议无关性**
+
+JSON-RPC 不依赖特定传输协议，可运行于：
+
+-   HTTP：单向请求-响应模型，响应后关闭连接
+    
+-   WebSockets（WSS）：双向协议，连接保持开放，支持基于订阅的事件驱动通信
+    
+-   IPC：同一机器上进程间通信，速度快但不适合远程通信（如本地 JS 控制台）
+    
+
+* * *
+
+### **八、使用方式**
+
+**curl 命令示例**
+
+bash
+
+```
+curl <node-endpoint> -X POST -H "Content-Type: application/json" \
+-d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
+```
+
+**JavaScript/TypeScript（axios）示例**
+
+javascript
+
+```
+const response = await axios.post(node, {
+  jsonrpc: '2.0',
+  method: 'eth_getBalance',
+  params: [address, 'latest'],
+  id: 1,
+  headers: { 'Content-Type': 'application/json' }
+});
+```
+
+**web3 库（推荐方式）**
+
+-   web3py：`w3.eth.get_balance('0xaddress')`
+    
+-   ethers.js：`await provider.getBlockNumber()`
+    
+
+web3 库对 JSON-RPC 方法进行了封装，提供更友好的编程接口。不同编程语言的语法有所差异。
+<!-- DAILY_CHECKIN_2026-04-12_END -->
+
 # 2026-04-11
 <!-- DAILY_CHECKIN_2026-04-11_START -->
+
 26.4.11 今天学习了 DevP2P  
   
 **一、概述**
@@ -177,6 +370,7 @@ EPF 实习计划
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 26.4.10 今天学习了区块与状态相关结构  
   
@@ -347,6 +541,7 @@ EPF 实习计划
 <!-- DAILY_CHECKIN_2026-04-09_START -->
 
 
+
 26.4.9 今天学习了交易字段与生命周期  
   
 **一、交易概述**
@@ -478,6 +673,7 @@ EPF 实习计划
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -681,6 +877,7 @@ EPF 实习计划
 
 
 
+
 26.4.7 今天学习了设计理念章节  
   
 **一、设计哲学（六大核心）**
@@ -791,6 +988,7 @@ EPF 实习计划
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
