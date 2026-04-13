@@ -15,8 +15,406 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-13
+<!-- DAILY_CHECKIN_2026-04-13_START -->
+EVM 对象格式升级,内置加密原语合约,交易打包与出块流程学习,AI总结
+
+* * *
+
+# 一、EVM 对象格式升级（Object Format Evolution）
+
+## 1\. 传统模式：Raw Bytecode（问题）
+
+早期 EVM 合约部署时，直接把 **编译后的字节码（bytecode）** 存储到状态中：
+
+```
+code = 0x6080604052...
+```
+
+存在问题：
+
+-   ❌ 无结构（无法区分 code / data）
+    
+-   ❌ 无版本（升级困难）
+    
+-   ❌ 静态分析困难（jumpdest 扫描成本高）
+    
+-   ❌ 安全性弱（代码验证困难）
+    
+
+* * *
+
+## 2\. 升级方向：EOF (EVM Object Format)
+
+EOF 是近年来（EIP-3540 / 3670 / 4200 / 4750 等）推动的重要升级。
+
+### 核心思想：结构化 + 可验证
+
+### 新结构（逻辑分段）：
+
+```
+| magic | version |
+| code section |
+| data section |
+| type section |
+```
+
+### 关键特性
+
+（1）代码与数据分离
+
+-   避免 runtime code 被误执行 data
+    
+-   类似现代 VM（WASM）
+    
+
+（2）版本化
+
+-   支持未来 opcode / gas 模型升级
+    
+-   向后兼容
+    
+
+（3）静态验证（Deploy-time validation）
+
+-   无效 jump 提前拒绝
+    
+-   stack 深度检查
+    
+-   类型检查（后续扩展）
+    
+
+（4）子程序（Functions）
+
+EIP-4750 引入：
+
+-   类似函数调用（CALLF / RETF）
+    
+-   替代 JUMP spaghetti
+    
+
+* * *
+
+## 3\. 本质变化
+
+| 维度 | 旧 EVM | EOF |
+| --- | --- | --- |
+| 结构 | 无 | 分段 |
+| 安全 | 运行时检查 | 部署时验证 |
+| 执行模型 | 跳转驱动 | 函数化 |
+| 可扩展性 | 差 | 强 |
+
+👉 本质：EVM 正在向“**结构化虚拟机**”演进（接近 WASM）
+
+* * *
+
+# 二、内置加密原语合约（Precompiled Contracts）
+
+## 1\. 概念
+
+EVM 并不是所有计算都用 opcode 实现，而是通过一类特殊地址：
+
+👉 **预编译合约（Precompile）**
+
+它们：
+
+-   写在客户端（Go-Ethereum / Nethermind）
+    
+-   用原生代码实现（C++/Go）
+    
+-   Gas 成本远低于纯 EVM 实现
+    
+
+* * *
+
+## 2\. 常见预编译地址
+
+| 地址 | 功能 |
+| --- | --- |
+| 0x01 | ECDSA 恢复 |
+| 0x02 | SHA256 |
+| 0x03 | RIPEMD160 |
+| 0x04 | identity |
+| 0x05 | modexp |
+| 0x06-0x08 | BN256（椭圆曲线） |
+
+* * *
+
+## 3\. 关键实例
+
+### （1）签名恢复
+
+```
+ecrecover(hash, v, r, s)
+```
+
+用于：
+
+-   钱包签名验证
+    
+-   meta transaction
+    
+
+* * *
+
+### （2）椭圆曲线运算（zk 关键）
+
+BN256：
+
+-   pairing
+    
+-   scalar mul
+    
+
+👉 支持：
+
+-   zk-SNARK
+    
+-   rollup 验证
+    
+
+* * *
+
+### （3）大数模幂（ModExp）
+
+用于：
+
+-   RSA
+    
+-   zk-STARK 部分运算
+    
+
+* * *
+
+## 4\. 为什么必须预编译？
+
+如果用 EVM opcode 实现：
+
+-   Gas 爆炸（不可用）
+    
+-   性能不可接受
+    
+
+👉 所以设计为：
+
+> “系统级 native syscall”
+
+* * *
+
+## 5\. 本质
+
+Precompile = **EVM 的加密协处理器**
+
+* * *
+
+# 三、交易打包与出块流程（Execution Pipeline）
+
+这一部分是 EL + CL 协作的核心。
+
+* * *
+
+## 1\. 交易生命周期（简化）
+
+```
+用户签名 → 广播 → TxPool → 打包 → 执行 → 出块 → 确认
+```
+
+* * *
+
+## 2\. TxPool（交易池）
+
+客户端维护：
+
+-   pending tx
+    
+-   按 gas price 排序
+    
+
+关键策略：
+
+-   nonce 连续性
+    
+-   替换规则（同 nonce 提高 gas）
+    
+
+* * *
+
+## 3\. 打包阶段（Builder / Proposer）
+
+在 Proposer-Builder Separation 模型下：
+
+### 角色拆分
+
+Builder
+
+-   构建最优区块（MEV 最大化）
+    
+-   排序交易
+    
+
+Proposer（验证者）
+
+-   从 builder 中选收益最高的 block
+    
+
+* * *
+
+## 4\. 区块构建流程
+
+### Step 1：选择交易
+
+策略：
+
+-   gas fee 最大
+    
+-   MEV bundle（套利）
+    
+
+* * *
+
+### Step 2：执行交易（EVM）
+
+对每笔交易：
+
+```
+ApplyTransaction(state, tx):
+    → nonce 检查
+    → gas 扣除
+    → 执行 EVM
+    → 状态更新
+```
+
+执行产生：
+
+-   logs（event）
+    
+-   receipt
+    
+-   gas used
+    
+
+* * *
+
+### Step 3：生成区块结构
+
+区块包含：
+
+-   header
+    
+-   transactions
+    
+-   receipts root
+    
+-   state root
+    
+
+* * *
+
+## 5\. 状态承诺结构
+
+### （1）状态树
+
+-   Patricia Merkle Trie
+    
+
+### （2）关键 root
+
+| root | 含义 |
+| --- | --- |
+| stateRoot | 全局状态 |
+| txRoot | 交易 |
+| receiptsRoot | 执行结果 |
+
+* * *
+
+## 6\. 出块与共识
+
+在 Ethereum PoS 下：
+
+### 流程
+
+1.  Proposer 提交 block
+    
+2.  广播到网络
+    
+3.  验证者执行：
+    
+    -   重放交易
+        
+    -   验证 state root
+        
+4.  Attestation（投票）
+    
+5.  Finality（最终确认）
+    
+
+* * *
+
+## 7\. 执行与共识分离（EL + CL）
+
+| 层 | 职责 |
+| --- | --- |
+| EL | 交易执行 / 状态 |
+| CL | 出块 / finality |
+
+通过 Engine API 通信：
+
+```
+CL → EL: forkchoiceUpdated
+CL → EL: newPayload
+```
+
+* * *
+
+# 四、整体关系总结
+
+可以把这三部分统一理解为：
+
+```
+           ┌──────────────┐
+           │ 交易输入     │
+           └──────┬───────┘
+                  ↓
+        ┌──────────────────┐
+        │ TxPool 排序       │
+        └──────┬───────────┘
+               ↓
+   ┌──────────────────────────┐
+   │ 区块构建（Builder）       │
+   └──────┬───────────────────┘
+          ↓
+   ┌──────────────────────────┐
+   │ EVM 执行                 │
+   │ - EOF bytecode           │
+   │ - Precompile             │
+   └──────┬───────────────────┘
+          ↓
+   ┌──────────────────────────┐
+   │ 状态更新 + root 计算      │
+   └──────┬───────────────────┘
+          ↓
+   ┌──────────────────────────┐
+   │ 共识层确认（CL）          │
+   └──────────────────────────┘
+```
+
+* * *
+
+# 五、一句话抓核心
+
+-   **EOF**：让 EVM 从“裸字节码”升级为“结构化 VM”
+    
+-   **Precompile**：提供高性能密码学能力（native）
+    
+-   **打包流程**：从 TxPool → Builder → EVM → 状态 → 共识确认
+    
+
+* * *
+<!-- DAILY_CHECKIN_2026-04-13_END -->
+
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 RLP 编码规则和节点间 P2P 通信协议和节点对外接口规范学习,AI总结
 
 * * *
@@ -454,6 +852,7 @@ snap 协议
 # 2026-04-11
 <!-- DAILY_CHECKIN_2026-04-11_START -->
 
+
 交易字段与生命周期和区块与状态相关结构学习,AI总结
 
 * * *
@@ -700,6 +1099,7 @@ Ethereum Virtual Machine 使用账户模型，账户分为：
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 
 学习交易字段与生命周期和EVM 执行模型基础,AI总结
@@ -1032,6 +1432,7 @@ EVM 操作的是 **账户模型（Account Model）**
 
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
+
 
 
 
@@ -1492,6 +1893,7 @@ State + Transactions → New State
 
 
 
+
 以太坊的核心哲学 = 用最小的底层规则（简洁 + 通用），通过模块化和封装控制复杂性，同时保持中立和可演进，让上层应用自由生长.
 
 区块链级协议总结
@@ -1906,6 +2308,7 @@ DHT + Gossip → 网络传播
 
 
 
+
 参加例会
 
 ![例会2.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/duladuladula/images/2026-04-07-1775563199079-__2.png)![例会1.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/duladuladula/images/2026-04-07-1775563217747-__1.png)
@@ -1913,6 +2316,7 @@ DHT + Gossip → 网络传播
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
