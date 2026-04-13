@@ -15,8 +15,14 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-14
+<!-- DAILY_CHECKIN_2026-04-14_START -->
+4.14继续学习打卡ing
+<!-- DAILY_CHECKIN_2026-04-14_END -->
+
 # 2026-04-13
 <!-- DAILY_CHECKIN_2026-04-13_START -->
+
 # 4.13打卡ing
 
 简单来说，**RLP (Recursive Length Prefix)** 是以太坊（Ethereum）专门设计的一种“打包”数据的方式。
@@ -87,6 +93,7 @@ RLP 的核心逻辑就是看数据的**长度**，然后在数据前面加一个
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 以下是以太坊（Ethereum）底层协议的文档内容非常硬核，涵盖了从数据模型、数据结构到共识机制及网络层的所有核心演进。
@@ -164,11 +171,13 @@ RLP 的核心逻辑就是看数据的**长度**，然后在数据前面加一个
 
 
 
+
 4.11继续studying
 <!-- DAILY_CHECKIN_2026-04-11_END -->
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 
 
@@ -293,11 +302,13 @@ $$\\sigma\_{t+1} \\equiv \\Pi(\\sigma\_t, B)$$
 
 
 
+
 4.9学习ing
 <!-- DAILY_CHECKIN_2026-04-09_END -->
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -320,11 +331,13 @@ $$\\sigma\_{t+1} \\equiv \\Pi(\\sigma\_t, B)$$
 
 
 
+
 4.7打卡ing
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
