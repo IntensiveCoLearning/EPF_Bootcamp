@@ -15,8 +15,69 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-13
+<!-- DAILY_CHECKIN_2026-04-13_START -->
+今天重点学习了 **Ethereum 中的数据编码与基础数据结构**，主要包括：
+
+-   RLP（Recursive Length Prefix）编码原理
+    
+-   交易与区块在网络中的序列化方式
+    
+-   数据在节点之间传输时的结构组织形式
+    
+-   RLP 在执行层中的使用场景
+    
+
+通过学习，初步理解了链上数据如何从结构化对象转换为可传输的字节流。
+
+围绕“数据如何被编码与传输”进行了流程拆解：
+
+1.  交易在本地以结构体形式存在（包含 nonce、gas、to、value 等）
+    
+2.  在发送前通过 RLP 编码为字节数组
+    
+3.  编码后的数据通过网络进行传输
+    
+4.  节点接收后进行解码，还原为原始数据结构
+    
+
+重点分析了：
+
+-   RLP 的核心特点：
+    
+    -   结构简单
+        
+    -   无字段名，仅依赖顺序
+        
+    -   编码结果紧凑，适合网络传输
+        
+
+同时也对比了常见编码方式（如 JSON）：
+
+-   JSON 可读性强，但体积较大
+    
+-   RLP 更偏向底层协议，强调效率与确定性  
+    
+
+今天的关键收获是意识到：
+
+-   区块链系统不仅依赖“逻辑执行”，同样依赖“数据表达方式”
+    
+-   编码规则决定了节点之间能否正确理解彼此的数据
+    
+-   RLP 本质上是执行层数据交互的基础设施
+    
+
+同时也逐渐建立起一个新的认知：
+
+> 一笔交易不仅是“要做什么”，还包括“如何被表示与传输”
+
+这为后续理解区块结构、状态数据以及签名机制打下了基础。
+<!-- DAILY_CHECKIN_2026-04-13_END -->
+
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 本周主要围绕 **Ethereum 执行层的基础认知** 展开，整体从“概念理解”逐步过渡到“流程理解”，核心内容包括：
 
 -   以太坊整体架构（Execution Layer / Consensus Layer）
@@ -89,6 +150,7 @@ EPF 实习计划
 # 2026-04-11
 <!-- DAILY_CHECKIN_2026-04-11_START -->
 
+
 今天重点学习了 **Ethereum 网络通信机制**，主要包括：
 
 -   DevP2P 协议（节点之间的 P2P 通信机制）
@@ -147,6 +209,7 @@ DevP2P 更偏“底层网络协议”
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 
 今天主要围绕 **Ethereum 交易结构与执行流程** 进行学习，重点包括：
@@ -218,6 +281,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-08-1775669487734-image.png)
 
 维修bug
@@ -225,6 +289,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -241,11 +306,13 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775491855322-image.png)![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775492614139-image.png)
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
