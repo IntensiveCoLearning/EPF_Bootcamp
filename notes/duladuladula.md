@@ -15,8 +15,16 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-14
+<!-- DAILY_CHECKIN_2026-04-14_START -->
+会议学习
+
+![会议2.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/duladuladula/images/2026-04-14-1776169108292-__2.png)![会议1.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/duladuladula/images/2026-04-14-1776169155798-__1.png)
+<!-- DAILY_CHECKIN_2026-04-14_END -->
+
 # 2026-04-13
 <!-- DAILY_CHECKIN_2026-04-13_START -->
+
 EVM 对象格式升级,内置加密原语合约,交易打包与出块流程学习,AI总结
 
 * * *
@@ -414,6 +422,7 @@ CL → EL: newPayload
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 RLP 编码规则和节点间 P2P 通信协议和节点对外接口规范学习,AI总结
 
@@ -853,6 +862,7 @@ snap 协议
 <!-- DAILY_CHECKIN_2026-04-11_START -->
 
 
+
 交易字段与生命周期和区块与状态相关结构学习,AI总结
 
 * * *
@@ -1099,6 +1109,7 @@ Ethereum Virtual Machine 使用账户模型，账户分为：
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 
 
@@ -1432,6 +1443,7 @@ EVM 操作的是 **账户模型（Account Model）**
 
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
+
 
 
 
@@ -1894,6 +1906,7 @@ State + Transactions → New State
 
 
 
+
 以太坊的核心哲学 = 用最小的底层规则（简洁 + 通用），通过模块化和封装控制复杂性，同时保持中立和可演进，让上层应用自由生长.
 
 区块链级协议总结
@@ -2309,6 +2322,7 @@ DHT + Gossip → 网络传播
 
 
 
+
 参加例会
 
 ![例会2.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/duladuladula/images/2026-04-07-1775563199079-__2.png)![例会1.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/duladuladula/images/2026-04-07-1775563217747-__1.png)
@@ -2316,6 +2330,7 @@ DHT + Gossip → 网络传播
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
