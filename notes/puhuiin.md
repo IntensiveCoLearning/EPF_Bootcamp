@@ -23,11 +23,13 @@ EPF 实习计划
 # 2026-04-13
 <!-- DAILY_CHECKIN_2026-04-13_START -->
 
+
 今天学习CL职责与整体流程，拜占庭将军问题和拜占庭容错。对共识层有了基本的了解
 <!-- DAILY_CHECKIN_2026-04-13_END -->
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 今天学习内置加密原语合约和交易打包与出块流程
@@ -38,11 +40,13 @@ EPF 实习计划
 
 
 
+
 学习EVM 对象格式，学了一会儿solidity，返回值和修饰符
 <!-- DAILY_CHECKIN_2026-04-11_END -->
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 
 
@@ -57,11 +61,13 @@ EPF 实习计划
 
 
 
+
 今天学习RLP编码规则DevP2P
 <!-- DAILY_CHECKIN_2026-04-09_END -->
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -80,11 +86,13 @@ EPF 实习计划
 
 
 
+
 今天例会，自学学习el客户端以及evm
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
