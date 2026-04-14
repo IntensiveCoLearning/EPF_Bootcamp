@@ -15,8 +15,90 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-14
+<!-- DAILY_CHECKIN_2026-04-14_START -->
+今天重点学习了 **Ethereum 区块结构（Block Structure）及状态组织方式**，主要包括：
+
+-   区块的基本组成（Header / Body）
+    
+-   区块头关键字段（parentHash / stateRoot / transactionsRoot / receiptsRoot 等）
+    
+-   交易列表与收据（receipts）的作用
+    
+-   状态树（State Trie）的基本概念
+    
+
+通过学习，对区块不仅是“数据容器”，更是“状态变更记录”的理解更加清晰。  
+围绕“区块如何组织与验证数据”进行了结构化分析：
+
+1\. 区块结构拆解
+
+-   **Block Header**：
+    
+    -   记录区块元信息（前一个区块、状态根、交易根等）
+        
+-   **Block Body**：
+    
+    -   包含交易列表（Transactions）
+        
+    -   包含叔块信息（Ommer/Uncle）
+        
+
+2\. 三个关键 Root 的理解
+
+-   **transactionsRoot**：所有交易的 Merkle Root
+    
+-   **receiptsRoot**：所有交易执行结果的 Root
+    
+-   **stateRoot**：全局状态（账户状态）的 Root
+    
+
+👉 这三者共同保证：
+
+-   数据完整性（未被篡改）
+    
+-   执行结果可验证  
+    
+
+今天的核心收获是：
+
+1\. 对“区块”的理解发生转变
+
+从最初的：
+
+> 区块 = 一堆交易
+
+转变为：
+
+> 区块 = 状态变更的“证明结构”
+
+* * *
+
+2\. 理解了“Root”的意义
+
+-   Root 本质上是对一整批数据的“压缩摘要”
+    
+-   任意数据变化都会导致 Root 改变
+    
+-   这是区块链能够实现“可验证性”的核心机制
+    
+
+* * *
+
+3\. 建立起状态驱动的认知
+
+开始意识到：
+
+-   交易的本质是“触发状态变更”
+    
+-   区块的本质是“记录状态变更结果”
+    
+-   状态树则是“当前世界状态的表达方式”
+<!-- DAILY_CHECKIN_2026-04-14_END -->
+
 # 2026-04-13
 <!-- DAILY_CHECKIN_2026-04-13_START -->
+
 今天重点学习了 **Ethereum 中的数据编码与基础数据结构**，主要包括：
 
 -   RLP（Recursive Length Prefix）编码原理
@@ -77,6 +159,7 @@ EPF 实习计划
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 本周主要围绕 **Ethereum 执行层的基础认知** 展开，整体从“概念理解”逐步过渡到“流程理解”，核心内容包括：
 
@@ -151,6 +234,7 @@ EPF 实习计划
 <!-- DAILY_CHECKIN_2026-04-11_START -->
 
 
+
 今天重点学习了 **Ethereum 网络通信机制**，主要包括：
 
 -   DevP2P 协议（节点之间的 P2P 通信机制）
@@ -209,6 +293,7 @@ DevP2P 更偏“底层网络协议”
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 
 
@@ -282,6 +367,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-08-1775669487734-image.png)
 
 维修bug
@@ -289,6 +375,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -307,11 +394,13 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775491855322-image.png)![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775492614139-image.png)
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
