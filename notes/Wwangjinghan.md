@@ -15,8 +15,14 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-14
+<!-- DAILY_CHECKIN_2026-04-14_START -->
+打卡
+<!-- DAILY_CHECKIN_2026-04-14_END -->
+
 # 2026-04-11
 <!-- DAILY_CHECKIN_2026-04-11_START -->
+
 以太坊协议经多年演进，核心分为两大层，通过 API 对接、各自独立实现与组网，共同支撑网络运行。
 
 一、两大核心层
@@ -134,11 +140,13 @@ EPF 实习计划
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
 
+
 密码学部分全部完成学习
 <!-- DAILY_CHECKIN_2026-04-10_END -->
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 1
@@ -149,11 +157,13 @@ EPF 实习计划
 
 
 
+
 day2 mmx补全
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
