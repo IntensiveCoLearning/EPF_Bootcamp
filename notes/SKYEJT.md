@@ -15,8 +15,16 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-14
+<!-- DAILY_CHECKIN_2026-04-14_START -->
+周会打卡
+
+![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/SKYEJT/images/2026-04-14-1776164529406-image.png)
+<!-- DAILY_CHECKIN_2026-04-14_END -->
+
 # 2026-04-13
 <!-- DAILY_CHECKIN_2026-04-13_START -->
+
 **理清楚EVM**
 
 **1\. 到底什么是 EVM？（全球共享的“虚拟电脑大脑”）**
@@ -58,6 +66,7 @@ EPF 实习计划
 
 # 2026-04-11
 <!-- DAILY_CHECKIN_2026-04-11_START -->
+
 
 **让ai生成了一个，以太坊执行层客户端架构框架图。让我对整个EL的记忆更深刻，起码知道这些模块在哪里，可以把这些串起来了**
 
@@ -104,6 +113,7 @@ EPF 实习计划
 <!-- DAILY_CHECKIN_2026-04-10_START -->
 
 
+
 今天开始真正从EL层面开始入门
 
 作为以太坊执行层（Execution Layer）的核心工作，状态转移函数其实只需要回答两个最根本的问题**1**：
@@ -148,11 +158,13 @@ EPF 实习计划
 
 
 
+
 请假一天
 <!-- DAILY_CHECKIN_2026-04-09_END -->
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -169,6 +181,7 @@ EPF 实习计划
 
 
 
+
 以太坊的设计核心理念：简洁性、通用性、模块化、非歧视性、敏捷性。还有关于一些原则的描述。现在来看显得比较空洞，再进一步学习区块链层协议
 
 1.  了解到新名词UTXO和Accounts总结了两个模型对比：（具体的内容笔记在我自己的NOTEBOOKLM）
@@ -179,6 +192,7 @@ EPF 实习计划
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
