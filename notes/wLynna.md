@@ -15,8 +15,16 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-14
+<!-- DAILY_CHECKIN_2026-04-14_START -->
+# [Execution Layer Specification](https://epf.wiki/#/wiki/EL/el-specs?id=execution-layer-specification)
+
+看的很晕，纠结要不要放弃？
+<!-- DAILY_CHECKIN_2026-04-14_END -->
+
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 04/12
 
 Protocol History and Evolution
@@ -115,6 +123,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 # 2026-04-11
 <!-- DAILY_CHECKIN_2026-04-11_START -->
 
+
 04/11
 
 还得再休一天，睡觉更重要
@@ -126,6 +135,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 <!-- DAILY_CHECKIN_2026-04-10_START -->
 
 
+
 04/10
 
 今天折腾网络，休息下
@@ -135,6 +145,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -377,6 +388,7 @@ Ethereum’s design can be summarized as:
 
 
 
+
 04/07
 
 ## 🧩 核心结构（Core Structure）
@@ -481,6 +493,7 @@ Ethereum’s design can be summarized as:
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
