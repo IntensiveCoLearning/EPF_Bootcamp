@@ -99,7 +99,7 @@ EPS 官方会议和 ACD 会议总结
 | [Moxan1st](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/Moxan1st.md) | ✅ | ✅ | ⭕️ | ✅ | ✅ | ⭕️ | ✅ | ✅ | ⭕️ | ✅ | | | | | | | | | | | | | | | | | | |
 | [pillowtalk-Qy](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/pillowtalk-Qy.md) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |   | | | | | | | | | | | | | | | | | | |
 | [tutuQin](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/tutuQin.md) | ⭕️ | ⭕️ | ❌ | | | | | | | | | | | | | | | | | | | | | | | | | |
-| [midi-zhuanjia](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/midi-zhuanjia.md) | ⭕️ | ✅ | ✅ | ✅ | ⭕️ | ✅ | ✅ | ⭕️ | ✅ |   | | | | | | | | | | | | | | | | | | |
+| [midi-zhuanjia](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/midi-zhuanjia.md) | ⭕️ | ✅ | ✅ | ✅ | ⭕️ | ✅ | ✅ | ⭕️ | ✅ | ✅ | | | | | | | | | | | | | | | | | | |
 | [SJW1111011](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/SJW1111011.md) | ⭕️ | ⭕️ | ✅ | ❌ | | | | | | | | | | | | | | | | | | | | | | | | |
 | [jingnanbei](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/jingnanbei.md) | ⭕️ | ⭕️ | ❌ | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [xingyanghao0-hub](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/xingyanghao0-hub.md) | ⭕️ | ⭕️ | ❌ | | | | | | | | | | | | | | | | | | | | | | | | | |
@@ -197,13 +197,14 @@ EPS 官方会议和 ACD 会议总结
 | [enderzcx](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/enderzcx.md) | ⭕️ | ⭕️ | ❌ | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [vitalebob](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/vitalebob.md) | ✅ | ⭕️ | ⭕️ | ❌ | | | | | | | | | | | | | | | | | | | | | | | | |
 | [walle233](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/walle233.md) | ⭕️ | ⭕️ | ❌ | | | | | | | | | | | | | | | | | | | | | | | | | |
-| [kvxunz](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/kvxunz.md) | ✅ | ✅ | ✅ | ⭕️ | ✅ | ✅ | ✅ | ⭕️ |   | | | | | | | | | | | | | | | | | | | |
+| [kvxunz](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/kvxunz.md) | ✅ | ✅ | ✅ | ⭕️ | ✅ | ✅ | ✅ | ⭕️ | ⭕️ |   | | | | | | | | | | | | | | | | | | |
 | [fangxu200241-del](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/fangxu200241-del.md) | ⭕️ | ⭕️ | ❌ | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [shriyashsoni](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/shriyashsoni.md) | ⭕️ | ⭕️ | ❌ | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [BareerahBenjamin](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/BareerahBenjamin.md) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |   | | | | | | | | | | | | | | | | | | |
 | [qingge785](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/qingge785.md) | ⭕️ | ⭕️ | ❌ | | | | | | | | | | | | | | | | | | | | | | | | | |
 | [DrakenZeng](https://github.com/IntensiveCoLearning/EPF_Bootcamp/blob/main/notes/DrakenZeng.md) | ⭕️ | ⭕️ | ❌ | | | | | | | | | | | | | | | | | | | | | | | | | |
 <!-- END_COMMIT_TABLE -->
+
 
 
 
