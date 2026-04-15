@@ -15,13 +15,20 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-15
+<!-- DAILY_CHECKIN_2026-04-15_START -->
+不知道霍尔曼树对效率的提升怎样.
+<!-- DAILY_CHECKIN_2026-04-15_END -->
+
 # 2026-04-14
 <!-- DAILY_CHECKIN_2026-04-14_START -->
+
 休息一天
 <!-- DAILY_CHECKIN_2026-04-14_END -->
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 欠一天
 <!-- DAILY_CHECKIN_2026-04-12_END -->
@@ -30,11 +37,13 @@ EPF 实习计划
 <!-- DAILY_CHECKIN_2026-04-11_START -->
 
 
+
 感觉有点跟不上了,还是先补学一下数据结构,模运算,p2p吧...
 <!-- DAILY_CHECKIN_2026-04-11_END -->
 
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
+
 
 
 
@@ -47,6 +56,7 @@ EPF 实习计划
 
 
 
+
 客户端的概念其实是 一整个eth网络的cpu? 只不过是去中心化的,但原理类似...这个想法很有意思.
 
 ![payload-validation-routine.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/midi-zhuanjia/images/2026-04-08-1775656974811-payload-validation-routine.png)
@@ -54,6 +64,7 @@ EPF 实习计划
 
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 
 
 
