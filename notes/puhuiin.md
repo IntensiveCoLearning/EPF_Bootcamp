@@ -15,8 +15,14 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-15
+<!-- DAILY_CHECKIN_2026-04-15_START -->
+今天学习SSZ,SSZ 是专为信标链设计的序列化方案，弥补了 RLP 的不足，原生支持复杂数据结构，并大幅提升了哈希效率和数据验证的确定性 。
+<!-- DAILY_CHECKIN_2026-04-15_END -->
+
 # 2026-04-14
 <!-- DAILY_CHECKIN_2026-04-14_START -->
+
 学习简单序列化，SSZ 取代了执行层中使用的RLP序列化方案。SSZ能提升以太坊共识层的效率、安全性和可扩展性。
 <!-- DAILY_CHECKIN_2026-04-14_END -->
 
@@ -24,11 +30,13 @@ EPF 实习计划
 <!-- DAILY_CHECKIN_2026-04-13_START -->
 
 
+
 今天学习CL职责与整体流程，拜占庭将军问题和拜占庭容错。对共识层有了基本的了解
 <!-- DAILY_CHECKIN_2026-04-13_END -->
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -41,11 +49,13 @@ EPF 实习计划
 
 
 
+
 学习EVM 对象格式，学了一会儿solidity，返回值和修饰符
 <!-- DAILY_CHECKIN_2026-04-11_END -->
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 
 
@@ -62,11 +72,13 @@ EPF 实习计划
 
 
 
+
 今天学习RLP编码规则DevP2P
 <!-- DAILY_CHECKIN_2026-04-09_END -->
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -87,11 +99,13 @@ EPF 实习计划
 
 
 
+
 今天例会，自学学习el客户端以及evm
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
