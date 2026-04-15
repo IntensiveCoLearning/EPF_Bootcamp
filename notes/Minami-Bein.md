@@ -15,8 +15,107 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-15
+<!-- DAILY_CHECKIN_2026-04-15_START -->
+今天重点学习了 **Ethereum 执行客户端（Execution Client）的架构设计**，并对主流客户端进行了对比分析，主要包括：
+
+-   Geth（Go 实现）
+    
+-   Nethermind（C# 实现）
+    
+
+重点关注内容：
+
+-   客户端整体模块划分（P2P / TxPool / EVM / Storage 等）
+    
+-   不同实现之间的设计差异
+    
+-   执行客户端在整个以太坊体系中的角色
+    
+
+1\. 执行客户端核心模块拆解
+
+通过阅读资料，对客户端内部结构进行了拆分：
+
+-   **P2P 模块**：负责节点发现与数据传播
+    
+-   **TxPool（交易池）**：管理待打包交易
+    
+-   **EVM 模块**：执行交易逻辑
+    
+-   **State / Database**：存储链上状态数据
+    
+
+👉 理解到：客户端本质是一个“集成系统”，而不是单一功能组件
+
+* * *
+
+2\. Geth vs Nethermind 对比
+
+| 维度 | Geth | Nethermind |
+| --- | --- | --- |
+| 实现语言 | Go | C# |
+| 生态成熟度 | 非常成熟（主流） | 较新但性能优秀 |
+| 设计风格 | 偏简洁、实用 | 更模块化、工程化 |
+| 社区支持 | 极强 | 持续增长 |
+
+👉 关键观察：
+
+-   Geth 更像“事实标准”
+    
+-   Nethermind 更偏“现代工程设计”
+    
+
+* * *
+
+3\. 执行客户端的定位理解
+
+从系统角度重新理解客户端：
+
+> 执行客户端 = 状态执行引擎 + 网络节点 + 数据管理系统
+
+不仅负责执行交易，还承担：
+
+-   网络通信
+    
+-   数据同步
+    
+-   状态维护  
+    
+
+1\. 从“使用节点”到“理解节点”
+
+之前更多是把节点当工具使用，现在开始理解：
+
+-   节点内部是如何组织各个模块
+    
+-   每个模块如何协同完成交易执行
+    
+
+* * *
+
+2\. 对系统复杂性的认知提升
+
+逐渐意识到：
+
+-   区块链客户端不仅是“运行代码”，更是复杂系统工程
+    
+-   包含网络、执行、存储、同步等多个子系统
+    
+
+* * *
+
+3\. 架构层面的初步理解
+
+开始形成一种新的视角：
+
+> 区块链 ≠ 单一技术  
+> 而是一个“分层 + 多模块协同”的系统架构
+<!-- DAILY_CHECKIN_2026-04-15_END -->
+
 # 2026-04-14
 <!-- DAILY_CHECKIN_2026-04-14_START -->
+
 今天重点学习了 **Ethereum 区块结构（Block Structure）及状态组织方式**，主要包括：
 
 -   区块的基本组成（Header / Body）
@@ -99,6 +198,7 @@ EPF 实习计划
 # 2026-04-13
 <!-- DAILY_CHECKIN_2026-04-13_START -->
 
+
 今天重点学习了 **Ethereum 中的数据编码与基础数据结构**，主要包括：
 
 -   RLP（Recursive Length Prefix）编码原理
@@ -159,6 +259,7 @@ EPF 实习计划
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 本周主要围绕 **Ethereum 执行层的基础认知** 展开，整体从“概念理解”逐步过渡到“流程理解”，核心内容包括：
@@ -235,6 +336,7 @@ EPF 实习计划
 
 
 
+
 今天重点学习了 **Ethereum 网络通信机制**，主要包括：
 
 -   DevP2P 协议（节点之间的 P2P 通信机制）
@@ -293,6 +395,7 @@ DevP2P 更偏“底层网络协议”
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 
 
@@ -368,6 +471,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-08-1775669487734-image.png)
 
 维修bug
@@ -375,6 +479,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -395,11 +500,13 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775491855322-image.png)![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775492614139-image.png)
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
