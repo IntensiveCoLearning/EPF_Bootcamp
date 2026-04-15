@@ -15,8 +15,14 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-15
+<!-- DAILY_CHECKIN_2026-04-15_START -->
+学习 Client architecture（客户端架构概述）（EL 客户端模块总览）
+<!-- DAILY_CHECKIN_2026-04-15_END -->
+
 # 2026-04-14
 <!-- DAILY_CHECKIN_2026-04-14_START -->
+
 **Day 6：**
 
 学习 EL Specs（执行层核心规范）
@@ -25,6 +31,7 @@ EPF 实习计划
 # 2026-04-13
 <!-- DAILY_CHECKIN_2026-04-13_START -->
 
+
 **Day 5：**
 
 学习学习Evolution（演进历史）（协议升级与历史脉络）
@@ -32,6 +39,7 @@ EPF 实习计划
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 **Day 4：**
@@ -44,6 +52,7 @@ EPF 实习计划
 
 
 
+
 **Day 3：**
 
 继续学习 Architecture（整体架构）（协议分层与模块关系）
@@ -51,6 +60,7 @@ EPF 实习计划
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -67,6 +77,7 @@ EPF 实习计划
 
 
 
+
 **Day 2：**
 
 了解 Prehistory（史前历史）（以太坊起源与背景）
@@ -74,6 +85,7 @@ EPF 实习计划
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
