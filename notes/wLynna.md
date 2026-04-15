@@ -15,8 +15,286 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-15
+<!-- DAILY_CHECKIN_2026-04-15_START -->
+04/15 EL 协议规范，对我来说太难了，远远超纲，所以 降维学习
+
+🧠 Execution Layer（EL）— Human Version // 降维学习
+
+* * *
+
+# 🧠 Execution Layer（EL）
+
+* * *
+
+## 1️⃣ What is Execution Layer?
+
+Execution Layer is the part of Ethereum that runs transactions and updates the state.  
+执行层是以太坊中负责运行交易、并更新整个系统状态的部分。
+
+It is like the “engine” of Ethereum that actually does the work.  
+它就像以太坊的“引擎”，真正干活的地方。
+
+When someone sends a transaction, EL is the place where it gets executed.  
+当有人发送交易时，就是在执行层被真正执行。
+
+So if you ask “what really happened on-chain”, the answer is inside EL.  
+所以如果你问“链上到底发生了什么”，答案就在执行层。
+
+* * *
+
+## 2️⃣ What is “state” in Ethereum?
+
+State means all the current data of the blockchain.  
+状态就是区块链当前所有的数据。
+
+It includes account balances, smart contract code, and stored data.  
+包括账户余额、智能合约代码、以及存储的数据。
+
+You can imagine state as a global database shared by all nodes.  
+你可以把状态想象成一个所有节点共享的“全局数据库”。
+
+Every transaction will try to change this database.  
+每一笔交易，都会尝试去改变这个数据库。
+
+* * *
+
+👉 One key idea:
+
+A transaction is just a state change.  
+一笔交易，本质上就是一次状态改变。
+
+* * *
+
+## 3️⃣ What does EL actually do?
+
+EL takes transactions and applies them to the current state.  
+执行层接收交易，并把它们作用到当前状态上。
+
+It processes them one by one, in a specific order.  
+它按顺序一笔一笔执行交易。
+
+After execution, the state becomes a new state.  
+执行完成后，状态就变成了新的状态。
+
+This process is called “state transition”.  
+这个过程叫做“状态转换”。
+
+* * *
+
+👉 Very simple flow:
+
+Old state → Transactions → Execution → New state  
+旧状态 → 交易 → 执行 → 新状态
+
+* * *
+
+## 4️⃣ How a transaction works (step by step)
+
+* * *
+
+A user creates a transaction from a wallet.  
+用户从钱包发起一笔交易。
+
+This transaction may transfer ETH or call a smart contract.  
+这笔交易可能是转账，也可能是调用智能合约。
+
+* * *
+
+The network first checks if the transaction is valid.  
+网络首先会检查这笔交易是否有效。
+
+It checks signature, nonce, and gas.  
+会检查签名、nonce（防止重复）、以及 gas 是否合理。
+
+* * *
+
+Then the transaction is included into a block.  
+接着这笔交易会被打包进一个区块。
+
+* * *
+
+Inside the block, the EVM executes the transaction.  
+在区块中，EVM 会执行这笔交易。
+
+* * *
+
+Execution may change balances or contract storage.  
+执行过程中可能改变账户余额或合约存储。
+
+* * *
+
+Finally, the state is updated, and gas is paid.  
+最终状态被更新，同时用户支付 gas 费用。
+
+* * *
+
+👉 One sentence summary:
+
+A transaction goes from “intent” to “state change”.  
+一笔交易，从“意图”变成“状态改变”。
+
+* * *
+
+## 5️⃣ What is EVM?
+
+EVM is the virtual machine of Ethereum.  
+EVM 是以太坊的虚拟机。
+
+It is like a global computer that runs smart contracts.  
+它就像一个全球共享的计算机，专门运行智能合约。
+
+* * *
+
+Every node runs the same EVM computation.  
+每个节点都会运行相同的 EVM 计算。
+
+This ensures that everyone gets the same result.  
+这保证了所有人得到相同的结果。
+
+* * *
+
+EVM does not trust anyone, it just follows rules.  
+EVM 不相信任何人，它只按照规则执行。
+
+* * *
+
+👉 Key idea:
+
+EVM = deterministic execution  
+EVM = 确定性执行（所有人算出来都一样）
+
+* * *
+
+## 6️⃣ Why do we need Gas?
+
+Gas is used to measure computation.  
+Gas 用来衡量计算量。
+
+Every operation in EVM costs gas.  
+EVM 中的每一个操作都要消耗 gas。
+
+* * *
+
+More complex operations cost more gas.  
+越复杂的操作，消耗越多 gas。
+
+* * *
+
+Gas also prevents spam.  
+Gas 还能防止垃圾攻击。
+
+If computation were free, people could overload the network.  
+如果计算免费，网络会被无限滥用。
+
+* * *
+
+Users must pay for what they use.  
+用户必须为自己使用的资源付费。
+
+* * *
+
+👉 Simple understanding:
+
+Gas is the price of using Ethereum.  
+Gas 就是使用以太坊的价格。
+
+* * *
+
+## 7️⃣ ==What is a block in EL?
+
+A block is a list of transactions grouped together.  
+一个区块就是一组被打包在一起的交易。
+
+* * *
+
+EL executes all transactions inside the block.  
+执行层会执行区块里的所有交易。
+
+* * *
+
+Transactions are executed in order.  
+交易是按顺序执行的。
+
+Order matters, because earlier transactions can change the state.  
+顺序很重要，因为前面的交易会影响后面的状态。
+
+* * *
+
+After all transactions are executed, we get a new state.  
+所有交易执行完后，我们得到新的状态。
+
+* * *
+
+👉 Key idea:
+
+Block = a batch of state transitions  
+区块 = 一批状态转换
+
+* * *
+
+## 8️⃣ What EL does NOT do
+
+Execution Layer does not decide who creates blocks.  
+执行层不决定谁来出块。
+
+* * *
+
+Execution Layer does not handle consensus.  
+执行层不负责共识。
+
+* * *
+
+That is the job of the Consensus Layer.  
+这些是共识层（CL）的职责。
+
+* * *
+
+👉 Important separation:
+
+EL decides “what happens”  
+CL decides “who decides”
+
+EL 决定“发生什么”  
+CL 决定“谁说了算”
+
+* * *
+
+## 🧭 Final mental model（最重要的整体理解）
+
+* * *
+
+User sends a transaction, and EL executes it using EVM, then updates the state.  
+用户发送交易，执行层用 EVM 执行它，然后更新状态。
+
+* * *
+
+Blocks are just containers of transactions.  
+区块只是交易的容器。
+
+* * *
+
+Ethereum is basically a state machine.  
+以太坊本质上是一个状态机。
+
+* * *
+
+Each block moves the system from one state to another.  
+每一个区块，都让系统从一个状态变到另一个状态。
+
+* * *
+
+👉 最核心一句
+
+Ethereum is a global state machine, and EL is the part that runs the machine.  
+以太坊是一个全球状态机，而执行层就是让这个机器运转的部分。
+
+* * *
+<!-- DAILY_CHECKIN_2026-04-15_END -->
+
 # 2026-04-14
 <!-- DAILY_CHECKIN_2026-04-14_START -->
+
 # [Execution Layer Specification](https://epf.wiki/#/wiki/EL/el-specs?id=execution-layer-specification)
 
 看的很晕，纠结要不要放弃？
@@ -24,6 +302,7 @@ EPF 实习计划
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 04/12
 
@@ -124,6 +403,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 <!-- DAILY_CHECKIN_2026-04-11_START -->
 
 
+
 04/11
 
 还得再休一天，睡觉更重要
@@ -136,6 +416,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 
 
+
 04/10
 
 今天折腾网络，休息下
@@ -145,6 +426,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -389,6 +671,7 @@ Ethereum’s design can be summarized as:
 
 
 
+
 04/07
 
 ## 🧩 核心结构（Core Structure）
@@ -493,6 +776,7 @@ Ethereum’s design can be summarized as:
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
