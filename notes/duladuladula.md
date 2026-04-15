@@ -15,8 +15,445 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-15
+<!-- DAILY_CHECKIN_2026-04-15_START -->
+EVM 对象格式升级和内置加密原语合约和交易打包与出块流程学习,AI总结
+
+* * *
+
+# 一、EVM 对象格式与结构升级（演进视角）
+
+EVM 本身是一个**确定性状态机**，核心对象包括：
+
+-   Account（账户）
+    
+-   Transaction（交易）
+    
+-   Block（区块）
+    
+-   Receipt（回执）
+    
+-   State（世界状态）
+    
+
+随着升级（如 Ethereum London Upgrade、Ethereum Shanghai Upgrade），这些对象的结构不断扩展。
+
+* * *
+
+## 1\. Account 对象（状态树节点）
+
+```text
+Account {
+    nonce
+    balance
+    storageRoot
+    codeHash
+}
+```
+
+### 升级点：
+
+-   **code 与 storage 分离（Merkle Patricia Trie）**
+    
+-   **Verkle Tree（未来）**：减少状态证明大小
+    
+-   **EOF（EVM Object Format）提案**
+    
+    -   合约代码结构化（非原始 bytecode）
+        
+    -   支持版本化、静态分析、安全校验
+        
+
+👉 核心趋势：
+
+> 从“字节码 blob” → “结构化可验证对象”
+
+* * *
+
+## 2\. Transaction 格式升级
+
+### Legacy Tx（最初）
+
+```text
+nonce, gasPrice, gasLimit, to, value, data, v, r, s
+```
+
+* * *
+
+### EIP-1559（Type 2 Tx）
+
+```text
+maxFeePerGas
+maxPriorityFeePerGas
+```
+
+👉 引入：
+
+-   Base Fee（协议销毁）
+    
+-   Tip（矿工/验证者收益）
+    
+
+* * *
+
+### Typed Transaction（EIP-2718）
+
+统一格式：
+
+```text
+Transaction = TransactionType || Payload
+```
+
+类型：
+
+-   Type 0：Legacy
+    
+-   Type 1：Access List（EIP-2930）
+    
+-   Type 2：EIP-1559
+    
+
+* * *
+
+## 3\. Block 结构升级
+
+```text
+Block {
+    header
+    transactions[]
+    ommers[]
+}
+```
+
+### Header 关键字段变化：
+
+PoW → PoS（The Merge）
+
+-   移除：difficulty
+    
+-   增加：
+    
+    -   prevRandao（随机数来源）
+        
+    -   baseFeePerGas
+        
+
+* * *
+
+## 4\. Receipt（交易回执）
+
+```text
+Receipt {
+    status
+    cumulativeGasUsed
+    logsBloom
+    logs[]
+}
+```
+
+升级点：
+
+-   status 替代 stateRoot（EIP-658）
+    
+-   logs 用于事件索引（DApp依赖）
+    
+
+* * *
+
+## 5\. 状态结构（State）
+
+-   使用：
+    
+    -   **Merkle Patricia Trie（MPT）**
+        
+-   存储：
+    
+    -   Account → Storage Trie
+        
+
+未来趋势：
+
+-   Verkle Tree（降低proof size）
+    
+-   Stateless client
+    
+
+* * *
+
+# 二、内置加密原语合约（Precompiled Contracts）
+
+EVM 本身不擅长高性能密码学计算，因此提供“预编译合约”。
+
+👉 本质：
+
+> Native 实现，但以合约形式调用（固定地址）
+
+* * *
+
+## 常见 Precompile（地址 0x01 - 0x09）
+
+| 地址 | 功能 |
+| --- | --- |
+| 0x01 | ecrecover（签名恢复） |
+| 0x02 | sha256 |
+| 0x03 | ripemd160 |
+| 0x04 | identity（数据拷贝） |
+| 0x05 | modexp（大数模幂） |
+| 0x06-0x08 | bn128（椭圆曲线） |
+| 0x09 | blake2 |
+
+* * *
+
+## 核心用途
+
+### 1\. 签名验证
+
+```solidity
+ecrecover(hash, v, r, s)
+```
+
+用于：
+
+-   钱包验证
+    
+-   meta-tx
+    
+-   EIP-712
+    
+
+* * *
+
+### 2\. 零知识证明（ZK）
+
+使用：
+
+-   bn128 pairing
+    
+
+应用：
+
+-   zk-SNARKs（如Groth16）
+    
+
+* * *
+
+### 3\. 哈希函数
+
+-   sha256 → 跨链兼容（BTC）
+    
+-   keccak256（EVM内建 opcode）
+    
+
+* * *
+
+## 设计意义
+
+👉 权衡点：
+
+-   Gas成本 vs 安全性
+    
+-   通用性 vs 性能
+    
+
+👉 本质：
+
+> “协议层提供加速器”
+
+* * *
+
+# 三、交易打包与出块流程（Execution Layer + Consensus Layer）
+
+这是你前面问题（EL / CL）最关键的串联部分。
+
+* * *
+
+## 1\. 用户发起交易
+
+```text
+Wallet → RPC → Node
+```
+
+流程：
+
+1.  构造交易
+    
+2.  私钥签名（ECDSA）
+    
+3.  广播到网络
+    
+
+* * *
+
+## 2\. P2P 网络传播
+
+-   节点通过 gossip 协议传播
+    
+-   放入：
+    
+
+```text
+TxPool（mempool）
+```
+
+* * *
+
+## 3\. 执行层（EL）处理交易
+
+客户端（如 Geth）：
+
+步骤：
+
+1.  验证交易合法性
+    
+2.  按 gas price / fee 排序
+    
+3.  构建 block body
+    
+
+* * *
+
+## 4\. 共识层（CL）选择出块者
+
+在 Ethereum PoS 中：
+
+-   Validator 被选为 proposer
+    
+-   使用：
+    
+    -   slot / epoch
+        
+    -   随机数（RANDAO）
+        
+
+* * *
+
+## 5\. 构建区块（Builder / Proposer）
+
+### PBS（Proposer-Builder Separation）
+
+角色：
+
+-   Builder：构建最优区块（MEV）
+    
+-   Proposer：签名并发布
+    
+
+* * *
+
+## 6\. 执行交易（EVM）
+
+对每笔交易：
+
+```text
+State → EVM → New State
+```
+
+执行内容：
+
+-   调用合约
+    
+-   修改 storage
+    
+-   消耗 gas
+    
+
+* * *
+
+## 7\. 生成区块
+
+```text
+Block = Header + Transactions + ReceiptsRoot + StateRoot
+```
+
+关键：
+
+-   stateRoot（全局状态哈希）
+    
+-   receiptsRoot
+    
+-   logsBloom
+    
+
+* * *
+
+## 8\. 区块传播与最终性
+
+流程：
+
+1.  广播新区块
+    
+2.  验证节点执行
+    
+3.  CL 投票（attestation）
+    
+4.  达成 finality（最终确定）
+    
+
+* * *
+
+# 四、整体流程图（总结）
+
+```text
+User
+ ↓
+Sign Transaction
+ ↓
+Broadcast (P2P)
+ ↓
+TxPool
+ ↓
+EL排序执行
+ ↓
+CL选择Validator
+ ↓
+Builder构建区块
+ ↓
+EVM执行交易
+ ↓
+生成Block
+ ↓
+网络传播
+ ↓
+Finality
+```
+
+* * *
+
+# 五、关键设计总结（面试/理解重点）
+
+### 1\. EVM对象升级核心
+
+-   Typed Tx（结构化）
+    
+-   EOF（合约结构化）
+    
+-   状态树优化（Verkle）
+    
+
+* * *
+
+### 2\. Precompile本质
+
+-   “链上密码学硬件加速”
+    
+-   支撑 zk / 签名 / 跨链
+    
+
+* * *
+
+### 3\. 出块流程本质
+
+-   EL：执行 + 状态转换
+    
+-   CL：排序 + 共识 + finality
+    
+
+* * *
+<!-- DAILY_CHECKIN_2026-04-15_END -->
+
 # 2026-04-14
 <!-- DAILY_CHECKIN_2026-04-14_START -->
+
 会议学习
 
 ![会议2.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/duladuladula/images/2026-04-14-1776169108292-__2.png)![会议1.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/duladuladula/images/2026-04-14-1776169155798-__1.png)
@@ -24,6 +461,7 @@ EPF 实习计划
 
 # 2026-04-13
 <!-- DAILY_CHECKIN_2026-04-13_START -->
+
 
 EVM 对象格式升级,内置加密原语合约,交易打包与出块流程学习,AI总结
 
@@ -422,6 +860,7 @@ CL → EL: newPayload
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 RLP 编码规则和节点间 P2P 通信协议和节点对外接口规范学习,AI总结
@@ -863,6 +1302,7 @@ snap 协议
 
 
 
+
 交易字段与生命周期和区块与状态相关结构学习,AI总结
 
 * * *
@@ -1109,6 +1549,7 @@ Ethereum Virtual Machine 使用账户模型，账户分为：
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 
 
@@ -1443,6 +1884,7 @@ EVM 操作的是 **账户模型（Account Model）**
 
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
+
 
 
 
@@ -1907,6 +2349,7 @@ State + Transactions → New State
 
 
 
+
 以太坊的核心哲学 = 用最小的底层规则（简洁 + 通用），通过模块化和封装控制复杂性，同时保持中立和可演进，让上层应用自由生长.
 
 区块链级协议总结
@@ -2323,6 +2766,7 @@ DHT + Gossip → 网络传播
 
 
 
+
 参加例会
 
 ![例会2.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/duladuladula/images/2026-04-07-1775563199079-__2.png)![例会1.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/duladuladula/images/2026-04-07-1775563217747-__1.png)
@@ -2330,6 +2774,7 @@ DHT + Gossip → 网络传播
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
