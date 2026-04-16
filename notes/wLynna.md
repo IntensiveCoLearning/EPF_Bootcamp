@@ -15,8 +15,226 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-16
+<!-- DAILY_CHECKIN_2026-04-16_START -->
+04/16 继续降维学习
+
+EL vs CL — The Real Separation
+
+* * *
+
+## 1️⃣ Why do we even have two layers?
+
+Ethereum used to be one system, but now it is split into two layers.  
+以太坊以前是一个整体系统，现在被拆成了两层。
+
+This split makes the system more modular and scalable.  
+这种拆分让系统更模块化，也更容易扩展。
+
+* * *
+
+Execution Layer handles “what happens”.  
+执行层负责“发生什么”。
+
+Consensus Layer handles “who decides”.  
+共识层负责“谁说了算”。
+
+* * *
+
+👉 This separation is very important.
+
+It allows Ethereum to evolve faster and safer.  
+这个分层非常重要，让以太坊可以更快、更安全地演进。
+
+* * *
+
+## 2️⃣ What does EL do again?
+
+Execution Layer executes transactions and updates the state.  
+执行层执行交易，并更新状态。
+
+* * *
+
+It does not care who created the block.  
+它不关心是谁创建了区块。
+
+* * *
+
+It only cares:  
+“Are these transactions valid, and what is the new state?”  
+它只关心：这些交易是否合法，以及新的状态是什么。
+
+* * *
+
+👉 EL is like a calculator.
+
+You give it input, it gives you the result.  
+执行层就像计算器，你给输入，它给结果。
+
+* * *
+
+## 3️⃣ What does CL do?
+
+Consensus Layer decides who can propose and validate blocks.  
+共识层决定谁可以出块、谁来验证区块。
+
+* * *
+
+It runs mechanisms like staking and validator selection.  
+它运行质押、验证者选择等机制。
+
+* * *
+
+It ensures everyone agrees on the same chain.  
+它确保所有人对同一条链达成一致。
+
+* * *
+
+👉 CL is about agreement.
+
+Not computation, but coordination.  
+共识层是关于“达成一致”，不是计算，而是协调。
+
+* * *
+
+## 4️⃣ How EL and CL work together
+
+* * *
+
+CL selects a validator to propose a block.  
+共识层选择一个验证者来出块。
+
+* * *
+
+The validator builds a block with transactions.  
+验证者把交易打包成一个区块。
+
+* * *
+
+EL executes those transactions and computes the new state.  
+执行层执行这些交易，并计算出新的状态。
+
+* * *
+
+CL then verifies and finalizes the block.  
+共识层再来验证并最终确认这个区块。
+
+* * *
+
+👉 Simple flow:
+
+CL → choose proposer  
+EL → execute transactions  
+CL → finalize block
+
+共识层选人 → 执行层计算 → 共识层确认
+
+* * *
+
+## 5️⃣ Why this separation matters
+
+* * *
+
+It reduces complexity in each layer.  
+这种拆分降低了每一层的复杂度。
+
+* * *
+
+Developers can improve EL without touching CL.  
+开发者可以优化执行层，而不用改共识层。
+
+* * *
+
+And vice versa.  
+反之亦然。
+
+* * *
+
+It also allows different implementations.  
+也允许不同的客户端实现。
+
+* * *
+
+👉 This is why Ethereum is resilient.
+
+因为模块化，让系统更有韧性。
+
+* * *
+
+## 6️⃣ A simple analogy (很好用)
+
+* * *
+
+Think of a company.
+
+把以太坊想象成一家公司。
+
+* * *
+
+EL is the “operations team”.  
+执行层是“执行团队”。
+
+They do the actual work.  
+他们负责干活。
+
+* * *
+
+CL is the “governance team”.  
+共识层是“决策/治理团队”。
+
+They decide who is in charge and what is accepted.  
+他们决定谁有权、什么被认可。
+
+* * *
+
+👉 Without EL → nothing gets done  
+没有执行层 → 什么都不会发生
+
+👉 Without CL → chaos, no agreement  
+没有共识层 → 一片混乱，没有共识
+
+* * *
+
+## 7️⃣ One key sentence (非常重要)
+
+* * *
+
+Ethereum works because execution and consensus are separated but coordinated.  
+以太坊之所以能运转，是因为执行和共识分离，但又协同。
+
+* * *
+
+## 8️⃣ Why this matters for YOU（这才是关键）
+
+* * *
+
+ENS runs on Ethereum, so it depends on both layers.  
+ENS 运行在以太坊上，因此依赖这两层。
+
+* * *
+
+When you register a name, it is a transaction → handled by EL.  
+当你注册 ENS 名字，这是一个交易 → 执行层处理。
+
+* * *
+
+But whether that transaction is accepted → decided by CL.  
+但这个交易是否被确认 → 由共识层决定。
+
+* * *
+
+👉 So:
+
+EL = execution of ENS logic  
+CL = security and finality of ENS
+
+EL = ENS 的执行  
+CL = ENS 的安全与确认
+<!-- DAILY_CHECKIN_2026-04-16_END -->
+
 # 2026-04-15
 <!-- DAILY_CHECKIN_2026-04-15_START -->
+
 04/15 EL 协议规范，对我来说太难了，远远超纲，所以 降维学习
 
 🧠 Execution Layer（EL）— Human Version // 降维学习
@@ -295,6 +513,7 @@ Ethereum is a global state machine, and EL is the part that runs the machine.
 # 2026-04-14
 <!-- DAILY_CHECKIN_2026-04-14_START -->
 
+
 # [Execution Layer Specification](https://epf.wiki/#/wiki/EL/el-specs?id=execution-layer-specification)
 
 看的很晕，纠结要不要放弃？
@@ -302,6 +521,7 @@ Ethereum is a global state machine, and EL is the part that runs the machine.
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 04/12
@@ -404,6 +624,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 
 
+
 04/11
 
 还得再休一天，睡觉更重要
@@ -417,6 +638,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 
 
+
 04/10
 
 今天折腾网络，休息下
@@ -426,6 +648,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -672,6 +895,7 @@ Ethereum’s design can be summarized as:
 
 
 
+
 04/07
 
 ## 🧩 核心结构（Core Structure）
@@ -776,6 +1000,7 @@ Ethereum’s design can be summarized as:
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
