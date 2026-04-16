@@ -15,13 +15,20 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-16
+<!-- DAILY_CHECKIN_2026-04-16_START -->
+今天学习了 跨链桥 和消息桥的原理
+<!-- DAILY_CHECKIN_2026-04-16_END -->
+
 # 2026-04-15
 <!-- DAILY_CHECKIN_2026-04-15_START -->
+
 学习了Optimisitc Rollup和ZK Rollup
 <!-- DAILY_CHECKIN_2026-04-15_END -->
 
 # 2026-04-14
 <!-- DAILY_CHECKIN_2026-04-14_START -->
+
 
 
 周会打卡
@@ -32,11 +39,13 @@ EPF 实习计划
 
 
 
+
 学习了 ETH 共识层 原理
 <!-- DAILY_CHECKIN_2026-04-13_END -->
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 
 
@@ -51,11 +60,13 @@ EPF 实习计划
 
 
 
+
 ETH Garden Lv12 close
 <!-- DAILY_CHECKIN_2026-04-09_END -->
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -74,11 +85,13 @@ ETH 关卡挑战到LV9
 
 
 
+
 参加EPF周会 & Infinite Garden
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
