@@ -15,8 +15,147 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-16
+<!-- DAILY_CHECKIN_2026-04-16_START -->
+### 一、今日学习内容
+
+今天重点学习了 **Ethereum 交易池（TxPool / mempool）机制**，主要包括：
+
+-   交易池的作用与基本结构
+    
+-   交易进入 mempool 的流程（校验 → 入池）
+    
+-   交易排序规则（gas price / priority fee）
+    
+-   节点如何从交易池中选择交易打包进区块
+    
+
+通过学习，对“交易在被打包前的状态”有了更清晰的认识。
+
+* * *
+
+### 二、实践与分析
+
+1\. 交易进入 TxPool 的流程
+
+从流程角度进行拆解：
+
+1.  节点接收到交易（来自用户或 P2P 网络）
+    
+2.  进行基础校验：
+    
+    -   签名是否合法
+        
+    -   nonce 是否合理
+        
+    -   账户余额是否足够
+        
+3.  校验通过后进入 TxPool
+    
+
+👉 理解到：  
+**TxPool 是交易进入区块前的“缓冲区”与“筛选层”**
+
+* * *
+
+2\. 交易排序机制分析
+
+重点分析了交易优先级的核心因素：
+
+-   **Gas Price / Priority Fee（小费）**
+    
+-   **Nonce 顺序（同一账户必须连续）**
+    
+
+👉 得出结论：
+
+-   高 fee 的交易更容易被优先打包
+    
+-   同一账户的交易存在“依赖关系”，不能跳过
+    
+
+* * *
+
+3\. 交易池的动态特性
+
+观察到 TxPool 并不是静态结构，而是持续变化的：
+
+-   新交易不断进入
+    
+-   部分交易被打包移除
+    
+-   低 fee 交易可能被丢弃（或长期滞留）
+    
+
+👉 本质上类似一个“实时竞争队列”
+
+* * *
+
+### 三、遇到的问题
+
+-   不同客户端在 TxPool 策略上存在差异，细节较多
+    
+-   交易替换机制（Replace-By-Fee）理解还不够深入
+    
+-   节点在高负载情况下的交易淘汰策略不够清晰
+    
+
+* * *
+
+### 四、思考与收获
+
+1\. 对“交易打包”有了新的认知
+
+之前认为：
+
+> 交易进入区块是顺序过程
+
+现在理解为：
+
+> 交易打包是一个“优先级选择 + 策略决策”的过程
+
+* * *
+
+2\. 初步接触“博弈机制”
+
+逐渐意识到：
+
+-   用户通过提高 fee 来竞争打包机会
+    
+-   节点（或验证者）倾向选择收益更高的交易
+    
+
+👉 本质上形成了一种“市场机制”
+
+* * *
+
+3\. TxPool 的系统定位
+
+可以从系统角度这样理解：
+
+> TxPool = 交易流量的调度中心 + 优先级管理层
+
+它连接了：
+
+-   网络层（交易来源）
+    
+-   执行层（区块打包）
+    
+
+* * *
+
+### 五、明日计划
+
+-   深入学习 Gas 机制（Gas Limit / Base Fee / Priority Fee）
+    
+-   理解 EIP-1559 对交易费用模型的影响
+    
+-   分析 Gas 机制与 TxPool 排序策略之间的关系
+<!-- DAILY_CHECKIN_2026-04-16_END -->
+
 # 2026-04-15
 <!-- DAILY_CHECKIN_2026-04-15_START -->
+
 今天重点学习了 **Ethereum 执行客户端（Execution Client）的架构设计**，并对主流客户端进行了对比分析，主要包括：
 
 -   Geth（Go 实现）
@@ -116,6 +255,7 @@ EPF 实习计划
 # 2026-04-14
 <!-- DAILY_CHECKIN_2026-04-14_START -->
 
+
 今天重点学习了 **Ethereum 区块结构（Block Structure）及状态组织方式**，主要包括：
 
 -   区块的基本组成（Header / Body）
@@ -199,6 +339,7 @@ EPF 实习计划
 <!-- DAILY_CHECKIN_2026-04-13_START -->
 
 
+
 今天重点学习了 **Ethereum 中的数据编码与基础数据结构**，主要包括：
 
 -   RLP（Recursive Length Prefix）编码原理
@@ -259,6 +400,7 @@ EPF 实习计划
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -337,6 +479,7 @@ EPF 实习计划
 
 
 
+
 今天重点学习了 **Ethereum 网络通信机制**，主要包括：
 
 -   DevP2P 协议（节点之间的 P2P 通信机制）
@@ -395,6 +538,7 @@ DevP2P 更偏“底层网络协议”
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 
 
@@ -472,6 +616,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-08-1775669487734-image.png)
 
 维修bug
@@ -479,6 +624,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -501,11 +647,13 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775491855322-image.png)![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775492614139-image.png)
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
