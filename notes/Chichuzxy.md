@@ -15,8 +15,137 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-16
+<!-- DAILY_CHECKIN_2026-04-16_START -->
+# Besu 执行客户端学习笔记
+
+## 一、基础认知
+
+-   **定位**：Apache 2.0 开源、Java 语言编写的以太坊执行客户端，主网完全兼容，同时适配公网、企业级私网和测试网（Holesky、Sepolia 等）
+    
+-   **核心优势**：模块化插件架构，支持 PoS、PoA（QBFT/IBFT 2.0/Clique）多种共识，EVM 可单独提取为库使用
+    
+-   **核心资源**
+    
+    -   代码库：[https://github.com/hyperledger/besu/](https://github.com/hyperledger/besu/)
+        
+    -   官方文档：[https://besu.hyperledger.org](https://besu.hyperledger.org)
+        
+    -   社区交流：Discord #besu 频道
+        
+    -   通用参考测试：[https://github.com/ethereum/tests](https://github.com/ethereum/tests)（所有以太坊客户端共用）
+        
+
+## 二、代码结构（多模块 Gradle 项目）
+
+所有模块在 `settings.gradle` 中定义，版本统一在 `versions.gradle` 管理，每个模块有独立的 `build.gradle`。
+
+### 1\. 顶级入口模块
+
+-   `config`：集中管理和验证所有配置，包含创世块信息
+    
+-   `app/besu`：CLI 命令定义入口，主方法所在位置
+    
+
+### 2\. 基础功能模块
+
+-   `crypto`：所有密码学、密钥相关实现
+    
+-   `datatypes`：Besu 内部核心数据类型
+    
+-   `metrics`：对接 OpenTelemetry/Prometheus 的监控指标
+    
+-   `nat`：网络地址转换逻辑
+    
+
+### 3\. 以太坊核心模块（ethereum 目录）
+
+-   `api`：以太坊对外交互接口、世界状态相关
+    
+-   `core`：区块链存储、共识配置核心逻辑
+    
+-   `evm`：**EVM 虚拟机实现，所有操作码的具体逻辑都在这里**
+    
+
+### 4\. 扩展 / 企业模块
+
+-   `plugin-api`：插件开发标准接口
+    
+-   `plugins`：内置插件（如 Bonsai 低存储模式）
+    
+-   `consensus`：各类共识算法的具体实现
+    
+
+## 三、Gradle 构建与常用命令
+
+-   使用 Gradle Wrapper（`gradlew`/`gradlew.bat`），自动下载对应版本 Gradle，无需本地安装
+    
+-   核心开发命令
+    
+    -   代码格式化：`./gradlew spotlessApply`
+        
+    -   全量代码检查（CI 必跑）：`./gradlew check`
+        
+    -   编译打包：`./gradlew assemble`
+        
+    -   Java 最佳实践检查：`./gradlew errorProne`
+        
+-   构建产物：`build/distributions/` 下的 `.tar`/`.zip` 包，解压后 `bin/besu` 为启动脚本
+    
+
+## 四、测试体系
+
+1.  **单元测试**：每个模块 `src/test/java` 下，测试单个类 / 方法
+    
+2.  **集成测试**：每个模块 `src/integration-test/java` 下，测试模块间交互
+    
+3.  **验收测试**：独立 `acceptance-tests` 模块，模拟多节点共识、区块传播等真实场景
+    
+4.  **参考测试**：以太坊基金会通用测试集（JSON 格式），存储在 `ethereum/referencetests/src/test/resources`，验证 EVM 和协议兼容性
+    
+
+## 五、本地开发与运行
+
+-   拉取完整代码：`git pull --recurse-submodules`（含子模块）
+    
+-   启动本地开发节点（可对接 MetaMask）
+    
+    bash
+    
+    运行
+    
+    ```
+    bin/besu --network=dev --rpc-http-enabled --rpc-http-cors-origins=chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn
+    ```
+    
+-   默认 RPC 地址：`http://localhost:8545`
+    
+
+## 六、核心类与组件
+
+-   `BesuControllerBuilder`：客户端所有组件的总构建器，组装完整 Besu 实例
+    
+-   `BesuCommand`：CLI 命令的核心处理类
+    
+-   `ForkIdManager`：管理链分叉，跟踪当前链的位置和同步状态
+    
+-   `ProtocolSchedule`：映射不同区块高度对应的协议配置
+    
+-   `MainnetEVMs`：主网各硬分叉对应的 EVM 操作码集合
+    
+-   `JsonRpcMethodsFactory`：RPC 方法的注册和构建工厂
+    
+
+## 七、依赖的重要安全库
+
+-   **libsodium**：现代轻量加密库，用于加密、解密、签名、哈希等（文档解析失败）
+    
+-   **NSS**：Mozilla 开发的安全库，支持 TLS 1.2/1.3、X.509 证书、PKCS 系列标准
+<!-- DAILY_CHECKIN_2026-04-16_END -->
+
 # 2026-04-15
 <!-- DAILY_CHECKIN_2026-04-15_START -->
+
 # EVM（以太坊虚拟机）极简学习笔记
 
 ## 一、核心定位
@@ -195,6 +324,7 @@ EPF 实习计划
 # 2026-04-14
 <!-- DAILY_CHECKIN_2026-04-14_START -->
 
+
 # 以太坊执行客户端 学习笔记
 
 ## 一、核心概念
@@ -308,6 +438,7 @@ Akula、Aleth、Mana、OpenEthereum、Trinity
 
 # 2026-04-13
 <!-- DAILY_CHECKIN_2026-04-13_START -->
+
 
 
 # 以太坊执行层客户端架构学习笔记
@@ -523,6 +654,7 @@ func 状态转换(父块, 当前块, 旧状态) (新状态, 错误) {
 
 
 
+
 # 以太坊燃气（Gas）核算 学习笔记
 
 ## 核心定位
@@ -724,6 +856,7 @@ blobGasFee=totalBlobGas×blobGasPrice
 
 # 2026-04-11
 <!-- DAILY_CHECKIN_2026-04-11_START -->
+
 
 
 
@@ -964,6 +1097,7 @@ g0​=Gtransaction​+Gtxcreate​+Gcalldata​+Gaccesslist​
 
 
 
+
 # 以太坊协议架构学习笔记
 
 ## 一、协议总览
@@ -1139,6 +1273,7 @@ Gasper = **RANDAO（随机数）** + **LMD-GHOST（分叉选择）** + **Casper 
 
 
 
+
 以太坊继承了早期互联网的开放精神、Unix 的极简软件哲学、自由开源运动的协作理念与密码朋克的反叛精神，是数字技术与去中心化思想百年演进的集大成者。
 
 1.  **技术基石奠基**：1969 年冷战催生的 ARPANET 开启互联网时代；1960-70 年代贝尔实验室推出 Unix 操作系统与 C 语言，确立了模块化、可组合、"做好一件事" 的软件设计范式；1974-1977 年，Merkle 谜题、Diffie-Hellman 密钥交换、RSA 加密相继问世，突破了对称加密的信任瓶颈，奠定了无信任安全通信的基础。
@@ -1152,6 +1287,7 @@ Gasper = **RANDAO（随机数）** + **LMD-GHOST（分叉选择）** + **Casper 
 
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 
 
 
@@ -1243,6 +1379,7 @@ Gasper = **RANDAO（随机数）** + **LMD-GHOST（分叉选择）** + **Casper 
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
