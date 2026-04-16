@@ -15,13 +15,20 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-16
+<!-- DAILY_CHECKIN_2026-04-16_START -->
+![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/fuyushiphilip/images/2026-04-16-1776343930155-image.png)
+<!-- DAILY_CHECKIN_2026-04-16_END -->
+
 # 2026-04-15
 <!-- DAILY_CHECKIN_2026-04-15_START -->
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/fuyushiphilip/images/2026-04-15-1776263515539-image.png)
 <!-- DAILY_CHECKIN_2026-04-15_END -->
 
 # 2026-04-14
 <!-- DAILY_CHECKIN_2026-04-14_START -->
+
 
 ## **L2 → L1 結算路徑圖**  
   
@@ -33,11 +40,13 @@ EPF 实习计划
 <!-- DAILY_CHECKIN_2026-04-13_START -->
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/fuyushiphilip/images/2026-04-13-1776089625195-image.png)
 <!-- DAILY_CHECKIN_2026-04-13_END -->
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -50,6 +59,7 @@ EPF 实习计划
 
 # 2026-04-11
 <!-- DAILY_CHECKIN_2026-04-11_START -->
+
 
 
 
@@ -472,6 +482,7 @@ REPLACEMENT TX → Bypasses txpool rules
 
 
 
+
 Opcode · Stack · Memory · Storage · Calldata · Rever  
   
 **1\. EVM**
@@ -536,6 +547,7 @@ Opcode = individual human-readable names for each byte in the bytecode
 
 
 
+
 **Fork Choice · Finality · Slot · Epoch · Checkpoint · Slashing**
 
 -   **Fork Choice**: Determines which chain is the correct one when temporary disagreements occur.
@@ -559,6 +571,7 @@ Opcode = individual human-readable names for each byte in the bytecode
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -591,6 +604,7 @@ EIP-1559 introduced Type 2 transactions (EIP-1559 transactions), splitting fees 
 
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 
 
 
