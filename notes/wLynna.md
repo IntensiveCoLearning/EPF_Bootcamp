@@ -15,8 +15,256 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-17
+<!-- DAILY_CHECKIN_2026-04-17_START -->
+04/17 继续降维学习
+
+# 🧠 Consensus Layer（CL）— Human Version
+
+* * *
+
+## 1️⃣ What is Consensus Layer?
+
+Consensus Layer is the part of Ethereum that decides which blocks are accepted.  
+共识层是以太坊中负责决定“哪些区块被接受”的那一层。
+
+* * *
+
+It answers one core question:  
+“Which version of the blockchain is the true one?”  
+它解决一个核心问题：  
+👉 哪一条链才是真正的链？
+
+* * *
+
+Without CL, everyone could have different versions.  
+如果没有共识层，每个人看到的链可能都不一样。
+
+* * *
+
+👉 So:
+
+CL creates shared truth.  
+共识层创造“共同认可的真相”。
+
+* * *
+
+## 2️⃣ What does CL actually do?
+
+CL coordinates validators to agree on blocks.  
+共识层协调验证者对区块达成一致。
+
+* * *
+
+It decides:
+
+-   who proposes a block
+    
+-   who checks the block
+    
+-   when the block is finalized  
+    
+
+它决定：
+
+-   谁来出块
+    
+-   谁来验证
+    
+-   什么时候最终确认  
+    
+
+* * *
+
+👉 Simple idea:
+
+CL = coordination + agreement  
+CL = 协调 + 共识
+
+* * *
+
+## 3️⃣ Who are validators?
+
+Validators are participants who secure the network.  
+验证者是维护网络安全的参与者。
+
+* * *
+
+They stake ETH to join the system.  
+他们需要质押 ETH 才能参与。
+
+* * *
+
+If they behave honestly, they earn rewards.  
+如果行为诚实，会获得奖励。
+
+* * *
+
+If they cheat, they get punished.  
+如果作弊，会被惩罚（slash）。
+
+* * *
+
+👉 Key idea:
+
+Validators = decision makers  
+验证者 = 决策参与者
+
+* * *
+
+## 4️⃣ How a block is created (CL view)
+
+* * *
+
+CL selects a validator randomly.  
+共识层随机选择一个验证者。
+
+* * *
+
+This validator becomes the proposer.  
+这个验证者成为出块者。
+
+* * *
+
+The proposer builds a block with transactions.  
+出块者把交易打包成区块。
+
+* * *
+
+Other validators check the block.  
+其他验证者检查这个区块。
+
+* * *
+
+If enough validators agree, the block is accepted.  
+如果足够多的验证者同意，这个区块就被接受。
+
+* * *
+
+👉 Simple flow:
+
+Select → Propose → Validate → Accept  
+选择 → 出块 → 验证 → 接受
+
+* * *
+
+## 5️⃣ What is finality?
+
+Finality means the block cannot be changed anymore.  
+最终性（finality）意味着区块不可再被更改。
+
+* * *
+
+Before finality, a block might be replaced.  
+在最终确认前，区块有可能被替换。
+
+* * *
+
+After finality, it becomes permanent.  
+一旦最终确认，就永久不可逆。
+
+* * *
+
+👉 Simple idea:
+
+Finality = irreversible truth  
+最终性 = 不可改变的真相
+
+* * *
+
+## 6️⃣ Why staking is important
+
+Validators must lock ETH as stake.  
+验证者必须锁定 ETH 作为质押。
+
+* * *
+
+This gives them skin in the game.  
+这让他们“有代价、有责任”。
+
+* * *
+
+If they try to cheat, they lose money.  
+如果他们作弊，会损失资金。
+
+* * *
+
+👉 So:
+
+Security comes from economic incentives.  
+安全性来自经济激励机制。
+
+* * *
+
+## 7️⃣ Why CL exists separately
+
+* * *
+
+Execution is complex (EVM, contracts).  
+执行很复杂（EVM、合约等）。
+
+* * *
+
+Consensus is also complex (agreement, timing).  
+共识也复杂（协调、时间机制）。
+
+* * *
+
+Separating them makes both simpler.  
+把它们分开，让两边都更简单。
+
+* * *
+
+👉 This is a major upgrade in Ethereum design.  
+👉 这是以太坊设计中的一个重要升级。
+
+* * *
+
+## 8️⃣ What CL does NOT do
+
+\==CL does not execute smart contracts.==  
+共识层不执行智能合约。
+
+* * *
+
+CL does not compute balances.  
+共识层不计算余额。
+
+* * *
+
+👉 That is EL’s job.  
+👉 那是执行层的工作。
+
+* * *
+
+## 🧭 Final mental model（最重要）
+
+* * *
+
+CL selects who can propose blocks.  
+CL 选择谁来出块。
+
+* * *
+
+EL executes the transactions inside the block.  
+EL 执行区块中的交易。
+
+* * *
+
+CL confirms and finalizes the block.  
+CL 确认并最终确定这个区块。
+
+* * *
+
+👉 One sentence:
+
+CL decides truth, EL produces results.  
+CL 决定“真相”，EL 产生“结果”。
+<!-- DAILY_CHECKIN_2026-04-17_END -->
+
 # 2026-04-16
 <!-- DAILY_CHECKIN_2026-04-16_START -->
+
 04/16 继续降维学习
 
 EL vs CL — The Real Separation
@@ -234,6 +482,7 @@ CL = ENS 的安全与确认
 
 # 2026-04-15
 <!-- DAILY_CHECKIN_2026-04-15_START -->
+
 
 04/15 EL 协议规范，对我来说太难了，远远超纲，所以 降维学习
 
@@ -514,6 +763,7 @@ Ethereum is a global state machine, and EL is the part that runs the machine.
 <!-- DAILY_CHECKIN_2026-04-14_START -->
 
 
+
 # [Execution Layer Specification](https://epf.wiki/#/wiki/EL/el-specs?id=execution-layer-specification)
 
 看的很晕，纠结要不要放弃？
@@ -521,6 +771,7 @@ Ethereum is a global state machine, and EL is the part that runs the machine.
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -625,6 +876,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 
 
+
 04/11
 
 还得再休一天，睡觉更重要
@@ -639,6 +891,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 
 
+
 04/10
 
 今天折腾网络，休息下
@@ -648,6 +901,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -896,6 +1150,7 @@ Ethereum’s design can be summarized as:
 
 
 
+
 04/07
 
 ## 🧩 核心结构（Core Structure）
@@ -1000,6 +1255,7 @@ Ethereum’s design can be summarized as:
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
