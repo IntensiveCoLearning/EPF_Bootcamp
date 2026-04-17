@@ -15,8 +15,160 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-17
+<!-- DAILY_CHECKIN_2026-04-17_START -->
+### 一、今日学习内容
+
+今天重点学习了 **Ethereum Gas 机制及 EIP-1559 费用模型**，主要包括：
+
+-   Gas 的基本概念（Gas Limit / Gas Used）
+    
+-   传统 Gas Price 模型
+    
+-   EIP-1559 引入的 Base Fee 与 Priority Fee（小费）
+    
+-   区块容量的动态调整机制（Elastic Block Size）
+    
+
+通过学习，对交易费用的计算方式及其背后的设计逻辑有了更深入理解。
+
+* * *
+
+### 二、实践与分析
+
+1\. Gas 机制基本理解
+
+从执行角度理解：
+
+-   每个操作（opcode）都会消耗 Gas
+    
+-   用户在交易中设置 Gas Limit
+    
+-   实际执行消耗为 Gas Used
+    
+
+👉 本质：
+
+> Gas 是对“计算资源消耗”的量化约束
+
+* * *
+
+2\. EIP-1559 费用结构拆解
+
+交易费用由两部分组成：
+
+-   **Base Fee（基础费用）**
+    
+    -   由网络自动调整
+        
+    -   被直接销毁（burn）
+        
+-   **Priority Fee（小费）**
+    
+    -   用户自定义
+        
+    -   作为激励给验证者
+        
+
+👉 费用模型可以理解为：
+
+> 总费用 = Base Fee + Priority Fee
+
+* * *
+
+3\. 动态调节机制分析
+
+EIP-1559 的核心在于：
+
+-   区块有一个“目标容量”（target gas）
+    
+-   如果区块拥堵：
+    
+    -   Base Fee 上升
+        
+-   如果区块空闲：
+    
+    -   Base Fee 下降
+        
+
+👉 实现效果：
+
+-   平滑 Gas 价格波动
+    
+-   降低用户出价不确定性
+    
+
+* * *
+
+### 三、遇到的问题
+
+-   Base Fee 的具体调整公式仍需进一步理解
+    
+-   Gas 与具体 opcode 消耗之间的映射还不够熟悉
+    
+-   在不同客户端中的实现细节还未深入
+    
+
+* * *
+
+### 四、思考与收获
+
+1\. 对“费用机制”的认知升级
+
+之前理解为：
+
+> Gas = 手续费
+
+现在理解为：
+
+> Gas = 资源定价机制 + 网络调度工具
+
+* * *
+
+2\. EIP-1559 的设计意义
+
+逐渐意识到：
+
+-   引入 Base Fee 可以减少用户之间的竞价博弈
+    
+-   费用销毁机制（burn）影响 ETH 的经济模型
+    
+-   Priority Fee 保留激励机制，保证网络安全
+    
+
+👉 本质是：
+
+> 在“用户体验”和“激励机制”之间做平衡
+
+* * *
+
+3\. 与 TxPool 的关联理解
+
+结合昨天内容：
+
+-   TxPool 排序依赖 Priority Fee
+    
+-   Base Fee 决定交易是否能被接受
+    
+
+👉 两者共同决定：
+
+> 一笔交易能否进入区块，以及进入的优先级
+
+* * *
+
+### 五、明日计划
+
+-   深入分析 EVM 执行过程（opcode 层级）
+    
+-   理解不同操作的 Gas 消耗差异
+    
+-   为后续智能合约执行分析做准备
+<!-- DAILY_CHECKIN_2026-04-17_END -->
+
 # 2026-04-16
 <!-- DAILY_CHECKIN_2026-04-16_START -->
+
 ### 一、今日学习内容
 
 今天重点学习了 **Ethereum 交易池（TxPool / mempool）机制**，主要包括：
@@ -156,6 +308,7 @@ EPF 实习计划
 # 2026-04-15
 <!-- DAILY_CHECKIN_2026-04-15_START -->
 
+
 今天重点学习了 **Ethereum 执行客户端（Execution Client）的架构设计**，并对主流客户端进行了对比分析，主要包括：
 
 -   Geth（Go 实现）
@@ -256,6 +409,7 @@ EPF 实习计划
 <!-- DAILY_CHECKIN_2026-04-14_START -->
 
 
+
 今天重点学习了 **Ethereum 区块结构（Block Structure）及状态组织方式**，主要包括：
 
 -   区块的基本组成（Header / Body）
@@ -340,6 +494,7 @@ EPF 实习计划
 
 
 
+
 今天重点学习了 **Ethereum 中的数据编码与基础数据结构**，主要包括：
 
 -   RLP（Recursive Length Prefix）编码原理
@@ -400,6 +555,7 @@ EPF 实习计划
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -480,6 +636,7 @@ EPF 实习计划
 
 
 
+
 今天重点学习了 **Ethereum 网络通信机制**，主要包括：
 
 -   DevP2P 协议（节点之间的 P2P 通信机制）
@@ -538,6 +695,7 @@ DevP2P 更偏“底层网络协议”
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 
 
@@ -617,6 +775,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-08-1775669487734-image.png)
 
 维修bug
@@ -624,6 +783,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -648,11 +808,13 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775491855322-image.png)![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775492614139-image.png)
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
