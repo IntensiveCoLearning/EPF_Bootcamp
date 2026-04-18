@@ -15,8 +15,163 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-18
+<!-- DAILY_CHECKIN_2026-04-18_START -->
+### 一、今日学习内容
+
+今天重点学习了 **EVM（Ethereum Virtual Machine）的执行细节**，主要聚焦在：
+
+-   EVM 的栈式执行模型（Stack-based Architecture）
+    
+-   常见 Opcode 分类（算术 / 存储 / 控制流 / 环境信息）
+    
+-   Gas 在不同 Opcode 执行中的消耗机制
+    
+-   Storage 与 Memory 的区别
+    
+
+通过这一部分学习，开始从“执行结果”反推“执行过程”。
+
+* * *
+
+### 二、实践与分析
+
+1\. EVM 执行模型理解
+
+EVM 本质是一个：
+
+> 基于栈（Stack）的虚拟机
+
+其核心结构包括：
+
+-   **Stack（栈）**：用于操作数计算（LIFO）
+    
+-   **Memory（内存）**：临时数据存储（执行结束即释放）
+    
+-   **Storage（存储）**：持久化链上数据（写入成本高）
+    
+
+👉 执行流程可以理解为：
+
+-   按顺序读取 Opcode
+    
+-   对栈进行入栈 / 出栈操作
+    
+-   执行计算或状态变更
+    
+
+* * *
+
+2\. Opcode 分类分析
+
+对常见 Opcode 做了初步分类：
+
+-   **算术操作**（ADD / MUL / SUB 等）
+    
+-   **比较与逻辑**（LT / GT / EQ 等）
+    
+-   **环境信息**（CALLER / CALLVALUE 等）
+    
+-   **存储操作**（SLOAD / SSTORE）
+    
+-   **控制流**（JUMP / JUMPI）
+    
+
+👉 关键观察：
+
+-   不同类型操作的 Gas 消耗差异明显
+    
+-   特别是 Storage 写入（SSTORE）成本较高
+    
+
+* * *
+
+3\. Gas 与执行成本关系
+
+进一步理解：
+
+-   Gas 本质上是对 Opcode 执行成本的定价
+    
+-   复杂操作（如存储写入）消耗更多 Gas
+    
+-   通过 Gas 机制限制滥用计算资源
+    
+
+👉 本质：
+
+> EVM 是一个“带成本约束的执行环境”
+
+* * *
+
+### 三、遇到的问题
+
+-   部分 Opcode 的具体执行逻辑较复杂（尤其是 CALL 系列）
+    
+-   Storage 的底层实现（与状态树的关系）还不够清晰
+    
+-   执行流程在源码层面的映射还未完全打通
+    
+
+* * *
+
+### 四、思考与收获
+
+1\. 对“智能合约执行”的理解加深
+
+之前理解为：
+
+> 调用函数 → 得到结果
+
+现在理解为：
+
+> 一系列 Opcode 在虚拟机中逐条执行
+
+👉 智能合约本质上是：
+
+> 一段被编译成字节码的执行指令序列
+
+* * *
+
+2\. 对 Gas 的本质理解进一步强化
+
+结合今天内容：
+
+-   Gas ≠ 简单费用
+    
+-   Gas = 对每一步执行动作的定价
+    
+
+👉 这也是区块链能够“限制资源使用”的核心机制
+
+* * *
+
+3\. 执行层的完整认知逐步形成
+
+开始把之前的内容串起来：
+
+-   TxPool：决定“哪些交易被执行”
+    
+-   Block：记录执行结果
+    
+-   EVM：负责“如何执行”
+    
+
+👉 执行层三要素开始形成闭环认知
+
+* * *
+
+### 五、明日计划
+
+-   对本阶段内容进行系统性总结（第一阶段深入总结）
+    
+-   梳理执行层完整流程（从交易 → 执行 → 状态）
+    
+-   为后续 Account Abstraction 学习做准备
+<!-- DAILY_CHECKIN_2026-04-18_END -->
+
 # 2026-04-17
 <!-- DAILY_CHECKIN_2026-04-17_START -->
+
 ### 一、今日学习内容
 
 今天重点学习了 **Ethereum Gas 机制及 EIP-1559 费用模型**，主要包括：
@@ -169,6 +324,7 @@ EIP-1559 的核心在于：
 # 2026-04-16
 <!-- DAILY_CHECKIN_2026-04-16_START -->
 
+
 ### 一、今日学习内容
 
 今天重点学习了 **Ethereum 交易池（TxPool / mempool）机制**，主要包括：
@@ -309,6 +465,7 @@ EIP-1559 的核心在于：
 <!-- DAILY_CHECKIN_2026-04-15_START -->
 
 
+
 今天重点学习了 **Ethereum 执行客户端（Execution Client）的架构设计**，并对主流客户端进行了对比分析，主要包括：
 
 -   Geth（Go 实现）
@@ -410,6 +567,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 区块结构（Block Structure）及状态组织方式**，主要包括：
 
 -   区块的基本组成（Header / Body）
@@ -495,6 +653,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 中的数据编码与基础数据结构**，主要包括：
 
 -   RLP（Recursive Length Prefix）编码原理
@@ -555,6 +714,7 @@ EIP-1559 的核心在于：
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -637,6 +797,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 网络通信机制**，主要包括：
 
 -   DevP2P 协议（节点之间的 P2P 通信机制）
@@ -695,6 +856,7 @@ DevP2P 更偏“底层网络协议”
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 
 
@@ -776,6 +938,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-08-1775669487734-image.png)
 
 维修bug
@@ -783,6 +946,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -809,11 +973,13 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775491855322-image.png)![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775492614139-image.png)
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
