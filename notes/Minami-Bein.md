@@ -15,8 +15,175 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-20
+<!-- DAILY_CHECKIN_2026-04-20_START -->
+### 一、今日学习内容
+
+今天开始系统学习 **Account Abstraction（账户抽象，AA）** 的整体设计，主要包括：
+
+-   传统账户模型（EOA vs Contract Account）回顾
+    
+-   Account Abstraction 的提出背景与目标
+    
+-   EIP-4337 的基本架构
+    
+-   UserOperation 的核心概念
+    
+
+通过学习，初步理解了 AA 试图解决的问题以及其整体设计思路。
+
+* * *
+
+### 二、实践与分析
+
+1\. 传统账户模型的局限
+
+对现有账户体系进行了梳理：
+
+-   **EOA（Externally Owned Account）**
+    
+    -   依赖私钥控制
+        
+    -   必须由用户直接发起交易
+        
+-   **Contract Account（合约账户）**
+    
+    -   由代码控制
+        
+    -   无法主动发起交易
+        
+
+👉 存在问题：
+
+-   用户体验较差（必须持有 ETH 支付 Gas）
+    
+-   功能扩展受限（难以实现多签、社交恢复等）
+    
+
+* * *
+
+2\. Account Abstraction 的核心思想
+
+AA 的目标可以理解为：
+
+> 将“账户逻辑”从协议层抽象出来，交由智能合约定义
+
+也就是说：
+
+-   账户不再固定为 EOA
+    
+-   用户可以通过智能合约自定义账户行为
+    
+
+👉 带来的能力包括：
+
+-   自定义签名逻辑（如多签）
+    
+-   Gas 代付（Gas Sponsorship）
+    
+-   更灵活的身份与权限管理
+    
+
+* * *
+
+3\. EIP-4337 架构初步理解
+
+AA 并没有修改底层协议，而是通过“上层机制”实现：
+
+核心组件包括：
+
+-   **UserOperation**
+    
+    -   替代传统 Transaction
+        
+    -   表达用户操作意图
+        
+-   **Bundler**
+    
+    -   收集 UserOperation
+        
+    -   打包为交易并提交到链上
+        
+-   **EntryPoint 合约**
+    
+    -   统一入口
+        
+    -   负责验证与执行 UserOperation
+        
+
+👉 执行流程可以理解为：
+
+> UserOperation → Bundler → EntryPoint → 智能账户执行
+
+* * *
+
+### 三、遇到的问题
+
+-   UserOperation 与传统 Transaction 的差异还需进一步细化
+    
+-   Bundler 的具体实现机制（如何打包与盈利）尚不清晰
+    
+-   EntryPoint 内部执行逻辑较复杂，需要深入阅读
+    
+
+* * *
+
+### 四、思考与收获
+
+1\. 对“账户”的认知发生变化
+
+之前理解为：
+
+> 账户 = 地址 + 私钥
+
+现在理解为：
+
+> 账户 = 可编程执行逻辑
+
+👉 本质从“静态身份”变为“动态行为”
+
+* * *
+
+2\. AA 的本质意义
+
+逐渐意识到：
+
+-   AA 不是简单功能扩展
+    
+-   而是对账户模型的一次“抽象升级”
+    
+
+👉 让账户从“协议内置规则”变成“可自定义逻辑”
+
+* * *
+
+3\. 与之前知识的关联
+
+开始把 AA 与前面内容建立联系：
+
+-   TxPool → 管理 Transaction
+    
+-   AA → 引入 UserOperation（新的“输入形式”）
+    
+-   EVM → 最终仍执行合约逻辑
+    
+
+👉 AA 是在现有执行层之上的“扩展层”
+
+* * *
+
+### 五、明日计划
+
+-   深入分析 UserOperation 的结构与字段
+    
+-   对比 UserOperation 与 Transaction 的差异
+    
+-   理解 AA 如何实现“替代交易”的效果
+<!-- DAILY_CHECKIN_2026-04-20_END -->
+
 # 2026-04-19
 <!-- DAILY_CHECKIN_2026-04-19_START -->
+
 ### 一、本周学习回顾
 
 本周从第一周的基础认知出发，进一步深入到 **执行层核心机制与数据结构**，主要内容包括：
@@ -177,6 +344,7 @@ EPF 实习计划
 # 2026-04-18
 <!-- DAILY_CHECKIN_2026-04-18_START -->
 
+
 ### 一、今日学习内容
 
 今天重点学习了 **EVM（Ethereum Virtual Machine）的执行细节**，主要聚焦在：
@@ -333,6 +501,7 @@ EVM 本质是一个：
 <!-- DAILY_CHECKIN_2026-04-17_START -->
 
 
+
 ### 一、今日学习内容
 
 今天重点学习了 **Ethereum Gas 机制及 EIP-1559 费用模型**，主要包括：
@@ -487,6 +656,7 @@ EIP-1559 的核心在于：
 
 
 
+
 ### 一、今日学习内容
 
 今天重点学习了 **Ethereum 交易池（TxPool / mempool）机制**，主要包括：
@@ -629,6 +799,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 执行客户端（Execution Client）的架构设计**，并对主流客户端进行了对比分析，主要包括：
 
 -   Geth（Go 实现）
@@ -732,6 +903,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 区块结构（Block Structure）及状态组织方式**，主要包括：
 
 -   区块的基本组成（Header / Body）
@@ -819,6 +991,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 中的数据编码与基础数据结构**，主要包括：
 
 -   RLP（Recursive Length Prefix）编码原理
@@ -879,6 +1052,7 @@ EIP-1559 的核心在于：
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -965,6 +1139,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 网络通信机制**，主要包括：
 
 -   DevP2P 协议（节点之间的 P2P 通信机制）
@@ -1023,6 +1198,7 @@ DevP2P 更偏“底层网络协议”
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 
 
@@ -1108,6 +1284,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-08-1775669487734-image.png)
 
 维修bug
@@ -1115,6 +1292,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -1145,11 +1323,13 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775491855322-image.png)![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775492614139-image.png)
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
