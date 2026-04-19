@@ -15,19 +15,27 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-19
+<!-- DAILY_CHECKIN_2026-04-19_START -->
+今天半天都在上课，晚上就浏览了下推，然后把笔记汇总优化一下。
+<!-- DAILY_CHECKIN_2026-04-19_END -->
+
 # 2026-04-18
 <!-- DAILY_CHECKIN_2026-04-18_START -->
+
 今天满课，晚上整理了一下笔记。
 <!-- DAILY_CHECKIN_2026-04-18_END -->
 
 # 2026-04-17
 <!-- DAILY_CHECKIN_2026-04-17_START -->
 
+
 晚上看了一些x上关于大佬们对底层的看法。然后看了一下ai的趋势。
 <!-- DAILY_CHECKIN_2026-04-17_END -->
 
 # 2026-04-16
 <!-- DAILY_CHECKIN_2026-04-16_START -->
+
 
 
 看了一下epf的客户端架构，然后把昨天的工作流修了一下（今天没有正常启动，又加了权限）。
@@ -38,11 +46,13 @@ EPF 实习计划
 
 
 
+
 今天看了共识层规范然后继续修炼vibe coding，搭了一个每日硬盘监控的工作流。首次运行还可以，期待明天的运行结果。
 <!-- DAILY_CHECKIN_2026-04-15_END -->
 
 # 2026-04-14
 <!-- DAILY_CHECKIN_2026-04-14_START -->
+
 
 
 
@@ -57,11 +67,13 @@ EPF 实习计划
 
 
 
+
 今天逛了一下X和一些主要平台的官网，了解了一下行业趋势，然后修炼vibe coding ing
 <!-- DAILY_CHECKIN_2026-04-13_END -->
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -80,11 +92,13 @@ EPF 实习计划
 
 
 
+
 整理笔记ing。
 <!-- DAILY_CHECKIN_2026-04-11_END -->
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 
 
@@ -107,11 +121,13 @@ EPF 实习计划
 
 
 
+
 今天继续看交易字段以及账户类型
 <!-- DAILY_CHECKIN_2026-04-09_END -->
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -138,11 +154,13 @@ EPF 实习计划
 
 
 
+
 看完了Protocol部分。
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
