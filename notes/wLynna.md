@@ -15,8 +15,184 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-20
+<!-- DAILY_CHECKIN_2026-04-20_START -->
+HK Web3 Festival 嘉年华感受熊市，太熊了，好难受
+
+# 🧠 One Transaction = EL + CL Cooperation
+
+A full transaction lifecycle is a cooperation between EL and CL.  
+一笔交易的完整生命周期，是执行层（EL）和共识层（CL）的协作。
+
+* * *
+
+# 🧭 Full Lifecycle（完整生命周期）
+
+* * *
+
+## 1️⃣ User creates a transaction（链外开始）
+
+A user creates and signs a transaction.  
+用户创建并签名一笔交易。
+
+* * *
+
+This is just an intent, nothing has happened on-chain yet.  
+这只是一个“意图”，链上还没有发生任何事情。
+
+* * *
+
+👉 关键理解：
+
+Nothing is real yet.  
+👉 此时还没有“真实发生”。
+
+* * *
+
+## 2️⃣ Transaction enters the network（进入系统）
+
+The transaction is broadcast to the network.  
+交易被广播到网络中。
+
+* * *
+
+Nodes check basic validity (signature, nonce, balance).  
+节点检查基本合法性（签名、nonce、余额）。
+
+* * *
+
+👉 这一步：
+
+Still not final, still not executed.  
+👉 还没执行，也没有被确认。
+
+* * *
+
+## 3️⃣ CL selects a proposer（CL第一次介入）
+
+Consensus Layer selects a validator to propose a block.  
+共识层选择一个验证者来出块。
+
+* * *
+
+👉 关键点：
+
+CL decides who has the right to act.  
+👉 共识层决定“谁有权出手”。
+
+* * *
+
+## 4️⃣ Block is built（EL内容被组织）
+
+The proposer selects transactions from the mempool.  
+出块者从 mempool 选择交易。
+
+* * *
+
+They build a block with these transactions.  
+把这些交易打包成一个区块。
+
+* * *
+
+👉 关键点：
+
+Content = EL  
+Authority = CL
+
+内容属于 EL  
+权力来自 CL
+
+* * *
+
+## 5️⃣ EL executes transactions（核心执行）
+
+Execution Layer runs all transactions inside the block.  
+执行层执行区块中的所有交易。
+
+* * *
+
+EVM processes them step by step.  
+EVM 一步一步执行。
+
+* * *
+
+State is updated accordingly.  
+状态随之改变。
+
+* * *
+
+👉 关键点：
+
+Now things actually happen.  
+👉 到这里，“事情真正发生了”。
+
+* * *
+
+## 6️⃣ CL verifies the block（共识验证）
+
+Other validators check the block.  
+其他验证者检查这个区块。
+
+* * *
+
+They verify both:
+
+-   correctness (EL result)  
+    
+-   proposer behavior  
+    
+
+他们会验证：
+
+-   执行结果是否正确（EL）  
+    
+-   出块者是否正常  
+    
+
+* * *
+
+👉 关键点：
+
+CL checks EL’s work.  
+👉 共识层在“审核执行层”。
+
+* * *
+
+## 7️⃣ Block is finalized（最终确认）
+
+The block gets finalized through consensus.  
+区块通过共识机制被最终确认。
+
+* * *
+
+After this, it cannot be reversed.  
+之后就不可逆了。
+
+* * *
+
+👉 关键点：
+
+Now it becomes truth.  
+👉 到这里，它才成为“真相”。
+
+* * *
+
+# 🎯 最核心的理解（这一句非常重要）
+
+* * *
+
+Execution makes it happen.  
+执行让事情发生。
+
+* * *
+
+Consensus makes it permanent.  
+共识让结果变成永久。
+<!-- DAILY_CHECKIN_2026-04-20_END -->
+
 # 2026-04-19
 <!-- DAILY_CHECKIN_2026-04-19_START -->
+
 今天周日 想休息
 
 下周好悬啊，一周HK
@@ -24,6 +200,7 @@ EPF 实习计划
 
 # 2026-04-17
 <!-- DAILY_CHECKIN_2026-04-17_START -->
+
 
 04/17 继续降维学习
 
@@ -274,6 +451,7 @@ CL 决定“真相”，EL 产生“结果”。
 <!-- DAILY_CHECKIN_2026-04-16_START -->
 
 
+
 04/16 继续降维学习
 
 EL vs CL — The Real Separation
@@ -491,6 +669,7 @@ CL = ENS 的安全与确认
 
 # 2026-04-15
 <!-- DAILY_CHECKIN_2026-04-15_START -->
+
 
 
 
@@ -775,6 +954,7 @@ Ethereum is a global state machine, and EL is the part that runs the machine.
 
 
 
+
 # [Execution Layer Specification](https://epf.wiki/#/wiki/EL/el-specs?id=execution-layer-specification)
 
 看的很晕，纠结要不要放弃？
@@ -782,6 +962,7 @@ Ethereum is a global state machine, and EL is the part that runs the machine.
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -890,6 +1071,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 
 
+
 04/11
 
 还得再休一天，睡觉更重要
@@ -906,6 +1088,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 
 
+
 04/10
 
 今天折腾网络，休息下
@@ -915,6 +1098,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -1167,6 +1351,7 @@ Ethereum’s design can be summarized as:
 
 
 
+
 04/07
 
 ## 🧩 核心结构（Core Structure）
@@ -1271,6 +1456,7 @@ Ethereum’s design can be summarized as:
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
