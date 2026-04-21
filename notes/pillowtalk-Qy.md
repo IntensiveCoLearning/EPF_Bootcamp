@@ -15,8 +15,141 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-21
+<!-- DAILY_CHECKIN_2026-04-21_START -->
+![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/pillowtalk-Qy/images/2026-04-21-1776783827993-image.png)
+
+**共识客户端**（以前称为_eth2 客户端_）运行以太坊的权益证明共识算法，使网络能够就信标链的链头达成一致。共识客户端不参与验证/广播交易或执行状态转换：这些操作由执行客户端完成。共识客户端也不对新区块进行认证或提议：这些操作由验证器客户端完成，验证器客户端是共识客户端的可选附加组件。
+
+## [分配](https://epf.wiki/#/wiki/CL/cl-clients?id=distribution)
+
+绝大多数节点运营商目前都使用 Prysm 或 Lighthouse 作为共识客户端。为了维护信标链（原 ETH2）的健康发展，建议使用不同的客户端。 [为什么呢？](https://clientdiversity.org/#why)
+
+### [灯塔](https://epf.wiki/#/wiki/CL/cl-clients?id=lighthouse)
+
+Lighthouse 由 Sigma Prime 使用 Rust 编写，注重安全性和性能。它已被广泛采用，但需要谨慎使用，因为绝对多数投票可能会导致链分裂。Lighthouse 采用 Apache 2.0 许可，并以其在生产环境中的稳健性而闻名。
+
+[Lighthouse 提供适用于包括 ARM 在内的所有平台的二进制文件，并支持交叉编译。它还提供可移植版本，但这些版本牺牲了部分编译器性能选项，以换取更好的平台兼容性。发布的二进制文件均由security@sigmaprime.io](mailto:security@sigmaprime.io)`15E66D941F697E28F49381F426416DC3F30674B0`提供的GPG 密钥签名。
+
+显著特点：
+
+-   [交叉编译](https://lighthouse-book.sigmaprime.io/installation_cross_compiling.html)
+    
+-   [防割保护](https://lighthouse-book.sigmaprime.io/validator_slashing_protection.html)
+    
+-   [分身保护](https://lighthouse-book.sigmaprime.io/validator_doppelganger.html)
+    
+-   [经营一家恐怖片](https://lighthouse-book.sigmaprime.io/advanced_slasher.html)
+    
+-   [仅限区块提案人](https://lighthouse-book.sigmaprime.io/advanced_proposer_only.html)
+    
+-   [普罗米修斯和格拉法纳](https://lighthouse-book.sigmaprime.io/api_metrics.html)
+    
+
+### [北极星](https://epf.wiki/#/wiki/CL/cl-clients?id=lodestar)
+
+Lodestar 是 ChainSafe 开发的基于 TypeScript 的以太坊共识客户端，专为快速原型开发和浏览器兼容性而设计。它支持信标节点和验证器客户端功能，并提供 BLS 和 SSZ 等以太坊协议开发所需的关键库。Lodestar 采用 Apache License 2.0 和 GNU Lesser General Public License (LGPL) 双重许可，允许用户在宽松许可模式和版权保护许可模式之间进行选择。
+
+显著特点：
+
+-   [验证器客户端](https://chainsafe.github.io/lodestar/run/validator-management/vc-configuration)
+    
+-   [MEV 和 Builder 集成](https://chainsafe.github.io/lodestar/run/beacon-management/mev-and-builder-integration)
+    
+-   [轻客户端](https://chainsafe.github.io/lodestar/libraries/lightclient-prover/lightclient)
+    
+-   [证明者](https://chainsafe.github.io/lodestar/libraries/lightclient-prover/prover)
+    
+-   [普罗米修斯和格拉法纳](https://chainsafe.github.io/lodestar/run/logging-and-metrics/prometheus-grafana)
+    
+-   [远程监控](https://chainsafe.github.io/lodestar/run/logging-and-metrics/client-monitoring)
+    
+
+### [普瑞斯姆](https://epf.wiki/#/wiki/CL/cl-clients?id=prysm)
+
+Prysmatic Labs 的 Prysm 客户端使用 Go 语言编写，注重易用性和可靠性。它包含完整的信标节点实现和验证器客户端，利用 gRPC 进行进程间通信，BoltDB 进行数据存储，libp2p 进行网络连接。Prysm 旨在为以太坊的权益证明共识机制提供安全的参与途径。
+
+显著特点：
+
+-   [验证器客户端](https://docs.prylabs.network/docs/wallet/nondeterministic)
+    
+-   [配置 MEV Builder](https://docs.prylabs.network/docs/advanced/builder)
+    
+-   [经营一家恐怖片](https://docs.prylabs.network/docs/prysm-usage/slasher)
+    
+-   [普罗米修斯和格拉法纳](https://docs.prylabs.network/docs/prysm-usage/monitoring/grafana-dashboard)
+    
+-   [详细的最佳安全实践](https://docs.prylabs.network/docs/security-best-practices)
+    
+
+### [雨云](https://epf.wiki/#/wiki/CL/cl-clients?id=nimbus)
+
+Nimbus 由 Status 使用 Nim 开发，针对资源效率进行了优化。它支持智能手机和 Raspberry Pi 等轻量级设备，在高性能服务器上运行时，能够节省资源用于其他任务。Nimbus 集成了验证器客户端支持、远程签名、性能分析工具和强大的验证器监控功能。
+
+显著特点：
+
+-   [运行执行客户端](https://nimbus.guide/eth1.html)
+    
+-   [验证器客户端](https://nimbus.guide/validator-client.html)
+    
+-   [MEV 和 Builder 集成](https://nimbus.guide/external-block-builder.html)
+    
+-   [普罗米修斯和格拉法纳](https://nimbus.guide/metrics-pretty-pictures.html)
+    
+
+### [特库](https://epf.wiki/#/wiki/CL/cl-clients?id=teku)
+
+ConsenSys 的 Teku 是一款基于 Java 的以太坊共识客户端，提供全面的企业级功能。它包含完整的信标节点实现、验证器客户端、用于节点管理的 REST API、用于监控的 Prometheus 指标以及用于验证器签名密钥的外部密钥管理。Teku 适用于需要可扩展性和运维控制的企业级以太坊部署。
+
+显著特点：
+
+-   [验证器客户端](https://docs.teku.consensys.io/concepts/proof-of-stake)
+    
+-   [防割保护](https://docs.teku.consensys.io/how-to/prevent-slashing/use-a-slashing-protection-file)
+    
+-   [构建器和 MEV-boost](https://docs.teku.consensys.io/concepts/builder-network)
+    
+-   [发现分身](https://docs.teku.consensys.io/how-to/prevent-slashing/detect-doppelgangers)
+    
+-   [普罗米修斯和格拉法纳](https://docs.teku.consensys.io/how-to/monitor/use-metrics)
+    
+
+### [格兰丁](https://epf.wiki/#/wiki/CL/cl-clients?id=grandine)
+
+Grandine 是一款快速轻量的以太坊共识客户端，其设计重点在于高性能和简洁性。它使用 Rust 编写，与 Lighthouse 相同，并共享一些库。Grandine 的核心在于并行化和高效的资源利用，旨在通过提供精简的客户端替代方案，突破以太坊共识层的界限。其架构经过优化，可最大限度地降低延迟并提高高端机器的吞吐量，使其非常适合对性能要求极高的环境。
+
+显著特点：
+
+-   [验证器客户端](https://docs.grandine.io/validator_client.html)
+    
+-   [防割保护](https://docs.grandine.io/slashing_protection.html)
+    
+-   [建造者和MEV](https://docs.grandine.io/builder_api_and_mev.html)
+    
+-   [经营一家恐怖片](https://github.com/grandinetech/grandine/tree/develop/slasher)
+    
+-   [普罗米修斯](https://docs.grandine.io/metrics.html)和[格拉法纳](https://github.com/grandinetech/grandine/tree/develop/metrics)
+    
+
+### [卡普林](https://epf.wiki/#/wiki/CL/cl-clients?id=caplin)
+
+Caplin 是一个集成在 Erigon 执行客户端中的共识客户端。它本质上是 Erigon 的一项额外功能，允许 Erigon 在无需任何外部 CL 的情况下运行。
+
+-   [https://erigon.gitbook.io/erigon/advanced-usage/consensus-layer/caplin](https://erigon.gitbook.io/erigon/advanced-usage/consensus-layer/caplin)
+    
+-   [https://github.com/ledgerwatch/erigon/?tab=readme-ov-file#caplin](https://github.com/ledgerwatch/erigon/?tab=readme-ov-file#caplin)
+    
+
+### [Lambda 类](https://epf.wiki/#/wiki/CL/cl-clients?id=lambdaclass)
+
+LambdaClass 开发了一个用 Elixir 编写的客户端。它始于 EPF4 时期，并发展成为一个功能齐全的实现。目前仍在积极开发中，但尚未投入生产环境使用。
+
+-   [https://github.com/lambdaclass/lambda\_ethereum\_consensus](https://github.com/lambdaclass/lambda_ethereum_consensus)
+<!-- DAILY_CHECKIN_2026-04-21_END -->
+
 # 2026-04-20
 <!-- DAILY_CHECKIN_2026-04-20_START -->
+
 ![以太坊路线图已于2023年12月由VB更新](https://epf.wiki/wiki/research/img/full_roadmap2024_1600x1596.webp)![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/pillowtalk-Qy/images/2026-04-20-1776694252543-image.png)
 
 ### [合并](https://epf.wiki/#/wiki/research/roadmap?id=the-merge)
@@ -121,11 +254,13 @@ Vitalik 的《可能的未来》第 5 部分：“清洗”强调历史和状态
 # 2026-04-19
 <!-- DAILY_CHECKIN_2026-04-19_START -->
 
+
 休息一天，明天抓紧学习。
 <!-- DAILY_CHECKIN_2026-04-19_END -->
 
 # 2026-04-18
 <!-- DAILY_CHECKIN_2026-04-18_START -->
+
 
 
 ### **椭圆曲线密码学（ECC）**
@@ -164,11 +299,13 @@ Vitalik 的《可能的未来》第 5 部分：“清洗”强调历史和状态
 
 
 
+
 今天休息一天
 <!-- DAILY_CHECKIN_2026-04-17_END -->
 
 # 2026-04-16
 <!-- DAILY_CHECKIN_2026-04-16_START -->
+
 
 
 
@@ -232,11 +369,13 @@ Vitalik 的《可能的未来》第 5 部分：“清洗”强调历史和状态
 
 
 
+
 今天划水请个假
 <!-- DAILY_CHECKIN_2026-04-15_END -->
 
 # 2026-04-14
 <!-- DAILY_CHECKIN_2026-04-14_START -->
+
 
 
 
@@ -333,6 +472,7 @@ Vitalik 的《可能的未来》第 5 部分：“清洗”强调历史和状态
 
 
 
+
 ### **Roadmap Overview 的核心组成部分：**
 
 1.  **目标与愿景**：
@@ -380,6 +520,7 @@ Vitalik 的《可能的未来》第 5 部分：“清洗”强调历史和状态
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -529,6 +670,7 @@ PoS 的工作原理：
 
 
 
+
 今天先去搞了LI.FI的黑客松，明天学习
 <!-- DAILY_CHECKIN_2026-04-11_END -->
 
@@ -544,11 +686,13 @@ PoS 的工作原理：
 
 
 
+
 今天再休息一天，周末补回去
 <!-- DAILY_CHECKIN_2026-04-10_END -->
 
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
+
 
 
 
@@ -579,11 +723,13 @@ PoS 的工作原理：
 
 
 
+
 今天要为周五的一个分享会写好所有的内容，所以比较忙，就先休息一天了
 <!-- DAILY_CHECKIN_2026-04-08_END -->
 
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 
 
 
@@ -605,6 +751,7 @@ PoS 的工作原理：
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
