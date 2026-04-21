@@ -15,8 +15,167 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-22
+<!-- DAILY_CHECKIN_2026-04-22_START -->
+### 一、今日学习内容
+
+今天重点学习了 **Account Abstraction 架构中的核心组件——Bundler**，主要包括：
+
+-   Bundler 的角色与定位
+    
+-   UserOperation 的收集与筛选机制
+    
+-   Bundler 如何将 UserOperation 打包为 Transaction
+    
+-   Bundler 的激励与盈利方式
+    
+
+通过学习，对 AA 架构中“执行桥梁”的作用有了更清晰的认识。
+
+* * *
+
+### 二、实践与分析
+
+1\. Bundler 的核心职责
+
+从系统角度理解，Bundler 本质是：
+
+> UserOperation → Transaction 的“转换与打包节点”
+
+其主要职责包括：
+
+1.  接收用户提交的 UserOperation
+    
+2.  对 UserOperation 进行验证（模拟执行）
+    
+3.  按策略筛选与排序
+    
+4.  打包为一笔或多笔 Transaction
+    
+5.  提交到链上执行
+    
+
+👉 类似于：
+
+-   传统交易中的“打包者（矿工/验证者）”
+    
+-   但工作发生在“应用层”
+    
+
+* * *
+
+2\. 执行流程拆解
+
+完整流程可以这样理解：
+
+> 用户 → 提交 UserOperation → Bundler 收集 → 模拟验证 → 打包 → 调用 EntryPoint → 链上执行
+
+关键点：
+
+-   Bundler 会先做 **模拟执行（simulation）**
+    
+-   避免无效操作进入链上浪费 Gas
+    
+
+* * *
+
+3\. Bundler 的策略机制
+
+分析了 Bundler 的选择逻辑：
+
+-   优先选择高收益 UserOperation（类似 Gas 竞价）
+    
+-   过滤无效或风险操作
+    
+-   可能存在自定义策略（如白名单、限流等）
+    
+
+👉 本质：
+
+> Bundler 也是一个“策略驱动的选择系统”
+
+* * *
+
+4\. 盈利与激励机制
+
+Bundler 的收益来源主要包括：
+
+-   UserOperation 中的 fee（用户支付）
+    
+-   可能的额外激励（如 Paymaster 机制）
+    
+
+👉 与验证者类似：
+
+> 提供服务 → 获取手续费
+
+* * *
+
+### 三、遇到的问题
+
+-   Bundler 的具体实现（代码层）还未深入
+    
+-   多个 Bundler 之间的竞争关系尚不清晰
+    
+-   是否存在中心化风险需要进一步分析
+    
+
+* * *
+
+### 四、思考与收获
+
+1\. 对 AA 执行链路的关键补全
+
+通过今天的学习，AA 执行流程终于完整：
+
+> UserOperation → Bundler → Transaction → EntryPoint → EVM
+
+👉 Bundler 是不可缺少的中间层
+
+* * *
+
+2\. Bundler 的系统定位
+
+可以这样理解：
+
+> Bundler = “用户操作调度器 + 执行中继层”
+
+它连接了：
+
+-   用户（提交操作）
+    
+-   区块链（执行操作）
+    
+
+* * *
+
+3\. 去中心化与现实权衡
+
+逐渐意识到：
+
+-   理论上可以有多个 Bundler
+    
+-   实际中可能出现集中化趋势
+    
+
+👉 AA 在设计上仍存在：
+
+> 去中心化 vs 效率 的权衡
+
+* * *
+
+### 五、明日计划
+
+-   学习 Paymaster 机制（Gas 代付核心）
+    
+-   理解 AA 如何实现“用户无需持有 ETH”
+    
+-   分析安全性与滥用风险
+<!-- DAILY_CHECKIN_2026-04-22_END -->
+
 # 2026-04-21
 <!-- DAILY_CHECKIN_2026-04-21_START -->
+
 ### 一、今日学习内容
 
 今天重点围绕 **UserOperation 与传统 Transaction 的对比分析** 展开，主要包括：
@@ -165,6 +324,7 @@ EPF 实习计划
 
 # 2026-04-20
 <!-- DAILY_CHECKIN_2026-04-20_START -->
+
 
 ### 一、今日学习内容
 
@@ -334,6 +494,7 @@ AA 并没有修改底层协议，而是通过“上层机制”实现：
 <!-- DAILY_CHECKIN_2026-04-19_START -->
 
 
+
 ### 一、本周学习回顾
 
 本周从第一周的基础认知出发，进一步深入到 **执行层核心机制与数据结构**，主要内容包括：
@@ -496,6 +657,7 @@ AA 并没有修改底层协议，而是通过“上层机制”实现：
 
 
 
+
 ### 一、今日学习内容
 
 今天重点学习了 **EVM（Ethereum Virtual Machine）的执行细节**，主要聚焦在：
@@ -650,6 +812,7 @@ EVM 本质是一个：
 
 # 2026-04-17
 <!-- DAILY_CHECKIN_2026-04-17_START -->
+
 
 
 
@@ -810,6 +973,7 @@ EIP-1559 的核心在于：
 
 
 
+
 ### 一、今日学习内容
 
 今天重点学习了 **Ethereum 交易池（TxPool / mempool）机制**，主要包括：
@@ -954,6 +1118,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 执行客户端（Execution Client）的架构设计**，并对主流客户端进行了对比分析，主要包括：
 
 -   Geth（Go 实现）
@@ -1059,6 +1224,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 区块结构（Block Structure）及状态组织方式**，主要包括：
 
 -   区块的基本组成（Header / Body）
@@ -1148,6 +1314,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 中的数据编码与基础数据结构**，主要包括：
 
 -   RLP（Recursive Length Prefix）编码原理
@@ -1208,6 +1375,7 @@ EIP-1559 的核心在于：
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -1298,6 +1466,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 网络通信机制**，主要包括：
 
 -   DevP2P 协议（节点之间的 P2P 通信机制）
@@ -1356,6 +1525,7 @@ DevP2P 更偏“底层网络协议”
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 
 
@@ -1445,6 +1615,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-08-1775669487734-image.png)
 
 维修bug
@@ -1452,6 +1623,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -1486,11 +1658,13 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775491855322-image.png)![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775492614139-image.png)
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
