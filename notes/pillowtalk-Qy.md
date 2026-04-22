@@ -15,8 +15,81 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-22
+<!-- DAILY_CHECKIN_2026-04-22_START -->
+会议讨论了 ZK 技术相关项目的历史、原理、应用以及发展方向等内容，具体如下：
+
+-   **PAC 团队历史**：
+    
+    -   **2018 年**：名为 applyzkp，专注 ZKP 在保险上的实作与应用，构建相关工具。
+        
+    -   **2020 年**：改名为 privacy and scaling explorations，探索隐私相关协议如 NPC、FHE，开展 scaling 项目 zkevm。
+        
+    -   **2025 年**：更名为 privacy stewards of Ethereum（简称 PSC），着重隐私应用，不碰 Ethereum 相关协议。
+        
+-   **Ethereum 隐私问题**：
+    
+    -   **特点**：是公开账本，记录所有交易，所有人可查看账本和智能合约，可能导致隐私泄露和被攻击。
+        
+    -   **分层**：有 Protocol layer 和 application layer，前者注重可验证性，隐私较难更改；后者可在外部协议上构建，隐私可能性更高，PSC 更关注此层。
+        
+-   **ZK 原理与目的**：
+    
+    -   **原理**：通过证明多项式上的点（x, y）来证明知道多项式，虽有被猜到的几率，但实际因多项式次方高、域值大，量子计算出现前难以破解。
+        
+    -   **目的**：一是隐私，只证明想证明的，不泄露其他信息；二是扩容，在产生证明时完成计算，验证时复杂度低。
+        
+-   **ZK 隐私相关项目**：
+    
+    -   **Symphony**：解决区块链上账号密码登录问题，利用 GKP 随机性建立 Merkle tree，注册时新增叶子节点，证明知道 hash 前的值，保护身份隐私。
+        
+    -   **Unirap**：解决 Symphony 成员权限相同问题，在 Merkle tree 中除 secret 外多存 data 资讯，频繁更新树以证明节点和 data 信息。
+        
+    -   **Tunnel Cash**：可将钱存入取出，用 Merkle tree 证明存款，用 nonce fire 避免重复取款。
+        
+    -   **Proof of Passport、Email、ZK ID**：利用 Signature 证明拥有政府文件、邮件等，实现匿名 KYC。
+        
+    -   **Mobile prover**：将 ZK 基础设施搬到手机上，方便开发者构建移动应用。
+        
+    -   **Peer（ZK p to p）**：可拥有朋友虚拟户的加密货币，用 DK Email 证明付款后获取对应 TOKEN，有移动版本。
+        
+    -   **ZK 版本 Luma**：参加活动时提供 QR code（semaphore 的 proof）证明是 Merkle tree 成员，无需透露身份。
+        
+-   **ZK 扩容相关**：
+    
+    -   **问题**：以太坊账本增大，节点验证交易负担重，希望将重计算放链下，链上只验证证明。
+        
+    -   **zkevm**：实现智能合约运算部分的电路编写，证明使用者合约符合运算，但存在电路难写、Ethereum 升级快、审计时间长等问题。
+        
+    -   **ZKVM**：用指令集（如 RISC - v）编写，兼容多种语言，可利用现有 Ethereum 代码，具有通用性强、开发迭代快、审计方便等优点，未来 Ethereum layer one 有望采用。
+        
+-   **ZK 未来方向**：
+    
+    -   **隐私方向**：注重创意和 UI/UX，将现有工具组装，满足用户隐私需求，往产品方向发展。
+        
+    -   **扩容方向**：开发者需具备数学、工程或研究等硬实力，关注 GPU 加速研究以提升效能。
+        
+-   **问答环节**：
+    
+    -   **ZKPASS**：目前已无人维护，成为开源资源。
+        
+    -   **PSE 未来方向**：分 privacy proofing、privacy rights、private rates 三个 track，目前状态稳定。
+        
+    -   **人才选拔**：早期有熟人介绍或有 ZK 经验即可加入，后期通过 GitHub 开源贡献、参加活动等途径吸引人才，今年仍在招聘。
+        
+    -   **合规问题**：团队小心处理与钱相关项目，多做与身份相关项目，若涉及钱可采用技术证明合规。
+        
+    -   **PSE 着力点**：在 master map 的几个方向均衡发展。
+        
+
+  
+  
+这次会议的大部分内容，我都不是很了解，要学的还是太多了，而且密码学这块需要的知识太复杂庞大了，目前只能当作长远的目标去努力。
+<!-- DAILY_CHECKIN_2026-04-22_END -->
+
 # 2026-04-21
 <!-- DAILY_CHECKIN_2026-04-21_START -->
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/pillowtalk-Qy/images/2026-04-21-1776783827993-image.png)
 
 **共识客户端**（以前称为_eth2 客户端_）运行以太坊的权益证明共识算法，使网络能够就信标链的链头达成一致。共识客户端不参与验证/广播交易或执行状态转换：这些操作由执行客户端完成。共识客户端也不对新区块进行认证或提议：这些操作由验证器客户端完成，验证器客户端是共识客户端的可选附加组件。
@@ -150,6 +223,7 @@ LambdaClass 开发了一个用 Elixir 编写的客户端。它始于 EPF4 时期
 # 2026-04-20
 <!-- DAILY_CHECKIN_2026-04-20_START -->
 
+
 ![以太坊路线图已于2023年12月由VB更新](https://epf.wiki/wiki/research/img/full_roadmap2024_1600x1596.webp)![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/pillowtalk-Qy/images/2026-04-20-1776694252543-image.png)
 
 ### [合并](https://epf.wiki/#/wiki/research/roadmap?id=the-merge)
@@ -255,11 +329,13 @@ Vitalik 的《可能的未来》第 5 部分：“清洗”强调历史和状态
 <!-- DAILY_CHECKIN_2026-04-19_START -->
 
 
+
 休息一天，明天抓紧学习。
 <!-- DAILY_CHECKIN_2026-04-19_END -->
 
 # 2026-04-18
 <!-- DAILY_CHECKIN_2026-04-18_START -->
+
 
 
 
@@ -300,11 +376,13 @@ Vitalik 的《可能的未来》第 5 部分：“清洗”强调历史和状态
 
 
 
+
 今天休息一天
 <!-- DAILY_CHECKIN_2026-04-17_END -->
 
 # 2026-04-16
 <!-- DAILY_CHECKIN_2026-04-16_START -->
+
 
 
 
@@ -370,11 +448,13 @@ Vitalik 的《可能的未来》第 5 部分：“清洗”强调历史和状态
 
 
 
+
 今天划水请个假
 <!-- DAILY_CHECKIN_2026-04-15_END -->
 
 # 2026-04-14
 <!-- DAILY_CHECKIN_2026-04-14_START -->
+
 
 
 
@@ -473,6 +553,7 @@ Vitalik 的《可能的未来》第 5 部分：“清洗”强调历史和状态
 
 
 
+
 ### **Roadmap Overview 的核心组成部分：**
 
 1.  **目标与愿景**：
@@ -520,6 +601,7 @@ Vitalik 的《可能的未来》第 5 部分：“清洗”强调历史和状态
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -671,6 +753,7 @@ PoS 的工作原理：
 
 
 
+
 今天先去搞了LI.FI的黑客松，明天学习
 <!-- DAILY_CHECKIN_2026-04-11_END -->
 
@@ -687,11 +770,13 @@ PoS 的工作原理：
 
 
 
+
 今天再休息一天，周末补回去
 <!-- DAILY_CHECKIN_2026-04-10_END -->
 
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
+
 
 
 
@@ -724,11 +809,13 @@ PoS 的工作原理：
 
 
 
+
 今天要为周五的一个分享会写好所有的内容，所以比较忙，就先休息一天了
 <!-- DAILY_CHECKIN_2026-04-08_END -->
 
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 
 
 
@@ -751,6 +838,7 @@ PoS 的工作原理：
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
