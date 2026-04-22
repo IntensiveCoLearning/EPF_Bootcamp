@@ -15,19 +15,27 @@ timezone: UTC+8
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-22
+<!-- DAILY_CHECKIN_2026-04-22_START -->
+学习了一些 ZK 和隐私相关的东西投了些简历
+<!-- DAILY_CHECKIN_2026-04-22_END -->
+
 # 2026-04-20
 <!-- DAILY_CHECKIN_2026-04-20_START -->
+
 整理第三周学习资料
 <!-- DAILY_CHECKIN_2026-04-20_END -->
 
 # 2026-04-19
 <!-- DAILY_CHECKIN_2026-04-19_START -->
 
+
 脑爆产品，开发新产品，惠州旅居踩点
 <!-- DAILY_CHECKIN_2026-04-19_END -->
 
 # 2026-04-17
 <!-- DAILY_CHECKIN_2026-04-17_START -->
+
 
 
 
@@ -40,11 +48,13 @@ timezone: UTC+8
 
 
 
+
 回顾了一下 EL CL 的知识，有点忙，暂时没时间写笔记
 <!-- DAILY_CHECKIN_2026-04-16_END -->
 
 # 2026-04-14
 <!-- DAILY_CHECKIN_2026-04-14_START -->
+
 
 
 
@@ -61,11 +71,13 @@ timezone: UTC+8
 
 
 
+
 布置任务，联系 PSE 团队
 <!-- DAILY_CHECKIN_2026-04-13_END -->
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -86,11 +98,13 @@ timezone: UTC+8
 
 
 
+
 今天调整工作流
 <!-- DAILY_CHECKIN_2026-04-11_END -->
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 
 
@@ -115,11 +129,13 @@ timezone: UTC+8
 
 
 
+
 我先来保证全勤
 <!-- DAILY_CHECKIN_2026-04-09_END -->
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -433,11 +449,13 @@ Frontier 是“技术用户版”的以太坊，Frontier thawing 逐步放开限
 
 
 
+
 明天开始恢复打卡，再欠一天
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
