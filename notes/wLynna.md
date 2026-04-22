@@ -15,8 +15,225 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-22
+<!-- DAILY_CHECKIN_2026-04-22_START -->
+## Layer 1 、Layer2
+
+# 🧠 What is Layer 1?
+
+Layer 1 is the base blockchain itself.  
+Layer 1 是区块链本身的基础层。
+
+* * *
+
+For Ethereum, Layer 1 is Ethereum mainnet.  
+对以太坊来说，Layer 1 就是以太坊主网。
+
+* * *
+
+It includes:
+
+-   Execution Layer（执行层）  
+    
+-   Consensus Layer（共识层）  
+    
+
+它包含：
+
+-   执行层  
+    
+-   共识层  
+    
+
+* * *
+
+Layer 1 is where the final truth lives.  
+Layer 1 是“最终真相”所在的地方。
+
+* * *
+
+👉 Key idea:
+
+Layer 1 = source of truth  
+Layer 1 = 真相来源
+
+* * *
+
+# 🧠 What is Layer 2?
+
+Layer 2 is built on top of Layer 1 to improve scalability.  
+Layer 2 是构建在 Layer 1 之上的扩展层，用来提升性能。
+
+* * *
+
+It processes transactions off the main chain.  
+它把交易放到主链之外处理。
+
+* * *
+
+But it still relies on Layer 1 for security.  
+但它仍然依赖 Layer 1 来保证安全。
+
+* * *
+
+👉 Key idea:
+
+Layer 2 = faster, cheaper, but anchored to L1  
+Layer 2 = 更快、更便宜，但依附于 L1
+
+* * *
+
+# 🧭 Why do we need Layer 2?
+
+* * *
+
+Layer 1 is secure but expensive and slow.  
+Layer 1 很安全，但成本高、速度慢。
+
+* * *
+
+Because every node must process every transaction.  
+因为每个节点都要处理每一笔交易。
+
+* * *
+
+👉 That limits scalability.
+
+👉 这限制了扩展性。
+
+* * *
+
+Layer 2 solves this by moving computation away.  
+Layer 2 通过把计算移到链外来解决这个问题。
+
+* * *
+
+👉 So:
+
+L1 = security  
+L2 = scalability
+
+L1 = 安全  
+L2 = 扩展性
+
+* * *
+
+# 🧩 How Layer 2 works (simple version)
+
+* * *
+
+Users send transactions to Layer 2.  
+用户把交易发送到 Layer 2。
+
+* * *
+
+Layer 2 executes many transactions off-chain.  
+Layer 2 在链外执行大量交易。
+
+* * *
+
+Then it sends a summary back to Layer 1.  
+然后把结果“打包摘要”发回 Layer 1。
+
+* * *
+
+Layer 1 verifies or accepts this result.  
+Layer 1 验证或确认这个结果。
+
+* * *
+
+👉 Key idea:
+
+L2 computes, L1 verifies  
+L2 计算，L1 验证
+
+* * *
+
+# 🔍 Two common types (轻微了解就够)
+
+* * *
+
+Optimistic Rollups assume transactions are correct unless challenged.  
+Optimistic Rollup 默认交易是正确的，除非有人提出挑战。
+
+* * *
+
+ZK Rollups prove correctness with math proofs.  
+ZK Rollup 用数学证明来保证正确性。
+
+* * *
+
+👉 不需要深入，只要记：
+
+Different L2s = different ways to prove correctness  
+不同 L2 = 不同的“证明正确性”的方式
+
+* * *
+
+# 🧭 Relationship between L1 and L2
+
+* * *
+
+Layer 2 cannot exist without Layer 1.  
+Layer 2 离不开 Layer 1。
+
+* * *
+
+Layer 1 provides security and finality.  
+Layer 1 提供安全和最终确认。
+
+* * *
+
+Layer 2 provides speed and low cost.  
+Layer 2 提供速度和低成本。
+
+* * *
+
+👉 One sentence:
+
+L2 scales Ethereum, L1 secures it  
+L2 扩展以太坊，L1 保护它
+
+* * *
+
+# 🧠 Connect back to what you learned
+
+* * *
+
+Execution Layer (EL) runs transactions.  
+执行层负责执行交易。
+
+* * *
+
+Consensus Layer (CL) finalizes them.  
+共识层负责最终确认。
+
+* * *
+
+👉 Now add L2:
+
+L2 does execution faster  
+L1 still provides final consensus
+
+L2 更快执行  
+L1 仍然提供最终共识
+
+* * *
+
+👉 所以：
+
+L2 is like an extension of EL  
+L2 有点像“外包的执行层”
+
+* * *
+
+But final truth still comes from L1  
+但最终真相仍然来自 L1
+<!-- DAILY_CHECKIN_2026-04-22_END -->
+
 # 2026-04-20
 <!-- DAILY_CHECKIN_2026-04-20_START -->
+
 HK Web3 Festival 嘉年华感受熊市，太熊了，好难受
 
 # 🧠 One Transaction = EL + CL Cooperation
@@ -193,6 +410,7 @@ Consensus makes it permanent.
 # 2026-04-19
 <!-- DAILY_CHECKIN_2026-04-19_START -->
 
+
 今天周日 想休息
 
 下周好悬啊，一周HK
@@ -200,6 +418,7 @@ Consensus makes it permanent.
 
 # 2026-04-17
 <!-- DAILY_CHECKIN_2026-04-17_START -->
+
 
 
 04/17 继续降维学习
@@ -452,6 +671,7 @@ CL 决定“真相”，EL 产生“结果”。
 
 
 
+
 04/16 继续降维学习
 
 EL vs CL — The Real Separation
@@ -669,6 +889,7 @@ CL = ENS 的安全与确认
 
 # 2026-04-15
 <!-- DAILY_CHECKIN_2026-04-15_START -->
+
 
 
 
@@ -955,6 +1176,7 @@ Ethereum is a global state machine, and EL is the part that runs the machine.
 
 
 
+
 # [Execution Layer Specification](https://epf.wiki/#/wiki/EL/el-specs?id=execution-layer-specification)
 
 看的很晕，纠结要不要放弃？
@@ -962,6 +1184,7 @@ Ethereum is a global state machine, and EL is the part that runs the machine.
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -1072,6 +1295,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 
 
+
 04/11
 
 还得再休一天，睡觉更重要
@@ -1089,6 +1313,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 
 
+
 04/10
 
 今天折腾网络，休息下
@@ -1098,6 +1323,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -1352,6 +1578,7 @@ Ethereum’s design can be summarized as:
 
 
 
+
 04/07
 
 ## 🧩 核心结构（Core Structure）
@@ -1456,6 +1683,7 @@ Ethereum’s design can be summarized as:
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
