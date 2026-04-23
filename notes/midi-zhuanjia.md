@@ -15,13 +15,20 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-23
+<!-- DAILY_CHECKIN_2026-04-23_START -->
+感觉数学逻辑上还不是很完善..任然ERC721这些库来决解底层问题,也许应该把这些功能完全集成进去,不需要再去导入....还有数学溢出的问题也是;超过上限等于0,0-1等于上限....这太反常了,应该修复这种类型的问题
+<!-- DAILY_CHECKIN_2026-04-23_END -->
+
 # 2026-04-22
 <!-- DAILY_CHECKIN_2026-04-22_START -->
+
 休息…..
 <!-- DAILY_CHECKIN_2026-04-22_END -->
 
 # 2026-04-21
 <!-- DAILY_CHECKIN_2026-04-21_START -->
+
 
 休息两天
 <!-- DAILY_CHECKIN_2026-04-21_END -->
@@ -30,11 +37,13 @@ EPF 实习计划
 <!-- DAILY_CHECKIN_2026-04-18_START -->
 
 
+
 以太坊的存储目前还是依赖常规的硬盘..目前有一种新技术;类似光纤的原理但使用特殊材质使光在其中的速度减慢,再增加路程长度.使之能够储存信息...我预感这项技术可能是非常适合区块链的技术..这是个有趣的想象....
 <!-- DAILY_CHECKIN_2026-04-18_END -->
 
 # 2026-04-17
 <!-- DAILY_CHECKIN_2026-04-17_START -->
+
 
 
 
@@ -48,11 +57,13 @@ EPF 实习计划
 
 
 
+
 我在想是不是有另一种方法 能够大幅降低甚至免除gas费...只需要有种系统能够审核项目,只上线通过信任考核的项目从而免除对计算资源浪费的可能.....或者对能够执行的代码进行规范 ....这样一来就能免除信任问题所带来的gas费消耗..
 <!-- DAILY_CHECKIN_2026-04-16_END -->
 
 # 2026-04-15
 <!-- DAILY_CHECKIN_2026-04-15_START -->
+
 
 
 
@@ -72,11 +83,13 @@ EPF 实习计划
 
 
 
+
 休息一天
 <!-- DAILY_CHECKIN_2026-04-14_END -->
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -101,11 +114,13 @@ EPF 实习计划
 
 
 
+
 感觉有点跟不上了,还是先补学一下数据结构,模运算,p2p吧...
 <!-- DAILY_CHECKIN_2026-04-11_END -->
 
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
+
 
 
 
@@ -134,6 +149,7 @@ EPF 实习计划
 
 
 
+
 客户端的概念其实是 一整个eth网络的cpu? 只不过是去中心化的,但原理类似...这个想法很有意思.
 
 ![payload-validation-routine.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/midi-zhuanjia/images/2026-04-08-1775656974811-payload-validation-routine.png)
@@ -141,6 +157,7 @@ EPF 实习计划
 
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 
 
 
