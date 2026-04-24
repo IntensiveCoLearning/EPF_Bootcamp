@@ -15,8 +15,153 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-24
+<!-- DAILY_CHECKIN_2026-04-24_START -->
+### 一、今日学习内容
+
+今天重点学习了 **Smart Account（智能账户）与 EOA（外部账户）的对比与设计差异**，主要包括：
+
+-   EOA 的基本特性与限制
+    
+-   Smart Account 的结构与执行方式
+    
+-   两种账户在权限控制、签名机制、扩展能力上的差异
+    
+-   智能账户在 Account Abstraction 中的作用
+    
+
+通过对比分析，对账户模型的演进有了更清晰的认识。
+
+* * *
+
+### 二、实践与分析
+
+1\. EOA 与 Smart Account 对比
+
+| 维度 | EOA | Smart Account |
+| --- | --- | --- |
+| 控制方式 | 私钥控制 | 合约逻辑控制 |
+| 签名机制 | 固定（ECDSA） | 可自定义 |
+| 发起交易 | 用户直接发起 | 通过合约执行 |
+| 可扩展性 | 较低 | 高（支持复杂逻辑） |
+| Gas 支付 | 必须由自身支付 | 可由第三方代付 |
+
+👉 核心差异：
+
+> EOA 是“固定规则账户”  
+> Smart Account 是“可编程账户”
+
+* * *
+
+2\. Smart Account 的执行机制
+
+结合 AA 架构理解：
+
+-   用户提交 UserOperation
+    
+-   由 EntryPoint 调用 Smart Account
+    
+-   Smart Account 内部执行验证逻辑
+    
+-   验证通过后执行实际操作
+    
+
+👉 关键点：
+
+-   验证逻辑完全由合约定义
+    
+-   可以实现复杂权限控制
+    
+
+* * *
+
+3\. 能力扩展分析
+
+Smart Account 可以实现：
+
+-   多签（Multi-Sig）
+    
+-   社交恢复（Social Recovery）
+    
+-   批量交易（Batch Execution）
+    
+-   自定义认证方式（如设备 / biometrics）
+    
+
+👉 本质：
+
+> 将“账户能力”从协议层释放到应用层
+
+* * *
+
+### 三、遇到的问题
+
+-   Smart Account 的部署成本（Gas）需要进一步评估
+    
+-   不同实现方案（如 minimal proxy）理解还不深入
+    
+-   安全边界（合约漏洞风险）需要进一步分析
+    
+
+* * *
+
+### 四、思考与收获
+
+1\. 对“账户”的终极理解
+
+通过今天的学习，可以重新定义：
+
+> 账户 ≠ 地址  
+> 账户 = 权限控制 + 执行逻辑
+
+* * *
+
+2\. AA 的核心落点
+
+逐渐明确：
+
+-   UserOperation 是“输入形式”
+    
+-   Bundler 是“执行中继”
+    
+-   Paymaster 是“费用支持”
+    
+-   Smart Account 才是“真正执行主体”
+    
+
+👉 Smart Account 是 AA 的核心承载者
+
+* * *
+
+3\. Web3 向 Web2 体验靠近
+
+通过 Smart Account：
+
+-   用户不再需要理解私钥细节
+    
+-   可以实现类似 Web2 的账户体验
+    
+-   权限管理更加灵活
+    
+
+👉 本质是：
+
+> 提升可用性，同时保持去中心化特性
+
+* * *
+
+### 五、明日计划
+
+-   分析 Account Abstraction 的安全性问题
+    
+-   研究潜在攻击面（重放攻击、恶意 Paymaster 等）
+    
+-   理解 AA 在实际应用中的风险与防护机制
+<!-- DAILY_CHECKIN_2026-04-24_END -->
+
 # 2026-04-23
 <!-- DAILY_CHECKIN_2026-04-23_START -->
+
 ### 一、今日学习内容
 
 今天重点学习了 **Account Abstraction 中的 Paymaster 机制**，主要包括：
@@ -178,6 +323,7 @@ Paymaster 并不是无条件支付，而是：
 # 2026-04-22
 <!-- DAILY_CHECKIN_2026-04-22_START -->
 
+
 ### 一、今日学习内容
 
 今天重点学习了 **Account Abstraction 架构中的核心组件——Bundler**，主要包括：
@@ -338,6 +484,7 @@ Bundler 的收益来源主要包括：
 <!-- DAILY_CHECKIN_2026-04-21_START -->
 
 
+
 ### 一、今日学习内容
 
 今天重点围绕 **UserOperation 与传统 Transaction 的对比分析** 展开，主要包括：
@@ -486,6 +633,7 @@ Bundler 的收益来源主要包括：
 
 # 2026-04-20
 <!-- DAILY_CHECKIN_2026-04-20_START -->
+
 
 
 
@@ -659,6 +807,7 @@ AA 并没有修改底层协议，而是通过“上层机制”实现：
 
 
 
+
 ### 一、本周学习回顾
 
 本周从第一周的基础认知出发，进一步深入到 **执行层核心机制与数据结构**，主要内容包括：
@@ -818,6 +967,7 @@ AA 并没有修改底层协议，而是通过“上层机制”实现：
 
 # 2026-04-18
 <!-- DAILY_CHECKIN_2026-04-18_START -->
+
 
 
 
@@ -983,6 +1133,7 @@ EVM 本质是一个：
 
 
 
+
 ### 一、今日学习内容
 
 今天重点学习了 **Ethereum Gas 机制及 EIP-1559 费用模型**，主要包括：
@@ -1141,6 +1292,7 @@ EIP-1559 的核心在于：
 
 
 
+
 ### 一、今日学习内容
 
 今天重点学习了 **Ethereum 交易池（TxPool / mempool）机制**，主要包括：
@@ -1287,6 +1439,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 执行客户端（Execution Client）的架构设计**，并对主流客户端进行了对比分析，主要包括：
 
 -   Geth（Go 实现）
@@ -1394,6 +1547,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 区块结构（Block Structure）及状态组织方式**，主要包括：
 
 -   区块的基本组成（Header / Body）
@@ -1485,6 +1639,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 中的数据编码与基础数据结构**，主要包括：
 
 -   RLP（Recursive Length Prefix）编码原理
@@ -1545,6 +1700,7 @@ EIP-1559 的核心在于：
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -1639,6 +1795,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 网络通信机制**，主要包括：
 
 -   DevP2P 协议（节点之间的 P2P 通信机制）
@@ -1697,6 +1854,7 @@ DevP2P 更偏“底层网络协议”
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 
 
@@ -1790,6 +1948,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-08-1775669487734-image.png)
 
 维修bug
@@ -1797,6 +1956,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -1835,11 +1995,13 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775491855322-image.png)![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775492614139-image.png)
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
