@@ -15,19 +15,27 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-25
+<!-- DAILY_CHECKIN_2026-04-25_START -->
+休息休息休息！有点忙不过来，再两三天，就把经历放回EPF上。
+<!-- DAILY_CHECKIN_2026-04-25_END -->
+
 # 2026-04-24
 <!-- DAILY_CHECKIN_2026-04-24_START -->
+
 今天没有学习EPF相关知识，忙着其他的学习上了，这几天可能都会如何，忙完后补上，以及后续共学结束后，也会好好学习相关资料。
 <!-- DAILY_CHECKIN_2026-04-24_END -->
 
 # 2026-04-23
 <!-- DAILY_CHECKIN_2026-04-23_START -->
 
+
 今天休息，空军一天。
 <!-- DAILY_CHECKIN_2026-04-23_END -->
 
 # 2026-04-22
 <!-- DAILY_CHECKIN_2026-04-22_START -->
+
 
 
 会议讨论了 ZK 技术相关项目的历史、原理、应用以及发展方向等内容，具体如下：
@@ -102,6 +110,7 @@ EPF 实习计划
 
 # 2026-04-21
 <!-- DAILY_CHECKIN_2026-04-21_START -->
+
 
 
 
@@ -241,6 +250,7 @@ LambdaClass 开发了一个用 Elixir 编写的客户端。它始于 EPF4 时期
 
 
 
+
 ![以太坊路线图已于2023年12月由VB更新](https://epf.wiki/wiki/research/img/full_roadmap2024_1600x1596.webp)![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/pillowtalk-Qy/images/2026-04-20-1776694252543-image.png)
 
 ### [合并](https://epf.wiki/#/wiki/research/roadmap?id=the-merge)
@@ -349,11 +359,13 @@ Vitalik 的《可能的未来》第 5 部分：“清洗”强调历史和状态
 
 
 
+
 休息一天，明天抓紧学习。
 <!-- DAILY_CHECKIN_2026-04-19_END -->
 
 # 2026-04-18
 <!-- DAILY_CHECKIN_2026-04-18_START -->
+
 
 
 
@@ -400,11 +412,13 @@ Vitalik 的《可能的未来》第 5 部分：“清洗”强调历史和状态
 
 
 
+
 今天休息一天
 <!-- DAILY_CHECKIN_2026-04-17_END -->
 
 # 2026-04-16
 <!-- DAILY_CHECKIN_2026-04-16_START -->
+
 
 
 
@@ -476,11 +490,13 @@ Vitalik 的《可能的未来》第 5 部分：“清洗”强调历史和状态
 
 
 
+
 今天划水请个假
 <!-- DAILY_CHECKIN_2026-04-15_END -->
 
 # 2026-04-14
 <!-- DAILY_CHECKIN_2026-04-14_START -->
+
 
 
 
@@ -585,6 +601,7 @@ Vitalik 的《可能的未来》第 5 部分：“清洗”强调历史和状态
 
 
 
+
 ### **Roadmap Overview 的核心组成部分：**
 
 1.  **目标与愿景**：
@@ -632,6 +649,7 @@ Vitalik 的《可能的未来》第 5 部分：“清洗”强调历史和状态
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -789,6 +807,7 @@ PoS 的工作原理：
 
 
 
+
 今天先去搞了LI.FI的黑客松，明天学习
 <!-- DAILY_CHECKIN_2026-04-11_END -->
 
@@ -808,11 +827,13 @@ PoS 的工作原理：
 
 
 
+
 今天再休息一天，周末补回去
 <!-- DAILY_CHECKIN_2026-04-10_END -->
 
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
+
 
 
 
@@ -851,11 +872,13 @@ PoS 的工作原理：
 
 
 
+
 今天要为周五的一个分享会写好所有的内容，所以比较忙，就先休息一天了
 <!-- DAILY_CHECKIN_2026-04-08_END -->
 
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 
 
 
@@ -881,6 +904,7 @@ PoS 的工作原理：
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
