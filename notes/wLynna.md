@@ -15,19 +15,375 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-26
+<!-- DAILY_CHECKIN_2026-04-26_START -->
+# 🧠 Two different models: Ethereum vs Bitcoin
+
+Ethereum and Bitcoin use two different ways to record state.  
+以太坊和比特币用两种不同的方式记录状态。
+
+* * *
+
+Ethereum uses the account model.  
+以太坊使用“账户模型”。
+
+* * *
+
+Bitcoin uses the UTXO model.  
+比特币使用“UTXO 模型”。
+
+* * *
+
+👉 Key idea:
+
+Account vs UTXO  
+账户 vs 未花费输出
+
+* * *
+
+* * *
+
+# 🧩 What is UTXO (simple idea)
+
+* * *
+
+UTXO means “Unspent Transaction Output”.  
+UTXO 的意思是“未花费的交易输出”。
+
+* * *
+
+In Bitcoin, you don’t have a balance.  
+在比特币中，你其实没有“余额”。
+
+* * *
+
+You have a set of UTXOs.  
+你拥有的是一组 UTXO。
+
+* * *
+
+Each UTXO is like a coin.  
+每一个 UTXO 就像一枚硬币。
+
+* * *
+
+👉 Example:
+
+You may have:
+
+-   0.3 BTC  
+    
+-   0.5 BTC  
+    
+
+你可能拥有：
+
+-   一个 0.3 BTC 的 UTXO  
+    
+-   一个 0.5 BTC 的 UTXO  
+    
+
+* * *
+
+👉 Total = 0.8 BTC  
+👉 总和才是你的“余额”
+
+* * *
+
+* * *
+
+# 🧠 How a BTC transaction works
+
+* * *
+
+To send BTC, you must consume UTXOs.  
+发送 BTC 时，你必须“花掉”已有的 UTXO。
+
+* * *
+
+You cannot partially spend one directly.  
+你不能直接“部分使用”一个 UTXO。
+
+* * *
+
+👉 So:
+
+You take inputs → create outputs  
+你用输入 → 生成新的输出
+
+* * *
+
+* * *
+
+### Example:
+
+You have one UTXO of 1 BTC.  
+你有一个 1 BTC 的 UTXO。
+
+* * *
+
+You want to send 0.3 BTC.  
+你想发送 0.3 BTC。
+
+* * *
+
+Transaction will:
+
+-   use 1 BTC as input  
+    
+-   create 0.3 BTC to receiver  
+    
+-   create 0.7 BTC back to you (change)  
+    
+
+交易会：
+
+-   用掉 1 BTC 输入  
+    
+-   生成 0.3 BTC 给对方  
+    
+-   生成 0.7 BTC 找零给你  
+    
+
+* * *
+
+👉 Key idea:
+
+BTC = consume and recreate  
+BTC = 消耗旧的，生成新的
+
+* * *
+
+* * *
+
+# 🧠 What is Ethereum account model
+
+* * *
+
+Ethereum uses accounts with balances.  
+以太坊使用账户 + 余额的模型。
+
+* * *
+
+Each account has:
+
+-   balance  
+    
+-   nonce  
+    
+-   storage  
+    
+
+每个账户有：
+
+-   余额  
+    
+-   nonce  
+    
+-   存储  
+    
+
+* * *
+
+👉 Example:
+
+You have 1 ETH in your account.  
+你账户里有 1 ETH。
+
+* * *
+
+You send 0.3 ETH.  
+你发送 0.3 ETH。
+
+* * *
+
+Result:
+
+Your balance becomes 0.7 ETH.  
+你的余额变成 0.7 ETH。
+
+* * *
+
+👉 No need to recreate outputs  
+👉 不需要“拆分再生成”
+
+* * *
+
+* * *
+
+# ⚖️ Core difference（核心区别）
+
+* * *
+
+Bitcoin:
+
+State = set of UTXOs  
+状态 = 一组 UTXO
+
+* * *
+
+Ethereum:
+
+State = account balances + storage  
+状态 = 账户余额 + 存储
+
+* * *
+
+* * *
+
+👉 One sentence:
+
+BTC tracks coins  
+ETH tracks accounts
+
+BTC 跟踪“币”  
+ETH 跟踪“账户”
+
+* * *
+
+* * *
+
+# 🧠 Deeper intuition（很重要）
+
+* * *
+
+UTXO model is stateless per transaction.  
+UTXO 模型在每笔交易层面是“无状态”的。
+
+* * *
+
+Each transaction only cares about inputs and outputs.  
+每笔交易只关心输入和输出。
+
+* * *
+
+👉 Like cash:
+
+You pay with coins.  
+像现金一样，用硬币支付。
+
+* * *
+
+* * *
+
+Ethereum is stateful.  
+以太坊是“有状态”的。
+
+* * *
+
+Each transaction changes global state.  
+每一笔交易都会改变全局状态。
+
+* * *
+
+👉 Like bank account:
+
+You update your balance.  
+像银行账户，直接更新余额。
+
+* * *
+
+* * *
+
+# 🔗 Why Ethereum chose account model
+
+* * *
+
+Ethereum needs to support smart contracts.  
+以太坊需要支持智能合约。
+
+* * *
+
+Smart contracts require persistent state.  
+智能合约需要持续存在的状态。
+
+* * *
+
+👉 Example:
+
+ENS needs to store:
+
+-   ownership  
+    
+-   records  
+    
+-   mappings  
+    
+
+ENS 需要存储：
+
+-   所有权  
+    
+-   解析记录  
+    
+-   映射关系  
+    
+
+* * *
+
+👉 UTXO is not good for this  
+👉 UTXO 不适合这种复杂状态
+
+* * *
+
+* * *
+
+# 🔗 Connect back to what you learned
+
+* * *
+
+Ethereum = global state machine  
+以太坊 = 全球状态机
+
+* * *
+
+Account model fits this perfectly.  
+账户模型完美匹配这个结构。
+
+* * *
+
+👉 Because:
+
+Transactions modify state directly  
+交易直接修改状态
+
+* * *
+
+* * *
+
+# ❤️ Final mental model（最重要）
+
+* * *
+
+Bitcoin:
+
+Transactions move coins  
+交易移动“币”
+
+* * *
+
+Ethereum:
+
+Transactions change state  
+交易改变“状态”
+<!-- DAILY_CHECKIN_2026-04-26_END -->
+
 # 2026-04-24
 <!-- DAILY_CHECKIN_2026-04-24_START -->
+
 又没学
 <!-- DAILY_CHECKIN_2026-04-24_END -->
 
 # 2026-04-23
 <!-- DAILY_CHECKIN_2026-04-23_START -->
 
+
 疲惫，休息，明天继续
 <!-- DAILY_CHECKIN_2026-04-23_END -->
 
 # 2026-04-22
 <!-- DAILY_CHECKIN_2026-04-22_START -->
+
 
 
 ## Layer 1 、Layer2
@@ -249,6 +605,7 @@ But final truth still comes from L1
 
 
 
+
 HK Web3 Festival 嘉年华感受熊市，太熊了，好难受
 
 # 🧠 One Transaction = EL + CL Cooperation
@@ -428,6 +785,7 @@ Consensus makes it permanent.
 
 
 
+
 今天周日 想休息
 
 下周好悬啊，一周HK
@@ -435,6 +793,7 @@ Consensus makes it permanent.
 
 # 2026-04-17
 <!-- DAILY_CHECKIN_2026-04-17_START -->
+
 
 
 
@@ -693,6 +1052,7 @@ CL 决定“真相”，EL 产生“结果”。
 
 
 
+
 04/16 继续降维学习
 
 EL vs CL — The Real Separation
@@ -910,6 +1270,7 @@ CL = ENS 的安全与确认
 
 # 2026-04-15
 <!-- DAILY_CHECKIN_2026-04-15_START -->
+
 
 
 
@@ -1202,6 +1563,7 @@ Ethereum is a global state machine, and EL is the part that runs the machine.
 
 
 
+
 # [Execution Layer Specification](https://epf.wiki/#/wiki/EL/el-specs?id=execution-layer-specification)
 
 看的很晕，纠结要不要放弃？
@@ -1209,6 +1571,7 @@ Ethereum is a global state machine, and EL is the part that runs the machine.
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -1325,6 +1688,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 
 
+
 04/11
 
 还得再休一天，睡觉更重要
@@ -1345,6 +1709,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 
 
+
 04/10
 
 今天折腾网络，休息下
@@ -1354,6 +1719,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -1614,6 +1980,7 @@ Ethereum’s design can be summarized as:
 
 
 
+
 04/07
 
 ## 🧩 核心结构（Core Structure）
@@ -1718,6 +2085,7 @@ Ethereum’s design can be summarized as:
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
