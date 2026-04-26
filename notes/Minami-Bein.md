@@ -15,8 +15,150 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-27
+<!-- DAILY_CHECKIN_2026-04-27_START -->
+### 一、今日学习内容
+
+今天开始进入实践阶段，重点围绕 **Account Abstraction 的实际调用流程** 进行学习与尝试，主要包括：
+
+-   AA SDK 的基本使用方式
+    
+-   UserOperation 的构造流程
+    
+-   本地签名与参数组装
+    
+-   提交 UserOperation 到 Bundler 的过程
+    
+
+通过动手梳理流程，将前期的理论理解逐步落地。
+
+* * *
+
+### 二、实践与分析
+
+1\. AA 调用流程梳理
+
+从实践角度，将完整流程重新走了一遍：
+
+1.  初始化智能账户（Smart Account）
+    
+2.  构造调用数据（callData）
+    
+3.  生成 UserOperation（包含 gas、nonce 等字段）
+    
+4.  对 UserOperation 进行签名
+    
+5.  提交给 Bundler
+    
+6.  由 Bundler 打包并发送到链上执行
+    
+
+👉 相比之前：
+
+-   不再只是理解流程
+    
+-   而是从“如何调用”角度重新认识整个链路
+    
+
+* * *
+
+2\. 关键步骤理解
+
+-   **UserOperation 构造**
+    
+    -   包含执行逻辑与费用参数
+        
+-   **签名过程**
+    
+    -   由智能账户定义验证方式
+        
+-   **提交阶段**
+    
+    -   通过 Bundler 进行中转
+        
+
+👉 关键变化：
+
+> 用户不再直接发送 Transaction，而是发送“操作意图”
+
+* * *
+
+3\. 与传统交易的对比（实践视角）
+
+-   传统方式：
+    
+    -   构造 Transaction → 签名 → 广播
+        
+-   AA 方式：
+    
+    -   构造 UserOperation → 签名 → 提交 Bundler → 转换为 Transaction
+        
+
+👉 实际体验：
+
+-   流程更复杂
+    
+-   但灵活性明显更高
+    
+
+* * *
+
+### 三、遇到的问题
+
+-   SDK 封装较多，底层细节不够透明
+    
+-   UserOperation 各字段含义在实际使用中仍需反复确认
+    
+-   Bundler 的返回结果与执行状态需要进一步理解
+    
+
+* * *
+
+### 四、思考与收获
+
+1\. 从“理解架构”到“使用架构”
+
+今天最大的变化是：
+
+-   之前是理解 AA 的设计
+    
+-   现在开始尝试使用 AA
+    
+
+👉 认知从“理论层”进入“操作层”
+
+* * *
+
+2\. 对调用链路的真实感增强
+
+通过实践，更清晰地感受到：
+
+-   UserOperation 是核心输入
+    
+-   Bundler 是必要中转
+    
+-   EntryPoint 是统一执行入口
+    
+
+👉 整个系统不再是抽象概念，而是“可操作流程”
+
+* * *
+
+3\. 工程复杂性的体现
+
+在实际操作中发现：
+
+-   AA 虽然功能强大
+    
+-   但使用复杂度也明显高于传统交易
+    
+
+👉 需要通过 SDK 与工具进一步降低门槛
+<!-- DAILY_CHECKIN_2026-04-27_END -->
+
 # 2026-04-26
 <!-- DAILY_CHECKIN_2026-04-26_START -->
+
 ### 一、本周学习回顾
 
 本周重点围绕 **Account Abstraction（账户抽象，AA）架构** 展开，从整体概念逐步深入到具体组件与运行机制，主要包括：
@@ -227,6 +369,7 @@ EPF 实习计划
 # 2026-04-25
 <!-- DAILY_CHECKIN_2026-04-25_START -->
 
+
 一、今日学习内容
 
 今天重点从 **安全性角度分析 Account Abstraction（AA）架构**，主要包括：
@@ -407,6 +550,7 @@ Paymaster 涉及资金支付，是重点风险区域：
 <!-- DAILY_CHECKIN_2026-04-24_START -->
 
 
+
 ### 一、今日学习内容
 
 今天重点学习了 **Smart Account（智能账户）与 EOA（外部账户）的对比与设计差异**，主要包括：
@@ -551,6 +695,7 @@ Smart Account 可以实现：
 
 # 2026-04-23
 <!-- DAILY_CHECKIN_2026-04-23_START -->
+
 
 
 
@@ -718,6 +863,7 @@ Paymaster 并不是无条件支付，而是：
 
 
 
+
 ### 一、今日学习内容
 
 今天重点学习了 **Account Abstraction 架构中的核心组件——Bundler**，主要包括：
@@ -881,6 +1027,7 @@ Bundler 的收益来源主要包括：
 
 
 
+
 ### 一、今日学习内容
 
 今天重点围绕 **UserOperation 与传统 Transaction 的对比分析** 展开，主要包括：
@@ -1029,6 +1176,7 @@ Bundler 的收益来源主要包括：
 
 # 2026-04-20
 <!-- DAILY_CHECKIN_2026-04-20_START -->
+
 
 
 
@@ -1208,6 +1356,7 @@ AA 并没有修改底层协议，而是通过“上层机制”实现：
 
 
 
+
 ### 一、本周学习回顾
 
 本周从第一周的基础认知出发，进一步深入到 **执行层核心机制与数据结构**，主要内容包括：
@@ -1367,6 +1516,7 @@ AA 并没有修改底层协议，而是通过“上层机制”实现：
 
 # 2026-04-18
 <!-- DAILY_CHECKIN_2026-04-18_START -->
+
 
 
 
@@ -1538,6 +1688,7 @@ EVM 本质是一个：
 
 
 
+
 ### 一、今日学习内容
 
 今天重点学习了 **Ethereum Gas 机制及 EIP-1559 费用模型**，主要包括：
@@ -1699,6 +1850,7 @@ EIP-1559 的核心在于：
 
 
 
+
 ### 一、今日学习内容
 
 今天重点学习了 **Ethereum 交易池（TxPool / mempool）机制**，主要包括：
@@ -1848,6 +2000,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 执行客户端（Execution Client）的架构设计**，并对主流客户端进行了对比分析，主要包括：
 
 -   Geth（Go 实现）
@@ -1958,6 +2111,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 区块结构（Block Structure）及状态组织方式**，主要包括：
 
 -   区块的基本组成（Header / Body）
@@ -2052,6 +2206,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 中的数据编码与基础数据结构**，主要包括：
 
 -   RLP（Recursive Length Prefix）编码原理
@@ -2112,6 +2267,7 @@ EIP-1559 的核心在于：
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -2212,6 +2368,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 网络通信机制**，主要包括：
 
 -   DevP2P 协议（节点之间的 P2P 通信机制）
@@ -2270,6 +2427,7 @@ DevP2P 更偏“底层网络协议”
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 
 
@@ -2369,6 +2527,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-08-1775669487734-image.png)
 
 维修bug
@@ -2376,6 +2535,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -2420,11 +2580,13 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775491855322-image.png)![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775492614139-image.png)
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
