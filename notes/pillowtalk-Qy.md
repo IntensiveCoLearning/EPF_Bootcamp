@@ -15,13 +15,67 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-28
+<!-- DAILY_CHECKIN_2026-04-28_START -->
+-   **EIP8141 提出动机**：
+    
+    -   **传统交易模型局限**：以太坊账户交易验证默认依赖 ECDS，普通交易格式绑定传统交易模型，无法满足现实中复杂的钱包需求。
+        
+    -   **多样化钱包需求**：用户希望用 passkey 登录钱包，企业钱包需多签和权限系统，游戏钱包用 session key，Dapp 帮用户付 gas，Defi 用户要 prove 加 swap 原子执行，量子方向支持新签名算法等。
+        
+-   **EIP8141 核心机制**：
+    
+    -   **新交易类型**：引入新类型交易，包含 frame 列表，每个 frame 有不同模式，如 default、verify、sender。
+        
+    -   **frame 结构**：包含 mode、flops、target、gas limit、value、data 等字段，各字段有不同作用。
+        
+    -   **三种 frame 模式**：verify 负责验证授权，须调用 approval OP code；sender 以用户身份执行交易，需 sender\_approved 为 true；default 以协议定义的 Endpoint 地址执行，用于部署账户辅助逻辑及 post OP。
+        
+    -   **prove 机制**：是新 OP code，更新交易及 prove 状态，有 sender approved 和 pay approved 两个核心状态。
+        
+    -   **Signature hash 特殊点**：verify frame 的 data 不进入 conic Signature hash，避免循环依赖，但存在安全风险，开发者需单独认证重要业务参数。
+        
+    -   **Atomic batch 原子化交易**：支持在 frame 层给连续的 sendframe 设置原子性，可通过 domakebatchflag 表达关系，提升用户体验。
+        
+-   **EIP8141 面临挑战**：
+    
+    -   **memory pool 难点**：frame transaction 的验证逻辑可能是任意 EVM 代码，公共 mempool 接受任意验证逻辑会有 DOS 风险。
+        
+    -   **验证前缀**：validation prefix 是成功执行后使 pay approved 等于 true 的最短 frame 前缀，公共 mempool 只检查前缀，限制验证逻辑。
+        
+    -   **公共 mempool 限制**：不能使用区块环境相关 OP code、不能写状态、不能读取第三方 table storage 等，一些应用层合理的交易在公共 mempool 可能被拒绝。
+        
+-   **相关项目方案**：
+    
+    -   **MOMO proof of permission simulator**：目标是做公共 mempool 的接纳判断器，解析 frame transaction、识别前缀、模拟执行验证前缀检查，有商业价值，目标客户包括钱包团队、paymaster 服务商等。
+        
+    -   **框架钱包 SDK**：面向钱包和 Dapp，解决开发者构建 frame transaction 的问题，减少代码量，防止开发者踩坑，可与 mempool simulator 联动。
+        
+    -   **产品化方案**：定位为 EIP8141 frame transaction Developer infrastructure，分为 6 层，有 API 订阅式、企业 SDK 授权等商业模式。
+        
+    -   **项目路线图**：分为四个阶段，依次是规则原型、pay master 模型、framework Wallet SDK、商业产品。
+        
+-   **可提 PR 建议**：
+    
+    -   **ERC20Paymaster 问题**：ERC20Paymaster 在共识层有效，但 verify 阶段读取 ERC20 相关信息可能不适合公共传播，建议提出相关 PR。
+        
+    -   **增加表格**：增加表格说明 CF verify、connect paymaster、ERC20 storage 读取等情况的公共性。
+        
+    -   **文档说明**：说明 verify data 不进入签名哈希，不能作为用户已认证数据，提升文档清晰度。  
+          
+          
+        这些是今天最后一次例会的内容
+<!-- DAILY_CHECKIN_2026-04-28_END -->
+
 # 2026-04-27
 <!-- DAILY_CHECKIN_2026-04-27_START -->
+
 ok，今晚忙完了，明天正式恢复EPF的学习
 <!-- DAILY_CHECKIN_2026-04-27_END -->
 
 # 2026-04-26
 <!-- DAILY_CHECKIN_2026-04-26_START -->
+
 
 明天应该就可以恢复EPF的学习了
 <!-- DAILY_CHECKIN_2026-04-26_END -->
@@ -30,11 +84,13 @@ ok，今晚忙完了，明天正式恢复EPF的学习
 <!-- DAILY_CHECKIN_2026-04-25_START -->
 
 
+
 休息休息休息！有点忙不过来，再两三天，就把经历放回EPF上。
 <!-- DAILY_CHECKIN_2026-04-25_END -->
 
 # 2026-04-24
 <!-- DAILY_CHECKIN_2026-04-24_START -->
+
 
 
 
@@ -47,11 +103,13 @@ ok，今晚忙完了，明天正式恢复EPF的学习
 
 
 
+
 今天休息，空军一天。
 <!-- DAILY_CHECKIN_2026-04-23_END -->
 
 # 2026-04-22
 <!-- DAILY_CHECKIN_2026-04-22_START -->
+
 
 
 
@@ -129,6 +187,7 @@ ok，今晚忙完了，明天正式恢复EPF的学习
 
 # 2026-04-21
 <!-- DAILY_CHECKIN_2026-04-21_START -->
+
 
 
 
@@ -274,6 +333,7 @@ LambdaClass 开发了一个用 Elixir 编写的客户端。它始于 EPF4 时期
 
 
 
+
 ![以太坊路线图已于2023年12月由VB更新](https://epf.wiki/wiki/research/img/full_roadmap2024_1600x1596.webp)![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/pillowtalk-Qy/images/2026-04-20-1776694252543-image.png)
 
 ### [合并](https://epf.wiki/#/wiki/research/roadmap?id=the-merge)
@@ -385,11 +445,13 @@ Vitalik 的《可能的未来》第 5 部分：“清洗”强调历史和状态
 
 
 
+
 休息一天，明天抓紧学习。
 <!-- DAILY_CHECKIN_2026-04-19_END -->
 
 # 2026-04-18
 <!-- DAILY_CHECKIN_2026-04-18_START -->
+
 
 
 
@@ -442,11 +504,13 @@ Vitalik 的《可能的未来》第 5 部分：“清洗”强调历史和状态
 
 
 
+
 今天休息一天
 <!-- DAILY_CHECKIN_2026-04-17_END -->
 
 # 2026-04-16
 <!-- DAILY_CHECKIN_2026-04-16_START -->
+
 
 
 
@@ -524,11 +588,13 @@ Vitalik 的《可能的未来》第 5 部分：“清洗”强调历史和状态
 
 
 
+
 今天划水请个假
 <!-- DAILY_CHECKIN_2026-04-15_END -->
 
 # 2026-04-14
 <!-- DAILY_CHECKIN_2026-04-14_START -->
+
 
 
 
@@ -639,6 +705,7 @@ Vitalik 的《可能的未来》第 5 部分：“清洗”强调历史和状态
 
 
 
+
 ### **Roadmap Overview 的核心组成部分：**
 
 1.  **目标与愿景**：
@@ -686,6 +753,7 @@ Vitalik 的《可能的未来》第 5 部分：“清洗”强调历史和状态
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -849,6 +917,7 @@ PoS 的工作原理：
 
 
 
+
 今天先去搞了LI.FI的黑客松，明天学习
 <!-- DAILY_CHECKIN_2026-04-11_END -->
 
@@ -871,11 +940,13 @@ PoS 的工作原理：
 
 
 
+
 今天再休息一天，周末补回去
 <!-- DAILY_CHECKIN_2026-04-10_END -->
 
 # 2026-04-09
 <!-- DAILY_CHECKIN_2026-04-09_START -->
+
 
 
 
@@ -920,11 +991,13 @@ PoS 的工作原理：
 
 
 
+
 今天要为周五的一个分享会写好所有的内容，所以比较忙，就先休息一天了
 <!-- DAILY_CHECKIN_2026-04-08_END -->
 
 # 2026-04-07
 <!-- DAILY_CHECKIN_2026-04-07_START -->
+
 
 
 
@@ -953,6 +1026,7 @@ PoS 的工作原理：
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
