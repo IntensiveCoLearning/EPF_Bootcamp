@@ -15,8 +15,160 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-28
+<!-- DAILY_CHECKIN_2026-04-28_START -->
+### 一、今日学习内容
+
+今天在实践基础上，进一步分析了 **Account Abstraction SDK 的内部结构与调用流程**，主要包括：
+
+-   SDK 的模块划分（账户初始化 / UserOperation 构造 / 提交逻辑）
+    
+-   核心方法的调用链路
+    
+-   SDK 如何封装底层复杂逻辑（签名、Gas 估算、打包请求等）
+    
+
+通过阅读代码与文档，尝试从“黑盒使用”转向“理解实现”。
+
+* * *
+
+### 二、实践与分析
+
+1\. SDK 模块拆解
+
+对整体结构进行了简单梳理：
+
+-   **Account 模块**
+    
+    -   负责 Smart Account 初始化与配置
+        
+-   **Operation 模块**
+    
+    -   构造 UserOperation（参数填充、编码）
+        
+-   **Provider / Client 模块**
+    
+    -   与 Bundler / 节点进行通信
+        
+
+👉 理解到：
+
+> SDK 本质是在“模拟一套客户端逻辑”
+
+* * *
+
+2\. UserOperation 构造流程（代码视角）
+
+结合调用链，整理出核心步骤：
+
+1.  构造 callData（目标合约调用）
+    
+2.  填充基础字段（sender / nonce 等）
+    
+3.  估算 Gas（callGas / verificationGas 等）
+    
+4.  生成 UserOperation 对象
+    
+5.  调用签名方法（由 Smart Account 定义）
+    
+
+👉 关键点：
+
+-   SDK 帮助自动处理大量底层细节
+    
+-   用户只需关注“调用意图”
+    
+
+* * *
+
+3\. 提交流程分析
+
+在提交阶段，SDK 做了以下封装：
+
+-   将 UserOperation 序列化
+    
+-   发送到 Bundler API
+    
+-   等待返回执行结果（或交易哈希）
+    
+
+👉 与传统 RPC 对比：
+
+-   传统：直接发送 Transaction
+    
+-   AA：通过 SDK → Bundler → Transaction
+    
+
+* * *
+
+### 三、遇到的问题
+
+-   SDK 内部封装较深，部分逻辑（如 Gas 估算）不易追踪
+    
+-   不同 SDK 实现方式差异较大，需要对比理解
+    
+-   异常处理机制（失败重试等）还未完全掌握
+    
+
+* * *
+
+### 四、思考与收获
+
+1\. SDK 的本质定位
+
+逐渐理解：
+
+> AA SDK = “用户侧的执行抽象层”
+
+它承担了：
+
+-   简化复杂流程
+    
+-   隐藏底层细节
+    
+-   提供统一接口
+    
+
+* * *
+
+2\. 从“调用”到“理解调用”
+
+今天最大的变化是：
+
+-   不再只是调用接口
+    
+-   开始理解：
+    
+    -   每一步在做什么
+        
+    -   为什么需要这一步
+        
+
+👉 这是从“使用工具”到“理解工具”的转变
+
+* * *
+
+3\. 工程实现的复杂性
+
+通过阅读代码发现：
+
+-   一个简单的操作背后涉及：
+    
+    -   编码
+        
+    -   Gas 计算
+        
+    -   签名
+        
+    -   网络通信
+        
+
+👉 AA 的复杂性主要被 SDK 吸收
+<!-- DAILY_CHECKIN_2026-04-28_END -->
+
 # 2026-04-27
 <!-- DAILY_CHECKIN_2026-04-27_START -->
+
 ### 一、今日学习内容
 
 今天开始进入实践阶段，重点围绕 **Account Abstraction 的实际调用流程** 进行学习与尝试，主要包括：
@@ -158,6 +310,7 @@ EPF 实习计划
 
 # 2026-04-26
 <!-- DAILY_CHECKIN_2026-04-26_START -->
+
 
 ### 一、本周学习回顾
 
@@ -370,6 +523,7 @@ EPF 实习计划
 <!-- DAILY_CHECKIN_2026-04-25_START -->
 
 
+
 一、今日学习内容
 
 今天重点从 **安全性角度分析 Account Abstraction（AA）架构**，主要包括：
@@ -551,6 +705,7 @@ Paymaster 涉及资金支付，是重点风险区域：
 
 
 
+
 ### 一、今日学习内容
 
 今天重点学习了 **Smart Account（智能账户）与 EOA（外部账户）的对比与设计差异**，主要包括：
@@ -695,6 +850,7 @@ Smart Account 可以实现：
 
 # 2026-04-23
 <!-- DAILY_CHECKIN_2026-04-23_START -->
+
 
 
 
@@ -864,6 +1020,7 @@ Paymaster 并不是无条件支付，而是：
 
 
 
+
 ### 一、今日学习内容
 
 今天重点学习了 **Account Abstraction 架构中的核心组件——Bundler**，主要包括：
@@ -1028,6 +1185,7 @@ Bundler 的收益来源主要包括：
 
 
 
+
 ### 一、今日学习内容
 
 今天重点围绕 **UserOperation 与传统 Transaction 的对比分析** 展开，主要包括：
@@ -1176,6 +1334,7 @@ Bundler 的收益来源主要包括：
 
 # 2026-04-20
 <!-- DAILY_CHECKIN_2026-04-20_START -->
+
 
 
 
@@ -1357,6 +1516,7 @@ AA 并没有修改底层协议，而是通过“上层机制”实现：
 
 
 
+
 ### 一、本周学习回顾
 
 本周从第一周的基础认知出发，进一步深入到 **执行层核心机制与数据结构**，主要内容包括：
@@ -1516,6 +1676,7 @@ AA 并没有修改底层协议，而是通过“上层机制”实现：
 
 # 2026-04-18
 <!-- DAILY_CHECKIN_2026-04-18_START -->
+
 
 
 
@@ -1689,6 +1850,7 @@ EVM 本质是一个：
 
 
 
+
 ### 一、今日学习内容
 
 今天重点学习了 **Ethereum Gas 机制及 EIP-1559 费用模型**，主要包括：
@@ -1851,6 +2013,7 @@ EIP-1559 的核心在于：
 
 
 
+
 ### 一、今日学习内容
 
 今天重点学习了 **Ethereum 交易池（TxPool / mempool）机制**，主要包括：
@@ -2001,6 +2164,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 执行客户端（Execution Client）的架构设计**，并对主流客户端进行了对比分析，主要包括：
 
 -   Geth（Go 实现）
@@ -2112,6 +2276,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 区块结构（Block Structure）及状态组织方式**，主要包括：
 
 -   区块的基本组成（Header / Body）
@@ -2207,6 +2372,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 中的数据编码与基础数据结构**，主要包括：
 
 -   RLP（Recursive Length Prefix）编码原理
@@ -2267,6 +2433,7 @@ EIP-1559 的核心在于：
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -2369,6 +2536,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 网络通信机制**，主要包括：
 
 -   DevP2P 协议（节点之间的 P2P 通信机制）
@@ -2427,6 +2595,7 @@ DevP2P 更偏“底层网络协议”
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 
 
@@ -2528,6 +2697,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-08-1775669487734-image.png)
 
 维修bug
@@ -2535,6 +2705,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -2581,11 +2752,13 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775491855322-image.png)![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775492614139-image.png)
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
