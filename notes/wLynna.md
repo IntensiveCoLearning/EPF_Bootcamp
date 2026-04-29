@@ -15,13 +15,20 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-29
+<!-- DAILY_CHECKIN_2026-04-29_START -->
+明日复明日，明日何其多
+<!-- DAILY_CHECKIN_2026-04-29_END -->
+
 # 2026-04-28
 <!-- DAILY_CHECKIN_2026-04-28_START -->
+
 唉 再请假
 <!-- DAILY_CHECKIN_2026-04-28_END -->
 
 # 2026-04-26
 <!-- DAILY_CHECKIN_2026-04-26_START -->
+
 
 # 🧠 Two different models: Ethereum vs Bitcoin
 
@@ -378,6 +385,7 @@ Transactions change state
 <!-- DAILY_CHECKIN_2026-04-24_START -->
 
 
+
 又没学
 <!-- DAILY_CHECKIN_2026-04-24_END -->
 
@@ -386,11 +394,13 @@ Transactions change state
 
 
 
+
 疲惫，休息，明天继续
 <!-- DAILY_CHECKIN_2026-04-23_END -->
 
 # 2026-04-22
 <!-- DAILY_CHECKIN_2026-04-22_START -->
+
 
 
 
@@ -616,6 +626,7 @@ But final truth still comes from L1
 
 
 
+
 HK Web3 Festival 嘉年华感受熊市，太熊了，好难受
 
 # 🧠 One Transaction = EL + CL Cooperation
@@ -797,6 +808,7 @@ Consensus makes it permanent.
 
 
 
+
 今天周日 想休息
 
 下周好悬啊，一周HK
@@ -804,6 +816,7 @@ Consensus makes it permanent.
 
 # 2026-04-17
 <!-- DAILY_CHECKIN_2026-04-17_START -->
+
 
 
 
@@ -1066,6 +1079,7 @@ CL 决定“真相”，EL 产生“结果”。
 
 
 
+
 04/16 继续降维学习
 
 EL vs CL — The Real Separation
@@ -1283,6 +1297,7 @@ CL = ENS 的安全与确认
 
 # 2026-04-15
 <!-- DAILY_CHECKIN_2026-04-15_START -->
+
 
 
 
@@ -1579,6 +1594,7 @@ Ethereum is a global state machine, and EL is the part that runs the machine.
 
 
 
+
 # [Execution Layer Specification](https://epf.wiki/#/wiki/EL/el-specs?id=execution-layer-specification)
 
 看的很晕，纠结要不要放弃？
@@ -1586,6 +1602,7 @@ Ethereum is a global state machine, and EL is the part that runs the machine.
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -1706,6 +1723,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 
 
+
 04/11
 
 还得再休一天，睡觉更重要
@@ -1728,6 +1746,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 
 
+
 04/10
 
 今天折腾网络，休息下
@@ -1737,6 +1756,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -2001,6 +2021,7 @@ Ethereum’s design can be summarized as:
 
 
 
+
 04/07
 
 ## 🧩 核心结构（Core Structure）
@@ -2105,6 +2126,7 @@ Ethereum’s design can be summarized as:
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
