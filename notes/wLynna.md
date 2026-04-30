@@ -15,19 +15,475 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-04-30
+<!-- DAILY_CHECKIN_2026-04-30_START -->
+# ZK 学习笔记 01
+
+## 从“大地图”开始：ZK 为什么突然重要？
+
+**ZK 的理论非常早，Web3 里的爆发比较晚。**
+
+更准确地说：
+
+**ZK is old in theory, but young in real-world blockchain adoption.**  
+ZK 在理论上很早，但在区块链里的大规模应用还很年轻。
+
+ZK 的核心思想最早可以追溯到 1980s 的密码学研究。后来在 Crypto / Web3 里，比较早被大众看到的是 **Zcash**，它在 2016 年使用 zk-SNARK 来实现更强的交易隐私。([Investopedia](https://www.investopedia.com/terms/z/zksnark.asp?utm_source=chatgpt.com))
+
+但真正让 ZK 成为 Web3 热点的，是最近几年：
+
+1.  Ethereum 需要扩容
+    
+2.  L2 需要更强的安全验证
+    
+3.  链上透明性带来了隐私问题
+    
+4.  AI、身份、合规、数据证明等新场景需要“可验证但不泄露”
+    
+
+所以你说“从 3 年前开始看到”是对的，因为大概从 2021–2024 以后，ZK 从密码学圈、隐私币圈，逐渐进入 Ethereum 主流路线。
+
+* * *
+
+# 1\. ZK 到底是什么？
+
+ZK 是 **Zero-Knowledge Proof**，中文通常叫：
+
+**零知识证明**
+
+它的核心意思是：
+
+**I can prove something is true without revealing the underlying information.**  
+我可以证明一件事是真的，但不暴露背后的具体信息。
+
+比如：你想证明自己超过 18 岁，但不想公开身份证号、生日、地址。
+
+普通方式是：“把身份证给我看。”
+
+ZK 方式是：  
+“我只给你一个数学证明，证明我确实超过 18 岁，但你看不到我的生日和身份证信息。”
+
+再比如：  
+你想证明你知道某个密码，但不想把密码告诉别人。
+
+普通方式是：“你把密码输入系统。”
+
+ZK 思路是：  
+“我证明我知道这个密码，但不把密码本身交出来。”
+
+* * *
+
+# 2\. ZK 的一句话理解
+
+**ZK separates verification from disclosure.**  
+ZK 把“验证”与“公开信息”分开了。
+
+这句话很重要。以前的互联网和区块链世界，经常是：想验证，就要看见数据。
+
+比如：
+
+要验证你是谁，就要看你的身份资料。  
+要验证你有钱，就要看你的账户余额。  
+要验证交易正确，就要重新计算很多东西。  
+要验证链上行为，就要把所有数据公开。
+
+但 ZK 提供了一种新方式：  
+**You do not need to see everything to verify that something is correct.**  
+你不需要看到全部信息，也可以验证某件事是正确的。
+
+这就是 ZK 最迷人的地方。
+
+* * *
+
+# 3\. ZK 为什么在 Ethereum 里这么重要？
+
+因为 Ethereum 面临两个长期问题：
+
+### 第一，扩容问题
+
+Ethereum L1 很安全、很去中心化，但处理能力有限。所以出现了 L2。
+
+L2 的基本思路是：把很多交易放到链下处理，然后把结果提交回 Ethereum。
+
+但问题来了：Ethereum 怎么知道 L2 没有作弊？
+
+ZK Rollup 的回答是：不用 Ethereum 重新计算所有交易，只要提交一个数学证明。
+
+Ethereum 官方文档解释，ZK-rollups 会把大量交易放到链下执行，然后向主网提交较小的数据摘要和一个密码学证明，用来证明状态变化是正确的。([ethereum.org](http://ethereum.org))
+
+**ZK-rollups allow Ethereum to verify many transactions without re-executing all of them.**  
+ZK Rollup 让 Ethereum 不必重新执行所有交易，也能验证它们是正确的。
+
+这就像：  
+学生做了 100 道题。  
+老师不需要重做 100 道题。  
+学生交上来一个“数学证明”，老师只验证这个证明，就知道结果没错。
+
+* * *
+
+### 第二，隐私问题
+
+区块链默认是透明的。这对信任很好，但对隐私不好。
+
+比如：  
+钱包地址、交易路径、资产变化、DAO 投票行为、身份关系，很多都可能被追踪。
+
+ZK 可以让用户证明某件事，而不暴露全部细节。  
+比如：  
+我属于某个社区，但不暴露我是谁。  
+我有某种资格，但不暴露完整身份。  
+我投过票，但不暴露我投给谁。  
+我有足够资产，但不暴露具体余额。  
+我满足合规要求，但不公开所有个人信息。
+
+这也是为什么 ZK 会跟 **identity / privacy / compliance / governance** 这些主题越来越相关。
+
+* * *
+
+# 4\. ZK 为什么现在成了热点？
+
+我觉得可以用四个阶段理解：
+
+## 阶段一：学术密码学阶段
+
+这个阶段，ZK 主要是密码学研究者在研究。核心问题是：
+
+**Can we prove knowledge without revealing knowledge?**  
+我们能不能证明自己知道某件事，但不暴露这件事本身？
+
+这听起来很哲学，也很数学。
+
+* * *
+
+## 阶段二：隐私币阶段
+
+Zcash 是代表。  
+它用 zk-SNARK 来隐藏交易里的发送方、接收方和金额等信息。([Investopedia](https://www.investopedia.com/terms/z/zksnark.asp?utm_source=chatgpt.com))
+
+这个阶段，ZK 的主要标签是：  
+**privacy**  
+隐私
+
+* * *
+
+## 阶段三：Ethereum 扩容阶段
+
+这是 ZK 进入主流 Web3 的关键。ZK 不再只是“隐藏信息”，而是变成：
+
+**prove computation**  
+证明计算是正确的
+
+也就是说：不只是证明“我知道一个秘密”，而是证明：
+
+这批交易计算正确。  
+这个程序执行正确。  
+这个状态变化正确。  
+这个 L2 没有作弊。
+
+Ethereum 文档也把 ZK-rollups 和 validiums 归为使用 validity proofs 的扩容方案，它们通过链下执行交易并在 Ethereum 上验证证明，来提升处理能力。([ethereum.org](http://ethereum.org))
+
+这个阶段，ZK 的标签变成：  
+**scaling + verification**  
+扩容 + 验证
+
+* * *
+
+## 阶段四：通用证明基础设施阶段
+
+这是现在正在发生的阶段。
+
+ZK 不只是 Rollup 技术，而是逐渐变成一种更底层的基础设施。
+
+a16z crypto 在 2025 年的报告里也提到，ZK 和 succinct proof systems 正从几十年的学术研究，演进为关键基础设施，并被用于 rollups、合规工具，甚至主流 Web 服务里的身份系统。([a16z crypto](https://a16zcrypto.com/posts/article/state-of-crypto-report-2025/?utm_source=chatgpt.com))
+
+这个阶段，ZK 的标签变成：
+
+**verifiable computing infrastructure**  
+可验证计算基础设施
+
+这句话很重要。它意味着未来很多系统可能都需要 ZK：
+
+不是因为它“很酷”，  
+而是因为未来的互联网需要一种能力：
+
+**让别人相信结果，而不是暴露全部过程。**
+
+* * *
+
+# 5\. ZK 和 ETH 的关系：越来越深
+
+你前面学 ETH 的时候，我们说过：
+
+Ethereum 不只是一个币，也不是一个普通数据库。 它更像一个全球共享的可信执行与结算层。  
+但如果所有事情都直接在 L1 上执行，成本很高。
+
+所以 Ethereum 未来很可能走向：
+
+-   L1 做安全和结算。
+    
+-   L2 / zkVM / offchain systems 做大量计算。
+    
+-   ZK 负责证明这些计算是正确的。
+    
+
+Ethereum Foundation 在 2025 年发布的 L1 zkEVM 相关文章中提到，很多 zkVM 已经可以证明 Ethereum blocks，并且性能突破正在频繁出现；EF 的 zkEVM 网站也明确写到，其目标是通过 zkVM 和 ZK proofs 扩展 Ethereum 主网。([Ethereum Foundation Blog](https://blog.ethereum.org/2025/07/10/realtime-proving?utm_source=chatgpt.com))
+
+**Ethereum may become a verification layer for a much larger computation world.**  
+Ethereum 可能会成为一个更大计算世界的验证层。
+
+这句话对理解 Ethereum 未来很关键。
+
+以前我们想的是：Ethereum 执行一切。
+
+后来变成：Ethereum 结算 L2。
+
+未来可能是：Ethereum 验证各种计算证明。
+
+* * *
+
+# 6\. ZK 的几个核心用途
+
+## 1）扩容 Scaling
+
+这是目前 Web3 里最主流的 ZK 用途。
+
+代表：
+
+zkSync  
+Starknet  
+Scroll  
+Polygon zkEVM  
+Linea  
+Taiko  
+Succinct / SP1  
+RISC Zero  
+Brevis  
+Aligned  
+等等
+
+它们不完全一样，有些是 ZK Rollup，有些是 zkVM，有些是 proving infrastructure。
+
+核心逻辑是：
+
+**Do computation elsewhere, prove correctness onchain.**  
+在链下完成计算，在链上证明正确性。
+
+* * *
+
+## 2）隐私 Privacy
+
+比如：
+
+private transfer  
+private voting  
+private identity  
+private membership  
+private DeFi  
+private reputation
+
+这跟 ENS 也有潜在关系。
+
+比如未来可能会出现：
+
+我可以证明我是某个 ENS name 的控制者，但不暴露主钱包。  
+我可以证明我属于某个社区，但不暴露所有链上历史。  
+我可以证明我的身份资质，但不暴露完整身份。
+
+这和你之前关注的 **ENS × AI identity / Opaque / privacy identity safety** 是同一条线。
+
+* * *
+
+## 3）身份 Identity
+
+ZK 身份的典型例子：
+
+证明我成年，但不公开生日。  
+证明我是某国居民，但不公开住址。  
+证明我是某组织成员，但不公开真实身份。  
+证明我有某种链上声誉，但不公开完整钱包历史。
+
+**ZK identity allows selective disclosure.**  
+ZK 身份允许“选择性披露”。
+
+不是完全匿名，也不是完全公开，而是：我只证明当前场景需要知道的那一部分。
+
+这个方向很适合连接 ENS、DID、VC、DAO governance。
+
+* * *
+
+## 4）合规 Compliance
+
+这点很现实。
+
+传统金融、支付、稳定币、RWA 都需要合规。但 Web3 用户不希望把全部隐私交出去。
+
+ZK 可以提供一种中间路线：
+
+-   证明你不是受制裁地址。
+    
+-   证明你通过了 KYC。
+    
+-   证明你符合某个地区规则。
+    
+-   但不把所有个人信息暴露在公开链上。
+    
+
+所以未来 ZK 可能会出现在：
+
+稳定币  
+交易所  
+支付  
+RWA  
+跨境金融  
+机构 DeFi
+
+这里你可以跟你昨天分析的“支付赛道”连接起来。  
+支付赛道成熟、合规、机构化，ZK 可能成为底层工具，但不一定适合你直接转去做支付公司。
+
+* * *
+
+## 5）AI × Web3
+
+这是更未来的方向。  
+AI 时代会有一个问题：AI 输出很多内容、决策、计算结果，但我们怎么知道它可信？
+
+ZK 可能用于：
+
+证明某个模型确实运行过。  
+证明某个数据满足条件，但不暴露数据。  
+证明某个 AI agent 有权限执行某事。  
+证明某个推荐或判断遵循某个规则。  
+证明某个计算结果没有被篡改。
+
+这也是为什么 ZK 会跟 AI identity、agent identity、verifiable AI 连接起来。
+
+* * *
+
+# 7\. ZK 当前现状：热，但还没完全大众化
+
+我会这样判断：
+
+ZK 现在已经不是纯概念热点，而是基础设施热点。  
+但它还没有完全进入普通用户体验层。
+
+也就是说：  
+工程师、研究员、协议团队、基金、L2 项目都很重视。  
+普通用户可能还不知道自己什么时候用了 ZK。  
+很多 ZK 产品仍然难用、成本高、开发门槛高。
+
+a16z 在 2024 年报告中提到，ZK proofs 的验证成本在下降，而 ZK rollups 上的 ETH 价值在增加，也就是说 ZK 正变得更便宜、更常用。([a16z crypto](https://a16zcrypto.com/posts/article/state-of-crypto-report-2024/?utm_source=chatgpt.com))
+
+同时，Succinct 在 2024 年融资 4300 万美元，目标就是让开发者更容易使用 ZK，因为当前 ZK 的一个核心问题是“很难用”。([Axios](https://www.axios.com/2024/03/21/succinct-raises-43-million-cryptography-zero-knowledge-proof-zk?utm_source=chatgpt.com))
+
+所以现状可以总结为：
+
+**ZK is powerful, but still hard to use.**  
+ZK 很强大，但仍然很难用。
+
+* * *
+
+# 8\. 未来展望：ZK 会走向哪里？
+
+我觉得有五个方向值得你长期观察。
+
+## 方向一：ZK Rollup 继续成熟
+
+这是最确定的方向。
+
+未来几年，ZK Rollup 会继续围绕：
+
+更低成本  
+更快证明  
+更好开发体验  
+更强去中心化  
+更安全的 prover / sequencer / bridge
+
+竞争。
+
+* * *
+
+## 方向二：zkVM 成为关键基础设施
+
+zkVM 可以简单理解为：一个可以生成证明的虚拟机。
+
+以前写 ZK 应用，需要懂很多密码学和电路设计。
+
+zkVM 的目标是：
+
+让开发者用更熟悉的语言写程序，然后系统自动生成证明。
+
+这非常重要，因为它把 ZK 从“密码学专家工具”推向“普通开发者工具”。
+
+**zkVMs may make ZK programmable and developer-friendly.**  
+zkVM 可能让 ZK 变得可编程，也更容易被开发者使用。
+
+* * *
+
+## 方向三：Ethereum L1 自身 ZK 化
+
+这是很大的方向。
+
+也就是说，未来 Ethereum L1 的执行过程本身，可能也会越来越依赖 ZK 证明。
+
+Ethereum Foundation 的 L1 zkEVM 方向，正是在探索用 zkVM / ZK proofs 扩展 Ethereum 主网。([zkEVM](https://zkevm.ethereum.foundation/?utm_source=chatgpt.com))
+
+如果这个方向成熟，Ethereum 的角色会进一步变化：
+
+从“所有节点重复执行所有计算”，  
+走向“节点更高效地验证证明”。
+
+* * *
+
+## 方向四：ZK 身份与隐私应用
+
+这是和 ENS、DID、DAO、AI identity 关系最密切的方向。
+
+未来可能出现更多：
+
+privacy-preserving identity  
+匿名但可信的 DAO 投票  
+隐藏钱包历史的 reputation  
+隐私保护的社交图谱  
+可证明的人类身份  
+AI agent 权限证明
+
+这条线很适合你观察，因为它不只是技术，而是直接关系到社区、治理、身份和信任。
+
+* * *
+
+## 方向五：ZK 进入 Web2 / 传统行业
+
+比如：
+
+金融合规  
+医疗数据  
+学历证明  
+年龄证明  
+信用证明  
+企业数据审计  
+AI 模型验证
+
+未来 ZK 不一定只属于 Crypto。
+
+它可能成为更广义的“可信互联网”基础设施。
+<!-- DAILY_CHECKIN_2026-04-30_END -->
+
 # 2026-04-29
 <!-- DAILY_CHECKIN_2026-04-29_START -->
+
 明日复明日，明日何其多
 <!-- DAILY_CHECKIN_2026-04-29_END -->
 
 # 2026-04-28
 <!-- DAILY_CHECKIN_2026-04-28_START -->
 
+
 唉 再请假
 <!-- DAILY_CHECKIN_2026-04-28_END -->
 
 # 2026-04-26
 <!-- DAILY_CHECKIN_2026-04-26_START -->
+
 
 
 # 🧠 Two different models: Ethereum vs Bitcoin
@@ -386,6 +842,7 @@ Transactions change state
 
 
 
+
 又没学
 <!-- DAILY_CHECKIN_2026-04-24_END -->
 
@@ -395,11 +852,13 @@ Transactions change state
 
 
 
+
 疲惫，休息，明天继续
 <!-- DAILY_CHECKIN_2026-04-23_END -->
 
 # 2026-04-22
 <!-- DAILY_CHECKIN_2026-04-22_START -->
+
 
 
 
@@ -627,6 +1086,7 @@ But final truth still comes from L1
 
 
 
+
 HK Web3 Festival 嘉年华感受熊市，太熊了，好难受
 
 # 🧠 One Transaction = EL + CL Cooperation
@@ -809,6 +1269,7 @@ Consensus makes it permanent.
 
 
 
+
 今天周日 想休息
 
 下周好悬啊，一周HK
@@ -816,6 +1277,7 @@ Consensus makes it permanent.
 
 # 2026-04-17
 <!-- DAILY_CHECKIN_2026-04-17_START -->
+
 
 
 
@@ -1080,6 +1542,7 @@ CL 决定“真相”，EL 产生“结果”。
 
 
 
+
 04/16 继续降维学习
 
 EL vs CL — The Real Separation
@@ -1297,6 +1760,7 @@ CL = ENS 的安全与确认
 
 # 2026-04-15
 <!-- DAILY_CHECKIN_2026-04-15_START -->
+
 
 
 
@@ -1595,6 +2059,7 @@ Ethereum is a global state machine, and EL is the part that runs the machine.
 
 
 
+
 # [Execution Layer Specification](https://epf.wiki/#/wiki/EL/el-specs?id=execution-layer-specification)
 
 看的很晕，纠结要不要放弃？
@@ -1602,6 +2067,7 @@ Ethereum is a global state machine, and EL is the part that runs the machine.
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -1724,6 +2190,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 
 
+
 04/11
 
 还得再休一天，睡觉更重要
@@ -1747,6 +2214,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 
 
+
 04/10
 
 今天折腾网络，休息下
@@ -1756,6 +2224,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -2022,6 +2491,7 @@ Ethereum’s design can be summarized as:
 
 
 
+
 04/07
 
 ## 🧩 核心结构（Core Structure）
@@ -2126,6 +2596,7 @@ Ethereum’s design can be summarized as:
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
