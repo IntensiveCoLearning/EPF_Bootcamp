@@ -15,8 +15,397 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-05-01
+<!-- DAILY_CHECKIN_2026-05-01_START -->
+# ZK 02｜核心原理：证明、验证者与秘密
+
+> 核心句：  
+> **ZK is not about hiding everything. It is about proving the right thing without revealing unnecessary information.**  
+> ZK 不是把一切都藏起来，而是在不暴露不必要信息的情况下，证明关键事实成立。
+
+* * *
+
+# 1\. ZK 里最重要的三个角色
+
+ZK 里先记住三个词：
+
+**Prover**：证明者  
+**Verifier**：验证者  
+**Proof**：证明
+
+比如你想证明：“我知道某个密码。”
+
+你就是：
+
+**Prover / 证明者**
+
+对方是：
+
+**Verifier / 验证者**
+
+你交给对方的东西是：
+
+**Proof / 证明**
+
+注意，不是把密码交给对方，而是交给对方一个“可以验证的证明”。
+
+**The prover creates a proof. The verifier checks the proof.**  
+证明者生成证明，验证者检查证明。
+
+* * *
+
+# 2\. 最简单的例子：我知道密码，但不告诉你密码
+
+普通互联网里，如果你要证明自己知道密码，通常要输入密码。
+
+系统会检查：
+
+你输入的密码是否正确。
+
+但在 ZK 的世界里，理想情况是：
+
+你不直接展示密码。  
+你生成一个证明。  
+别人验证这个证明。  
+验证通过后，对方相信：你确实知道密码。
+
+重点是：
+
+验证者知道你“知道密码”，但不知道密码是什么。
+
+**I can prove that I know the secret without revealing the secret itself.**  
+我可以证明我知道这个秘密，但不暴露秘密本身。
+
+这就是“零知识”的直觉。
+
+* * *
+
+# 3\. 什么叫“零知识”？
+
+“零知识”不是说验证者什么都不知道。
+
+验证者至少知道一件事：
+
+**这个命题是真的。**
+
+比如：
+
+你确实知道密码。  
+你确实超过 18 岁。  
+这批交易确实计算正确。  
+这个用户确实有资格投票。  
+这个钱包确实满足某个条件。
+
+但验证者不知道多余的信息。
+
+比如：
+
+不知道你的密码。  
+不知道你的生日。  
+不知道你的完整身份。  
+不知道你的全部资产。  
+不知道你的完整交易路径。  
+不知道你的全部链上历史。
+
+所以更准确地说：
+
+**Zero-knowledge means the verifier learns the truth of a statement, but learns nothing extra.**  
+零知识的意思是：验证者知道某个命题为真，但没有学到额外信息。
+
+* * *
+
+# 4\. ZK 不是“隐藏一切”，而是“只暴露必要结论”
+
+这是很多人容易误解的地方。
+
+ZK 不是单纯“隐身术”。  
+ZK 不是把一切都加密起来。  
+ZK 也不是说所有信息都不能看。
+
+ZK 的核心是：
+
+**最小披露。**
+
+也就是：
+
+只证明当前场景需要证明的事情，其他信息不暴露。
+
+比如年龄验证：
+
+不需要告诉别人你的生日、身份证号、住址。  
+只需要证明：
+
+“我超过 18 岁。”
+
+比如 DAO 投票资格：
+
+不需要暴露你的完整钱包历史。  
+只需要证明：
+
+“我拥有投票资格。”
+
+比如合规：
+
+不一定要把所有 KYC 信息放到链上。  
+只需要证明：
+
+“我已通过某种合规检查。”
+
+**ZK enables selective disclosure.**  
+ZK 允许选择性披露。
+
+这个概念以后会和 identity / ENS / DID / governance 强相关。
+
+* * *
+
+# 5\. ZK 里的两个核心概念：Statement 和 Witness
+
+现在进入一点点系统层。
+
+ZK 证明里经常会出现两个词：
+
+**Statement**：要证明的公开命题  
+**Witness**：证明这个命题所需要的秘密信息
+
+听起来抽象，但其实很好理解。
+
+比如：
+
+你要证明：
+
+“我知道某个密码。”
+
+这里的 Statement 是：
+
+**我知道正确密码。**
+
+Witness 是：
+
+**那个真正的密码。**
+
+再比如：
+
+你要证明：
+
+“我超过 18 岁。”
+
+Statement 是：
+
+**我超过 18 岁。**
+
+Witness 是：
+
+**你的真实生日 / 身份资料。**
+
+再比如：
+
+你要证明：
+
+“这批 L2 交易计算正确。”
+
+Statement 是：
+
+**新的链上状态是正确的。**
+
+Witness 是：
+
+**完整交易数据、执行过程、中间计算信息等。**
+
+**The statement is what you prove. The witness is the hidden information that makes the proof possible.**  
+Statement 是你要证明的命题，Witness 是让这个证明成立的隐藏信息。
+
+* * *
+
+# 6\. 用一个“门”的故事理解 ZK
+
+经典理解方式是“洞穴故事”，但我们换成更简单的“门”。
+
+假设有一扇智能门。  
+只有知道密码的人，才能从门里走出来。
+
+你想向我证明：
+
+“我知道门的密码。”
+
+但你不想告诉我密码。
+
+于是你可以这样做：
+
+我站在门外。  
+你进去。  
+门关上。  
+我看不到你输入了什么。  
+过一会儿，你从门里面出来。  
+我就知道：你确实知道打开门的方法。
+
+我没有看到密码。  
+但我相信你知道密码。
+
+这个过程就是 ZK 的直觉：
+
+证明者通过某种动作证明自己知道秘密。  
+验证者只确认结果，不获得秘密。
+
+当然，真实 ZK 不是靠“门”，而是靠数学证明。  
+但逻辑类似。
+
+**The verifier checks the result, not the secret.**  
+验证者检查结果，而不是查看秘密本身。
+
+* * *
+
+# 7\. ZK 为什么能用于区块链？
+
+区块链最重要的问题是：
+
+**如何让不信任彼此的人，共同相信一个结果？**
+
+以前的方式是：
+
+所有节点都重新执行。  
+所有数据都公开。  
+大家一起验证。
+
+这很安全，但成本高，隐私差。
+
+ZK 提供了另一种路径：
+
+某个系统先在链下完成计算。  
+然后生成一个证明。  
+链上只验证这个证明。  
+验证通过后，链就相信结果正确。
+
+这就是 ZK Rollup 的基本逻辑。
+
+比如：
+
+L2 处理了 10,000 笔交易。  
+它不需要让 Ethereum L1 重新执行这 10,000 笔交易。  
+它只需要提交一个 proof。  
+Ethereum 验证 proof。  
+如果 proof 有效，就接受新的状态。
+
+**Ethereum does not need to re-execute every transaction; it only needs to verify the proof.**  
+Ethereum 不需要重新执行每一笔交易，只需要验证证明。
+
+这就是为什么 ZK 对扩容很重要。
+
+* * *
+
+# 8\. ZK 的三大性质
+
+一个好的 ZK proof 通常需要满足三个性质：
+
+## 1）Completeness｜完整性
+
+如果命题是真的，诚实的证明者应该能让验证者相信。
+
+比如你真的知道密码，那你应该能成功证明。
+
+**If the statement is true, the proof should pass.**  
+如果命题是真的，证明应该能通过。
+
+## 2）Soundness｜可靠性
+
+如果命题是假的，作弊者很难骗过验证者。
+
+比如你不知道密码，却想假装知道，理论上应该几乎不可能成功。
+
+**If the statement is false, a dishonest prover should not be able to convince the verifier.**  
+如果命题是假的，不诚实的证明者不应该能骗过验证者。
+
+## 3）Zero-Knowledge｜零知识性
+
+验证者除了知道“命题是真的”以外，不应该获得额外信息。
+
+比如验证者知道你确实知道密码，但不知道密码本身。
+
+**The verifier learns that the statement is true, and nothing more.**  
+验证者知道命题为真，但除此之外不获得更多信息。
+
+这三个性质是 ZK 的基础骨架。
+
+* * *
+
+# 9\. ZK 和普通加密有什么不同？
+
+这点很重要。
+
+普通加密更像是：
+
+**我把信息锁起来，不让你看。**
+
+ZK 更像是：
+
+**我不把信息给你，但我证明它满足某个条件。**
+
+比如：
+
+加密：我把生日加密，你看不到。  
+ZK：我不告诉你生日，但证明我超过 18 岁。
+
+加密：我把交易金额隐藏。  
+ZK：我证明交易合法，但不暴露具体金额。
+
+加密：保护数据内容。  
+ZK：证明数据关系。
+
+**Encryption hides data. ZK proves statements about data.**  
+加密隐藏数据，ZK 证明关于数据的命题。
+
+这句话非常关键。
+
+* * *
+
+# 10\. ZK 也不是“绝对隐私”
+
+ZK 很强，但不要神化。
+
+ZK 只能隐藏 proof 设计中不需要公开的信息。
+
+如果系统设计不好，仍然可能泄露信息。  
+如果链上地址本身暴露过，仍然可能被关联。  
+如果应用层 metadata 暴露太多，仍然可能被追踪。  
+如果用户行为模式很明显，也可能被分析出来。
+
+所以 ZK 是隐私工具，但不是万能隐私魔法。
+
+**ZK is a powerful privacy tool, but privacy also depends on system design.**  
+ZK 是强大的隐私工具，但隐私也取决于系统设计。
+
+这点对你理解 ENS / identity 很重要。
+
+* * *
+
+# 11\. 把它放回你的主线：身份与信任
+
+ZK 对你的主线最重要的意义是：
+
+它改变了身份系统的表达方式。
+
+以前身份系统经常是：
+
+证明我是谁 = 暴露我的资料。
+
+ZK 之后可以变成：
+
+证明我满足某个条件 ≠ 暴露我的完整身份。
+
+比如：
+
+我可以证明我是某个社区成员，但不暴露主钱包。  
+我可以证明我是某个 ENS name 的控制者，但不暴露所有相关地址。  
+我可以证明我有投票资格，但不暴露我的完整链上历史。  
+我可以证明我是人类用户，但不暴露真实身份。  
+AI agent 也可以证明自己拥有某种权限，但不暴露所有内部信息。
+
+**ZK turns identity from full exposure into conditional proof.**  
+ZK 把身份从“完整暴露”变成“条件证明”。
+<!-- DAILY_CHECKIN_2026-05-01_END -->
+
 # 2026-04-30
 <!-- DAILY_CHECKIN_2026-04-30_START -->
+
 # ZK 学习笔记 01
 
 ## 从“大地图”开始：ZK 为什么突然重要？
@@ -471,6 +860,7 @@ AI 模型验证
 # 2026-04-29
 <!-- DAILY_CHECKIN_2026-04-29_START -->
 
+
 明日复明日，明日何其多
 <!-- DAILY_CHECKIN_2026-04-29_END -->
 
@@ -478,11 +868,13 @@ AI 模型验证
 <!-- DAILY_CHECKIN_2026-04-28_START -->
 
 
+
 唉 再请假
 <!-- DAILY_CHECKIN_2026-04-28_END -->
 
 # 2026-04-26
 <!-- DAILY_CHECKIN_2026-04-26_START -->
+
 
 
 
@@ -843,6 +1235,7 @@ Transactions change state
 
 
 
+
 又没学
 <!-- DAILY_CHECKIN_2026-04-24_END -->
 
@@ -853,11 +1246,13 @@ Transactions change state
 
 
 
+
 疲惫，休息，明天继续
 <!-- DAILY_CHECKIN_2026-04-23_END -->
 
 # 2026-04-22
 <!-- DAILY_CHECKIN_2026-04-22_START -->
+
 
 
 
@@ -1087,6 +1482,7 @@ But final truth still comes from L1
 
 
 
+
 HK Web3 Festival 嘉年华感受熊市，太熊了，好难受
 
 # 🧠 One Transaction = EL + CL Cooperation
@@ -1270,6 +1666,7 @@ Consensus makes it permanent.
 
 
 
+
 今天周日 想休息
 
 下周好悬啊，一周HK
@@ -1277,6 +1674,7 @@ Consensus makes it permanent.
 
 # 2026-04-17
 <!-- DAILY_CHECKIN_2026-04-17_START -->
+
 
 
 
@@ -1543,6 +1941,7 @@ CL 决定“真相”，EL 产生“结果”。
 
 
 
+
 04/16 继续降维学习
 
 EL vs CL — The Real Separation
@@ -1760,6 +2159,7 @@ CL = ENS 的安全与确认
 
 # 2026-04-15
 <!-- DAILY_CHECKIN_2026-04-15_START -->
+
 
 
 
@@ -2060,6 +2460,7 @@ Ethereum is a global state machine, and EL is the part that runs the machine.
 
 
 
+
 # [Execution Layer Specification](https://epf.wiki/#/wiki/EL/el-specs?id=execution-layer-specification)
 
 看的很晕，纠结要不要放弃？
@@ -2067,6 +2468,7 @@ Ethereum is a global state machine, and EL is the part that runs the machine.
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -2191,6 +2593,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 
 
+
 04/11
 
 还得再休一天，睡觉更重要
@@ -2215,6 +2618,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 
 
+
 04/10
 
 今天折腾网络，休息下
@@ -2224,6 +2628,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -2492,6 +2897,7 @@ Ethereum’s design can be summarized as:
 
 
 
+
 04/07
 
 ## 🧩 核心结构（Core Structure）
@@ -2596,6 +3002,7 @@ Ethereum’s design can be summarized as:
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
