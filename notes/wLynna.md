@@ -15,8 +15,364 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-05-02
+<!-- DAILY_CHECKIN_2026-05-02_START -->
+# ZK 03｜ZK 的两大主线：Privacy 与 Verifiable Computation
+
+> 核心句：  
+> **ZK has two major paths: privacy and verifiable computation.**  
+> ZK 有两大主线：隐私，以及可验证计算。
+
+* * *
+
+## 1\. 为什么要分成两条主线？
+
+很多人第一次听到 ZK，会以为它只是“隐私技术”。  
+这没有错，但不完整。
+
+ZK 最早在 Web3 里被大众认识，确实主要来自隐私场景，比如隐藏交易信息、隐藏身份信息。
+
+但在 Ethereum / L2 时代，ZK 的另一个用途变得更重要：
+
+**ZK is not only about hiding secrets. It is also about proving computation is correct.**  
+ZK 不只是隐藏秘密，也是在证明计算是正确的。
+
+所以我们可以把 ZK 理解成两条主线：
+
+1.  **Privacy｜隐私**
+    
+2.  **Verifiable Computation｜可验证计算**
+    
+
+* * *
+
+## 2\. 主线一：Privacy｜隐私
+
+Privacy 这条线关注的问题是：
+
+**How can I prove something without exposing myself?**  
+**我如何证明某件事，但不暴露自己？**
+
+比如：
+
+-   我证明我超过 18 岁，但不公开生日。  
+    
+-   我证明我是某个社区成员，但不公开真实身份。  
+    
+-   我证明我有投票资格，但不公开完整钱包历史。  
+    
+-   我证明我通过了合规检查，但不公开全部 KYC 信息。  
+    
+-   我证明我拥有某个资产，但不公开资产总额。  
+    
+
+这条线的关键词是：
+
+**selective disclosure**  
+选择性披露
+
+**Privacy ZK lets users reveal only what is necessary.**  
+隐私型 ZK 让用户只披露必要信息。
+
+* * *
+
+## 3\. Privacy 解决的核心矛盾
+
+Web3 默认透明。
+
+这对信任很好，但对个人很不友好。
+
+链上世界里，很多东西都可能被追踪：
+
+钱包地址  
+交易记录  
+资产变化  
+DAO 投票  
+NFT 持有  
+社交关系  
+跨应用行为
+
+所以 Web3 有一个长期矛盾：
+
+**Public blockchains need transparency, but users need privacy.**  
+**公链需要透明，但用户也需要隐私。**
+
+ZK 的隐私路线，就是在这两者之间找平衡。
+
+不是完全匿名，也不是完全暴露，而是：
+
+**prove enough, reveal less.**  
+证明足够的信息，暴露更少的数据。
+
+* * *
+
+## 4\. Privacy 的典型应用
+
+### 4.1 身份证明
+
+例子：
+
+证明我是成年人。  
+证明我是某国居民。  
+证明我是某个组织成员。  
+证明我是某个 ENS / DAO / 社区的合格参与者。
+
+重点不是“我是谁”，而是：
+
+**我是否满足这个条件。**
+
+**ZK identity changes identity from “who I am” to “what I can prove.”**  
+ZK 身份把身份从“我是谁”，转向“我能证明什么”。
+
+* * *
+
+### 4.2 隐私投票
+
+DAO 治理里，如果所有投票都公开，可能会带来压力、站队、报复或利益操控。
+
+ZK 可以支持：
+
+我证明我有投票资格。  
+我证明我的票被正确计入。  
+但别人不知道我具体投给谁。
+
+**ZK voting can make governance more private while keeping results verifiable.**  
+ZK 投票可以让治理更隐私，同时保持结果可验证。
+
+* * *
+
+### 4.3 合规证明
+
+比如：
+
+我证明我不是受制裁地址。  
+我证明我通过了 KYC。  
+我证明我符合某个地区的交易规则。
+
+但我不把全部个人资料公开到链上。
+
+这对 stablecoin、payment、RWA、exchange、institutional DeFi 都很重要。
+
+**ZK compliance can prove eligibility without exposing full personal data.**  
+ZK 合规可以证明资格，而不暴露完整个人数据。
+
+* * *
+
+### 4.4 链上声誉
+
+未来可能出现这样的场景：
+
+我证明我长期参与过某些社区。  
+我证明我完成过某些贡献。  
+我证明我有良好的链上行为记录。  
+但我不公开全部钱包历史。
+
+这和你的主线 **identity / trust / ecosystem building** 很相关。
+
+**ZK reputation allows people to prove credibility without exposing their full history.**  
+ZK 声誉让人证明可信度，而不暴露完整历史。
+
+* * *
+
+## 5\. 主线二：Verifiable Computation｜可验证计算
+
+第二条主线更偏 Ethereum / L2 / zkVM。
+
+它关注的问题是：
+
+**How can I prove that a computation was done correctly?**  
+**我如何证明一段计算被正确执行了？**
+
+这里的重点不再是“隐藏身份”，而是：
+
+**证明计算结果可信。**
+
+比如：
+
+一批交易执行正确。  
+一个智能合约状态更新正确。  
+一个程序运行结果正确。  
+一个 AI 模型推理过程符合规则。  
+一个链下系统提交的数据没有造假。
+
+**Verifiable computation lets others trust the result without redoing all the work.**  
+可验证计算让别人相信结果，而不必重新做所有计算。
+
+* * *
+
+## 6\. Verifiable Computation 解决的核心矛盾
+
+区块链原本的安全模式是：
+
+所有节点重复执行。  
+大家都算一遍。  
+结果一致，就可信。
+
+这个方式很安全，但很贵、很慢。
+
+ZK 提供了另一种模式：
+
+一个地方先完成计算。  
+生成一个 proof。  
+其他人只验证 proof。  
+不需要重新执行全部计算。
+
+**Instead of re-executing everything, the network verifies a proof.**  
+网络不必重新执行一切，而是验证一个证明。
+
+这就是 ZK Rollup、zkVM、可验证计算的核心。
+
+* * *
+
+## 7\. Verifiable Computation 的典型应用
+
+### 7.1 ZK Rollup
+
+L2 在链下处理大量交易，然后生成 proof 提交给 Ethereum。
+
+Ethereum 不需要重新执行每笔交易，只需要验证 proof。
+
+**ZK Rollups move execution offchain and keep verification on Ethereum.**  
+ZK Rollup 把执行放到链下，把验证留在 Ethereum。
+
+这就是 ZK 对扩容的重要性。
+
+* * *
+
+### 7.2 zkVM
+
+zkVM 可以理解成：
+
+**a virtual machine that can generate proofs for program execution**  
+**一种可以为程序执行生成证明的虚拟机**
+
+以前开发 ZK 应用，需要写复杂电路。  
+zkVM 的目标是让开发者用更熟悉的方式写程序，然后系统生成证明。
+
+**zkVMs make ZK more programmable.**  
+zkVM 让 ZK 更可编程。
+
+这会降低 ZK 应用开发门槛。
+
+* * *
+
+### 7.3 链下计算证明
+
+很多计算不适合直接放到链上：
+
+成本太高。  
+数据太大。  
+逻辑太复杂。  
+隐私要求太高。
+
+ZK 可以让这些计算在链下完成，再把证明放到链上。
+
+例子：
+
+复杂 DeFi 风控计算  
+游戏逻辑计算  
+AI 推理结果证明  
+数据分析结果证明  
+跨链状态证明
+
+**ZK can bring offchain computation back into onchain trust.**  
+ZK 可以把链下计算重新带回链上信任体系。
+
+* * *
+
+## 8\. 两条主线的区别
+
+| 维度 | Privacy｜隐私 | Verifiable Computation｜可验证计算 |
+| --- | --- | --- |
+| 核心问题 | 如何证明但不暴露自己 | 如何证明计算正确 |
+| 重点 | 数据最小披露 | 结果可信验证 |
+| 典型场景 | 身份、投票、合规、声誉 | Rollup、zkVM、链下计算 |
+| 用户感受 | 更安全、更少暴露 | 更快、更便宜、更可扩展 |
+| 关键词 | selective disclosure | proof of computation |
+
+一句话区分：
+
+**Privacy ZK protects what should stay hidden. Verifiable computation proves what should be trusted.**  
+隐私型 ZK 保护不该暴露的信息；可验证计算证明应该被信任的结果。
+
+* * *
+
+## 9\. 两条主线其实会交叉
+
+现实中，Privacy 和 Verifiable Computation 并不是完全分开的。
+
+很多场景同时需要两者。
+
+比如 ZK Identity：
+
+既要隐藏用户完整身份。  
+也要证明身份条件计算正确。
+
+比如 ZK Voting：
+
+既要隐藏投票选择。  
+也要证明计票结果正确。
+
+比如 ZK Compliance：
+
+既要隐藏个人资料。  
+也要证明合规判断正确。
+
+比如 AI × Web3：
+
+既可能要保护数据隐私。  
+也要证明 AI 推理或权限判断是可信的。
+
+**The strongest ZK applications often combine privacy and verifiable computation.**  
+最强的 ZK 应用，往往同时结合隐私和可验证计算。
+
+* * *
+
+## 10\. 放回你的主线：Identity & Trust
+
+对你的长期方向来说，这两条线刚好对应两个关键词：
+
+**Privacy → Identity**  
+隐私 → 身份
+
+**Verifiable Computation → Trust**  
+可验证计算 → 信任
+
+所以 ZK 对你重要，不是因为你要成为工程师，而是因为它正在重塑：
+
+身份如何表达  
+信任如何建立  
+治理如何验证  
+社区声誉如何呈现  
+AI agent 如何获得权限  
+链下行为如何进入链上信任体系
+
+**ZK is a technical foundation for future identity and trust systems.**  
+ZK 是未来身份与信任系统的重要技术基础。
+
+* * *
+
+## 11\. 本节核心总结
+
+**ZK has two major paths: privacy and verifiable computation.**  
+ZK 有两大主线：隐私，以及可验证计算。
+
+**Privacy ZK proves facts without exposing unnecessary data.**  
+隐私型 ZK 在不暴露不必要数据的情况下证明事实。
+
+**Verifiable computation proves that a computation was done correctly.**  
+可验证计算证明一段计算被正确执行。
+
+**Privacy protects the person; verifiable computation protects the result.**  
+隐私保护人，可验证计算保护结果。
+
+**For your direction, ZK connects identity, trust, governance, and AI agents.**  
+对你的方向来说，ZK 连接了身份、信任、治理和 AI agent。
+<!-- DAILY_CHECKIN_2026-05-02_END -->
+
 # 2026-05-01
 <!-- DAILY_CHECKIN_2026-05-01_START -->
+
 # ZK 02｜核心原理：证明、验证者与秘密
 
 > 核心句：  
@@ -405,6 +761,7 @@ ZK 把身份从“完整暴露”变成“条件证明”。
 
 # 2026-04-30
 <!-- DAILY_CHECKIN_2026-04-30_START -->
+
 
 # ZK 学习笔记 01
 
@@ -861,6 +1218,7 @@ AI 模型验证
 <!-- DAILY_CHECKIN_2026-04-29_START -->
 
 
+
 明日复明日，明日何其多
 <!-- DAILY_CHECKIN_2026-04-29_END -->
 
@@ -869,11 +1227,13 @@ AI 模型验证
 
 
 
+
 唉 再请假
 <!-- DAILY_CHECKIN_2026-04-28_END -->
 
 # 2026-04-26
 <!-- DAILY_CHECKIN_2026-04-26_START -->
+
 
 
 
@@ -1236,6 +1596,7 @@ Transactions change state
 
 
 
+
 又没学
 <!-- DAILY_CHECKIN_2026-04-24_END -->
 
@@ -1247,11 +1608,13 @@ Transactions change state
 
 
 
+
 疲惫，休息，明天继续
 <!-- DAILY_CHECKIN_2026-04-23_END -->
 
 # 2026-04-22
 <!-- DAILY_CHECKIN_2026-04-22_START -->
+
 
 
 
@@ -1483,6 +1846,7 @@ But final truth still comes from L1
 
 
 
+
 HK Web3 Festival 嘉年华感受熊市，太熊了，好难受
 
 # 🧠 One Transaction = EL + CL Cooperation
@@ -1667,6 +2031,7 @@ Consensus makes it permanent.
 
 
 
+
 今天周日 想休息
 
 下周好悬啊，一周HK
@@ -1674,6 +2039,7 @@ Consensus makes it permanent.
 
 # 2026-04-17
 <!-- DAILY_CHECKIN_2026-04-17_START -->
+
 
 
 
@@ -1942,6 +2308,7 @@ CL 决定“真相”，EL 产生“结果”。
 
 
 
+
 04/16 继续降维学习
 
 EL vs CL — The Real Separation
@@ -2159,6 +2526,7 @@ CL = ENS 的安全与确认
 
 # 2026-04-15
 <!-- DAILY_CHECKIN_2026-04-15_START -->
+
 
 
 
@@ -2461,6 +2829,7 @@ Ethereum is a global state machine, and EL is the part that runs the machine.
 
 
 
+
 # [Execution Layer Specification](https://epf.wiki/#/wiki/EL/el-specs?id=execution-layer-specification)
 
 看的很晕，纠结要不要放弃？
@@ -2468,6 +2837,7 @@ Ethereum is a global state machine, and EL is the part that runs the machine.
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -2594,6 +2964,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 
 
+
 04/11
 
 还得再休一天，睡觉更重要
@@ -2619,6 +2990,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 
 
+
 04/10
 
 今天折腾网络，休息下
@@ -2628,6 +3000,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -2898,6 +3271,7 @@ Ethereum’s design can be summarized as:
 
 
 
+
 04/07
 
 ## 🧩 核心结构（Core Structure）
@@ -3002,6 +3376,7 @@ Ethereum’s design can be summarized as:
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
