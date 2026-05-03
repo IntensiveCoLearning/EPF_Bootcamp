@@ -15,8 +15,465 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-05-03
+<!-- DAILY_CHECKIN_2026-05-03_START -->
+# ZK 04｜ZK Rollup：Ethereum 为什么需要 ZK 扩容
+
+> ZK 04｜ZK Rollup：Ethereum 为什么需要 ZK 扩容
+> 
+> 核心句：  
+> **ZK Rollup moves execution offchain and keeps verification on Ethereum.**  
+> ZK Rollup 把执行放到链下，把验证留在 Ethereum。
+
+* * *
+
+## 1\. 先回到 Ethereum 的核心问题
+
+Ethereum 很安全、很开放、很去中心化。  
+但它有一个长期问题：
+
+**太多人想用，L1 自己处理不过来。**
+
+如果每一笔交易都直接在 Ethereum L1 上执行，就会出现：
+
+-   gas fee 高  
+    
+-   交易慢  
+    
+-   用户体验差  
+    
+-   应用难以大规模使用  
+    
+
+所以 Ethereum 需要扩容。
+
+**Ethereum L1 is secure, but limited in throughput.**  
+Ethereum L1 很安全，但处理能力有限。
+
+* * *
+
+## 2\. Rollup 是什么？
+
+Rollup 的核心思路是：
+
+把很多交易放到链下处理。  
+把结果打包后提交回 Ethereum。  
+Ethereum 作为最终结算和安全层。
+
+“Rollup” 可以理解为：
+
+**把很多交易卷成一个包，再提交到 L1。**
+
+这就像：
+
+不是每个人单独去窗口办业务。  
+而是先在外面整理好一批材料。  
+最后只把总结结果交给窗口确认。
+
+**Rollups bundle many transactions together and settle them on Ethereum.**  
+Rollup 把很多交易打包，并最终在 Ethereum 上结算。
+
+* * *
+
+## 3\. ZK Rollup 的核心逻辑
+
+ZK Rollup 是 Rollup 的一种。
+
+它的关键不是“打包”，而是：
+
+**提交 proof。**
+
+流程大概是：
+
+1.  用户在 L2 上发起交易。
+    
+2.  L2 在链下执行这些交易。
+    
+3.  L2 计算出新的状态。
+    
+4.  L2 生成一个 ZK proof。
+    
+5.  Ethereum L1 验证这个 proof。
+    
+6.  proof 有效，L1 接受新的状态。
+    
+
+**Ethereum does not re-execute all L2 transactions. It verifies a proof of correct execution.**  
+Ethereum 不重新执行所有 L2 交易，而是验证一个“正确执行”的证明。
+
+* * *
+
+## 4\. 一个简单类比：老师改作业
+
+假设学生做了 10,000 道题。
+
+普通方式：
+
+老师重新算 10,000 道题。  
+很慢。
+
+ZK Rollup 方式：
+
+学生交一个“证明”。  
+老师只检查这个证明。  
+如果证明有效，老师相信答案是对的。
+
+这里：
+
+-   学生 = L2  
+    
+-   老师 = Ethereum L1  
+    
+-   10,000 道题 = 大量交易  
+    
+-   证明 = ZK proof  
+    
+
+**The proof is much smaller than the full computation.**  
+证明比完整计算小得多。
+
+* * *
+
+## 5\. ZK Rollup 为什么能扩容？
+
+因为它把最重的工作移到了链下：
+
+**execution offchain**  
+链下执行
+
+同时保留 Ethereum 的安全性：
+
+**verification onchain**  
+链上验证
+
+L1 不再需要亲自处理所有交易细节，只需要确认：
+
+这批交易的最终结果是正确的。
+
+**ZK Rollup reduces the work Ethereum needs to do, while keeping Ethereum as the trust anchor.**  
+ZK Rollup 减少了 Ethereum 需要做的工作，同时保留 Ethereum 作为信任锚点。
+
+* * *
+
+## 6\. ZK Rollup 和普通 L2 的关系
+
+L2 是大类。  
+Rollup 是 L2 的一种。  
+ZK Rollup 是 Rollup 的一种。
+
+可以这样记：
+
+```text
+Ethereum scaling
+└── Layer 2
+    └── Rollup
+        ├── Optimistic Rollup
+        └── ZK Rollup
+```
+
+常见 Rollup 分两类：
+
+-   **Optimistic Rollup**  
+    
+-   **ZK Rollup**  
+    
+
+它们都把交易放到链下执行，但验证方式不同。
+
+* * *
+
+## 7\. Optimistic Rollup 是什么？
+
+Optimistic 的意思是“乐观”。
+
+它的默认假设是：
+
+**先相信提交的结果是对的。**
+
+如果有人发现问题，可以在挑战期内提出 fraud proof。
+
+所以 Optimistic Rollup 的逻辑是：
+
+先接受。  
+如果有人挑战，再检查。
+
+代表项目：
+
+-   Optimism  
+    
+-   Arbitrum  
+    
+
+**Optimistic Rollups assume transactions are valid unless challenged.**  
+Optimistic Rollup 默认交易有效，除非有人挑战。
+
+* * *
+
+## 8\. ZK Rollup 和 Optimistic Rollup 的区别
+
+ZK Rollup 不靠“事后挑战”。  
+它靠“事前证明”。
+
+也就是说：
+
+ZK Rollup 提交结果时，就同时提交 proof。  
+Ethereum 验证 proof 后才接受。
+
+| 维度 | Optimistic Rollup | ZK Rollup |
+| --- | --- | --- |
+| 核心假设 | 默认相信，除非挑战 | 先证明，再接受 |
+| 验证方式 | fraud proof | validity proof |
+| 提现体验 | 通常有挑战期 | 理论上更快 |
+| 技术难度 | 相对较低 | 更高 |
+| 代表项目 | Optimism, Arbitrum | Starknet, zkSync, Scroll |
+
+一句话：
+
+**Optimistic Rollups rely on challenges. ZK Rollups rely on proofs.**  
+Optimistic Rollup 依赖挑战，ZK Rollup 依赖证明。
+
+* * *
+
+## 9\. 什么是 Validity Proof？
+
+ZK Rollup 常说的 proof，本质上是：
+
+**validity proof**  
+有效性证明
+
+它证明的是：
+
+这批交易执行后得到的新状态，是有效的。
+
+不是说：
+
+“我觉得我是对的。”
+
+而是说：
+
+“这里有一个可以验证的数学证明，证明我是对的。”
+
+**A validity proof proves that a state transition is correct.**  
+有效性证明证明一次状态转换是正确的。
+
+* * *
+
+## 10\. 什么是 State Transition？
+
+State 是状态。  
+Transition 是转换。
+
+Ethereum 或 L2 的状态包括：
+
+-   谁有多少余额  
+    
+-   合约里存了什么数据  
+    
+-   NFT 属于谁  
+    
+-   某个账户 nonce 是多少  
+    
+-   某个应用当前记录是什么  
+    
+
+一笔交易会改变状态。
+
+比如：
+
+A 给 B 转 1 ETH。
+
+旧状态：
+
+A 有 5 ETH，B 有 0 ETH。
+
+新状态：
+
+A 有 4 ETH，B 有 1 ETH。
+
+ZK Rollup 要证明的是：
+
+从旧状态到新状态的变化是正确的。
+
+**A blockchain transaction is a state transition.**  
+一笔区块链交易，本质上是一次状态转换。
+
+* * *
+
+## 11\. ZK Rollup 的三层结构
+
+可以简单理解为三层：
+
+### 1）Execution Layer｜执行层
+
+处理用户交易。  
+更新 L2 状态。
+
+### 2）Proving Layer｜证明层
+
+为这批交易生成 validity proof。
+
+### 3）Settlement Layer｜结算层
+
+Ethereum L1 验证 proof。  
+确认最终状态。
+
+```text
+Users
+↓
+L2 Execution
+↓
+ZK Proof
+↓
+Ethereum Verification / Settlement
+```
+
+**L2 executes, prover proves, Ethereum verifies.**  
+L2 执行，prover 证明，Ethereum 验证。
+
+* * *
+
+## 12\. ZK Rollup 的优势
+
+### 1）更低成本
+
+大量交易在链下执行，减少 L1 负担。
+
+### 2）更高吞吐
+
+L2 可以处理更多交易。
+
+### 3）更快最终性潜力
+
+因为 validity proof 验证通过后，状态更快被确认。
+
+### 4）继承 Ethereum 安全性
+
+最终验证和结算仍在 Ethereum 上。
+
+### 5）适合未来可验证计算
+
+不仅可以证明交易，还可能证明更复杂的程序执行。
+
+**ZK Rollups scale Ethereum by compressing trust into proofs.**  
+ZK Rollup 通过把信任压缩进证明，来扩展 Ethereum。
+
+* * *
+
+## 13\. ZK Rollup 的挑战
+
+ZK Rollup 很强，但不简单。
+
+主要挑战：
+
+-   证明生成成本高  
+    
+-   技术复杂  
+    
+-   开发者体验还不够成熟  
+    
+-   EVM 兼容难度高  
+    
+-   prover 去中心化仍在发展中  
+    
+-   bridge / sequencer / governance 仍有风险  
+    
+
+所以 ZK Rollup 不是“已经完美解决一切”。
+
+它是方向很强，但仍在演进。
+
+**ZK Rollups are powerful, but still technically complex.**  
+ZK Rollup 很强大，但技术上仍然复杂。
+
+* * *
+
+## 14\. 常见 ZK Rollup / ZK L2 项目
+
+你先建立大概印象即可：
+
+### Starknet
+
+使用 STARK 技术。  
+有自己的语言 Cairo。  
+偏技术原生和长期基础设施路线。
+
+### zkSync
+
+强调 ZK Rollup 与用户体验。  
+希望让应用更容易构建在 ZK L2 上。
+
+### Scroll
+
+强调 EVM 等价 / 兼容，目标是让 Ethereum 开发者更自然迁移。
+
+### Polygon zkEVM
+
+Polygon 生态中的 ZK 扩容方案之一，偏 EVM 兼容路线。
+
+### Linea
+
+Consensys 推出的 zkEVM 方向，和 MetaMask / Infura 生态有连接。
+
+不用现在记太细。  
+先知道：它们都在探索如何把 Ethereum 扩容带到 ZK 时代。
+
+* * *
+
+## 15\. 放回你的主线：为什么你要懂 ZK Rollup？
+
+你不是要做 ZK 工程师。  
+但你需要理解 ZK Rollup，因为它代表 Web3 技术发展的一个底层方向：
+
+**未来很多应用不会直接建在 Ethereum L1 上，而会建在 L2 / ZK / modular infra 上。**
+
+如果你想做：
+
+-   技术生态建设  
+    
+-   社区教育  
+    
+-   identity / trust infrastructure  
+    
+-   ENS / AI identity 观察  
+    
+-   ZK 社区参与  
+    
+-   L2 生态机会判断  
+    
+
+你就需要知道：
+
+这些系统的信任从哪里来？  
+谁在执行？谁在证明？谁在验证？  
+L1 和 L2 的关系是什么？  
+项目方为什么需要 community / ecosystem builder？
+
+**Technical ecosystem builders need to understand where trust comes from in the system.**  
+技术生态建设者需要理解系统里的信任从哪里来。
+
+* * *
+
+## 16\. 本节核心总结
+
+**ZK Rollup moves execution offchain and keeps verification on Ethereum.**  
+ZK Rollup 把执行放到链下，把验证留在 Ethereum。
+
+**Optimistic Rollups rely on challenges. ZK Rollups rely on proofs.**  
+Optimistic Rollup 依赖挑战，ZK Rollup 依赖证明。
+
+**A validity proof proves that a state transition is correct.**  
+有效性证明证明一次状态转换是正确的。
+
+**L2 executes, prover proves, Ethereum verifies.**  
+L2 执行，prover 证明，Ethereum 验证。
+
+**ZK Rollups help Ethereum scale without giving up Ethereum as the trust anchor.**  
+ZK Rollup 帮助 Ethereum 扩容，同时不放弃 Ethereum 作为信任锚点。
+<!-- DAILY_CHECKIN_2026-05-03_END -->
+
 # 2026-05-02
 <!-- DAILY_CHECKIN_2026-05-02_START -->
+
 # ZK 03｜ZK 的两大主线：Privacy 与 Verifiable Computation
 
 > 核心句：  
@@ -372,6 +829,7 @@ ZK 有两大主线：隐私，以及可验证计算。
 
 # 2026-05-01
 <!-- DAILY_CHECKIN_2026-05-01_START -->
+
 
 # ZK 02｜核心原理：证明、验证者与秘密
 
@@ -761,6 +1219,7 @@ ZK 把身份从“完整暴露”变成“条件证明”。
 
 # 2026-04-30
 <!-- DAILY_CHECKIN_2026-04-30_START -->
+
 
 
 # ZK 学习笔记 01
@@ -1219,6 +1678,7 @@ AI 模型验证
 
 
 
+
 明日复明日，明日何其多
 <!-- DAILY_CHECKIN_2026-04-29_END -->
 
@@ -1228,11 +1688,13 @@ AI 模型验证
 
 
 
+
 唉 再请假
 <!-- DAILY_CHECKIN_2026-04-28_END -->
 
 # 2026-04-26
 <!-- DAILY_CHECKIN_2026-04-26_START -->
+
 
 
 
@@ -1597,6 +2059,7 @@ Transactions change state
 
 
 
+
 又没学
 <!-- DAILY_CHECKIN_2026-04-24_END -->
 
@@ -1609,11 +2072,13 @@ Transactions change state
 
 
 
+
 疲惫，休息，明天继续
 <!-- DAILY_CHECKIN_2026-04-23_END -->
 
 # 2026-04-22
 <!-- DAILY_CHECKIN_2026-04-22_START -->
+
 
 
 
@@ -1847,6 +2312,7 @@ But final truth still comes from L1
 
 
 
+
 HK Web3 Festival 嘉年华感受熊市，太熊了，好难受
 
 # 🧠 One Transaction = EL + CL Cooperation
@@ -2032,6 +2498,7 @@ Consensus makes it permanent.
 
 
 
+
 今天周日 想休息
 
 下周好悬啊，一周HK
@@ -2039,6 +2506,7 @@ Consensus makes it permanent.
 
 # 2026-04-17
 <!-- DAILY_CHECKIN_2026-04-17_START -->
+
 
 
 
@@ -2309,6 +2777,7 @@ CL 决定“真相”，EL 产生“结果”。
 
 
 
+
 04/16 继续降维学习
 
 EL vs CL — The Real Separation
@@ -2526,6 +2995,7 @@ CL = ENS 的安全与确认
 
 # 2026-04-15
 <!-- DAILY_CHECKIN_2026-04-15_START -->
+
 
 
 
@@ -2830,6 +3300,7 @@ Ethereum is a global state machine, and EL is the part that runs the machine.
 
 
 
+
 # [Execution Layer Specification](https://epf.wiki/#/wiki/EL/el-specs?id=execution-layer-specification)
 
 看的很晕，纠结要不要放弃？
@@ -2837,6 +3308,7 @@ Ethereum is a global state machine, and EL is the part that runs the machine.
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -2965,6 +3437,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 
 
+
 04/11
 
 还得再休一天，睡觉更重要
@@ -2991,6 +3464,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 
 
+
 04/10
 
 今天折腾网络，休息下
@@ -3000,6 +3474,7 @@ The Merge（2022）不是“优化”，而是一次**架构级重构**：Ethere
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -3272,6 +3747,7 @@ Ethereum’s design can be summarized as:
 
 
 
+
 04/07
 
 ## 🧩 核心结构（Core Structure）
@@ -3376,6 +3852,7 @@ Ethereum’s design can be summarized as:
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
