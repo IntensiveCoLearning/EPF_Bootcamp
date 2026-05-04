@@ -1876,15 +1876,16 @@ EPS 官方会议和 ACD 会议总结
 
 
 
+
 <!-- STATISTICALDATA_START -->
 ## 统计数据
 
-- 总参与人数: 0
-- 完成人数: 0
-- 完成用户: 
-- 全勤用户: 
-- 淘汰人数: 0
-- 淘汰率: 0.00%
+- 总参与人数: 129
+- 完成人数: 32
+- 完成用户: dadwawd1-ops, SKYEJT, fffg-o, XGe711, may-tonk, Moxan1st, pillowtalk-Qy, midi-zhuanjia, puhuiin, Karynam2, fengjy73, Chichuzxy, Minami-Bein, yicoyico639-a11y, Jay-Gould7, ARZER-TW, KUOLEYA, zg870, QingQiuGeek, mark0-cn, fenixIves, vergissxie, StellaWang5209, duladuladula, bonujel, ZHQ-clack, wkarry450-max, wLynna, fuyushiphilip, zaizhengzai697-prog, klizz111, BareerahBenjamin
+- 全勤用户: fffg-o, pillowtalk-Qy, puhuiin, mark0-cn, duladuladula
+- 淘汰人数: 97
+- 淘汰率: 75.19%
 <!-- STATISTICALDATA_END -->
 
 
