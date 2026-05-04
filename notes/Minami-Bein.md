@@ -15,8 +15,14 @@ EPF 实习计划
 ## Notes
 
 <!-- Content_START -->
+# 2026-05-04
+<!-- DAILY_CHECKIN_2026-05-04_START -->
+123
+<!-- DAILY_CHECKIN_2026-05-04_END -->
+
 # 2026-05-01
 <!-- DAILY_CHECKIN_2026-05-01_START -->
+
 ### 一、今日学习内容
 
 今天在前几天实践与问题排查的基础上，开始从 **优化与改进的角度** 重新审视 Account Abstraction 的调用流程。
@@ -214,6 +220,7 @@ EPF 实习计划
 
 # 2026-04-30
 <!-- DAILY_CHECKIN_2026-04-30_START -->
+
 
 ### 一、今日学习内容
 
@@ -415,6 +422,7 @@ EPF 实习计划
 <!-- DAILY_CHECKIN_2026-04-29_START -->
 
 
+
 ### 一、今日学习内容
 
 今天在前两天实践与源码分析的基础上，尝试从“实现角度”梳理 **Account Abstraction 的完整执行流程**，并用伪代码的方式进行模拟。
@@ -526,6 +534,7 @@ EPF 实习计划
 
 # 2026-04-28
 <!-- DAILY_CHECKIN_2026-04-28_START -->
+
 
 
 
@@ -684,6 +693,7 @@ EPF 实习计划
 
 
 
+
 ### 一、今日学习内容
 
 今天开始进入实践阶段，重点围绕 **Account Abstraction 的实际调用流程** 进行学习与尝试，主要包括：
@@ -825,6 +835,7 @@ EPF 实习计划
 
 # 2026-04-26
 <!-- DAILY_CHECKIN_2026-04-26_START -->
+
 
 
 
@@ -1045,6 +1056,7 @@ EPF 实习计划
 
 
 
+
 一、今日学习内容
 
 今天重点从 **安全性角度分析 Account Abstraction（AA）架构**，主要包括：
@@ -1230,6 +1242,7 @@ Paymaster 涉及资金支付，是重点风险区域：
 
 
 
+
 ### 一、今日学习内容
 
 今天重点学习了 **Smart Account（智能账户）与 EOA（外部账户）的对比与设计差异**，主要包括：
@@ -1374,6 +1387,7 @@ Smart Account 可以实现：
 
 # 2026-04-23
 <!-- DAILY_CHECKIN_2026-04-23_START -->
+
 
 
 
@@ -1551,6 +1565,7 @@ Paymaster 并不是无条件支付，而是：
 
 
 
+
 ### 一、今日学习内容
 
 今天重点学习了 **Account Abstraction 架构中的核心组件——Bundler**，主要包括：
@@ -1719,6 +1734,7 @@ Bundler 的收益来源主要包括：
 
 
 
+
 ### 一、今日学习内容
 
 今天重点围绕 **UserOperation 与传统 Transaction 的对比分析** 展开，主要包括：
@@ -1867,6 +1883,7 @@ Bundler 的收益来源主要包括：
 
 # 2026-04-20
 <!-- DAILY_CHECKIN_2026-04-20_START -->
+
 
 
 
@@ -2056,6 +2073,7 @@ AA 并没有修改底层协议，而是通过“上层机制”实现：
 
 
 
+
 ### 一、本周学习回顾
 
 本周从第一周的基础认知出发，进一步深入到 **执行层核心机制与数据结构**，主要内容包括：
@@ -2215,6 +2233,7 @@ AA 并没有修改底层协议，而是通过“上层机制”实现：
 
 # 2026-04-18
 <!-- DAILY_CHECKIN_2026-04-18_START -->
+
 
 
 
@@ -2396,6 +2415,7 @@ EVM 本质是一个：
 
 
 
+
 ### 一、今日学习内容
 
 今天重点学习了 **Ethereum Gas 机制及 EIP-1559 费用模型**，主要包括：
@@ -2547,6 +2567,7 @@ EIP-1559 的核心在于：
 
 # 2026-04-16
 <!-- DAILY_CHECKIN_2026-04-16_START -->
+
 
 
 
@@ -2716,6 +2737,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 执行客户端（Execution Client）的架构设计**，并对主流客户端进行了对比分析，主要包括：
 
 -   Geth（Go 实现）
@@ -2814,6 +2836,7 @@ EIP-1559 的核心在于：
 
 # 2026-04-14
 <!-- DAILY_CHECKIN_2026-04-14_START -->
+
 
 
 
@@ -2930,6 +2953,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 中的数据编码与基础数据结构**，主要包括：
 
 -   RLP（Recursive Length Prefix）编码原理
@@ -2990,6 +3014,7 @@ EIP-1559 的核心在于：
 
 # 2026-04-12
 <!-- DAILY_CHECKIN_2026-04-12_START -->
+
 
 
 
@@ -3100,6 +3125,7 @@ EIP-1559 的核心在于：
 
 
 
+
 今天重点学习了 **Ethereum 网络通信机制**，主要包括：
 
 -   DevP2P 协议（节点之间的 P2P 通信机制）
@@ -3158,6 +3184,7 @@ DevP2P 更偏“底层网络协议”
 
 # 2026-04-10
 <!-- DAILY_CHECKIN_2026-04-10_START -->
+
 
 
 
@@ -3267,6 +3294,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-08-1775669487734-image.png)
 
 维修bug
@@ -3274,6 +3302,7 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 # 2026-04-08
 <!-- DAILY_CHECKIN_2026-04-08_START -->
+
 
 
 
@@ -3328,11 +3357,13 @@ PS：通过阅读文档，对交易从构造到上链的整体流程有了更清
 
 
 
+
 ![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775491855322-image.png)![image.png](https://raw.githubusercontent.com/IntensiveCoLearning/EPF_Bootcamp/main/assets/Minami-Bein/images/2026-04-06-1775492614139-image.png)
 <!-- DAILY_CHECKIN_2026-04-07_END -->
 
 # 2026-04-06
 <!-- DAILY_CHECKIN_2026-04-06_START -->
+
 
 
 
